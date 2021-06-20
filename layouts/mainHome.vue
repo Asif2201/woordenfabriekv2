@@ -1,6 +1,5 @@
 <template>
-  <div >
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <div>
 
     <table class="table-fixed w-full bg-gray-100 text-sm text-gray-500 font-mono " >
       <thead/>
