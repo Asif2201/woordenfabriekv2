@@ -1,12 +1,13 @@
 <template>
-  <div class="container">
-    <div>
-      <div>
+  <div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <div class="text-center text-yellow-700">
+          <p> &nbsp; </p>
+          <p> Your Lessons </p>
+          <p> &nbsp; </p>
           <Lessons />
       </div>
-
-  </div>
-  </div>
+   </div>
 </template>
 
 <script>
