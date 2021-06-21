@@ -13,10 +13,10 @@
         </tr>
       </thead>
       <tbody class="bg-gray-200">
-        <tr v-for="lesson of lessons.vwUsers" >
+        <tr v-for="lesson of lessons.vwUsers">
           <td v-for="value2,key in lesson">
             <p v-if="key === 'studentlessonid' " class="text-sm font-medium text-gray-900">
-              <nuxt-link :to="{ path: '/lesson/' + value2 }" >
+              <nuxt-link :to="{ path: `/lessonhome?studentlessonID=` + value2 }" >
                 {{ value2 }}
               </nuxt-link>
             </p>
