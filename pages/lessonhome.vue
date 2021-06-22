@@ -1,21 +1,51 @@
 <template>
-  <div>
-    <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
-    <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
-    <div v-else>
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <div class="text-center text-yellow-700">
-          <p> &nbsp; </p>
-          <p> {{ lessons.vwUsers[0].lessonsubtitle }} </p>
-          <p> &nbsp; </p>
+  <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
+  <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
+  <div v-else>
+    <div class="relative h-64 m-8 overflow-hidden rounded-lg bg-indigo-500">
+    <div class="absolute z-30 flex w-full h-full">
+      <div class="relative z-30 w-5/6 px-6 py-8 text-gray md:py-10 md:w-1/2">
+        <h2 class="text-2xl">{{ lessons.vwUsers[0].lessonsubtitle }}</h2>
+        <span></span>
+      </div>
+      <div class="absolute top-0 right-0 flex w-full h-full">
+        <div class="w-1/3 h-full bg-blue-500"></div>
+        <div class="relative w-1/3">
+          <svg
+            fill="currentColor"
+            viewBox="0 0 100 100"
+            class="absolute inset-y-0 z-20 h-full text-blue-500"
+          >
+            <polygon id="diagonal" points="0,0 100,0 50,100 0,100"></polygon>
+          </svg>
+          <svg
+            fill="currentColor"
+            viewBox="0 0 100 100"
+            class="absolute inset-y-0 z-10 h-full ml-6 text-gray opacity-50"
+          >
+            <polygon points="0,0 100,0 50,100 0,100"></polygon>
+          </svg>
         </div>
-
+      </div>
+    </div>
+    <div class="absolute top-0 right-0 block w-9/12 h-full">
+      <img
+        alt="Snowy mountain lake"
+        class="object-cover min-w-full h-full"
+        src="https://source.unsplash.com/random" />
+    </div>
+    </div>
+    <div class="relative h-8 m-8 overflow-hidden rounded-lg bg-gray-500 text-white text-center">
+      <nuxt-link :to="{ path: `/challengehome?studentlessonID=` + this.$route.query.studentlessonID }" >
+                Continue with learning challenge
+      </nuxt-link>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import moment from 'moment';
 
 export default {
     layout: 'lessonhomelayout',
@@ -32,6 +62,16 @@ export default {
       `http://localhost:3000/v1/userLessons?lessonID=${this.$route.query.studentlessonID}`
     ).then(res => res.json())
   },
+  methods:  {
+    dateTime(value) {
+      if(moment(value).format('YYYY-MM-DD') !== 'Invalid date')  {
+        return moment(value).format('YYYY-MM-DD');
+      }
+      else  {
+        return value;
+      }
+    },
+  }
 };
 
 </script>

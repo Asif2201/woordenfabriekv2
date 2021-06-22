@@ -6,7 +6,7 @@
       <tbody>
         <tr class="break-words">
           <td class="w-1/10 pl-4  pb-4 pt-4 ...">
-          <router-link to="/" > Menu </router-link>
+          <nuxt-link to="/" > Menu </nuxt-link>
           </td>
           <td class="w-1/2 pb-4 pt-4 ...">
           <a href="#" class="block.."> De Woordenfabriek - een leeromgeving van Radboud Universiteit Nijmegen </a>

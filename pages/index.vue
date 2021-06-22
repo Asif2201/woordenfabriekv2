@@ -4,9 +4,9 @@
       <div class="text-center text-yellow-700">
           <p> &nbsp; </p>
           <p> Your Lessons </p>
-          <p> &nbsp; </p>
           <Lessons />
       </div>
+      <img class="component-85-1-TdZx3J" src="~/assets/component-85---1@1x.png">
    </div>
 </template>
 
@@ -35,6 +35,16 @@ export default {
   justify-content: center;
   align-items: center;
   text-align: center;
+}
+
+.component-85-1-TdZx3J {
+  background-color: transparent;
+  height: 349px;
+  left: 690px;
+  object-fit: cover;
+  position: absolute;
+  top: 325px;
+  width: 557px;
 }
 
 .title {
