@@ -26,9 +26,9 @@
       <div v-for="lesson in currentLevel.vwUsers">
         <div class="rectangle-570-8DUsak"></div>
         <div class="rectangle-571-Eabc5t">
-              <span class="span0-eySr01 lato-bold-cerise-36px"> {{ `Level ` + lesson.studentchallengeid }} </span>
+              <span class="span0-eySr01 lato-bold-cerise-36px"> {{ `Level ` + lesson.studentlevelid }} </span>
               <span class="span1-eySr01 lato-bold-sonic-silver-36px"> | </span>
-              <span class="span2-eySr01 lato-bold-curious-blue-36px-2">{{ lesson.challengesubtitle }}</span>
+              <span class="span2-eySr01 lato-bold-curious-blue-36px-2">{{ lesson.levelsubtitle }}</span>
         </div>
       </div>
       <div class="group-761-Foijvq">
@@ -55,7 +55,7 @@ export default {
   },
   async fetch() {
     this.currentLevel = await fetch(
-      `http://localhost:3000/v1/userChallenge?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=true`
+      `http://localhost:3000/v1/userLevels?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=true`
     ).then(res => res.json())
   },
 }

@@ -298,10 +298,10 @@
  .buttondefault-4ZAul6 {
   background-color: transparent;
   height: 36px;
-  left: 214px;
+  left: 1400px;
   position: absolute;
-  top: 0px;
-  width: 93px;
+  top: 400px;
+  width: 200px;
 }
  .buttondefault-6lk7Xx {
   background-color: transparent;
@@ -522,7 +522,7 @@
  .buttondisabled-TdZx3J {
   background-color: transparent;
   height: 36px;
-  left: 200px;
+  left: 300px;
   position: relative;
   top: -27px;
   width: 91px;
@@ -530,9 +530,9 @@
  .buttondisabled-XRxZD4 {
   background-color: transparent;
   height: 36px;
-  left: 1332px;
-  position: absolute;
-  top: 21315px;
+  left: 370px;
+  position: relative;
+  top: -63px;
   width: 91px;
 }
  .buttondisabled-Xixqhf {
@@ -2958,7 +2958,7 @@
   height: 750px;
   left: 147px;
   position: relative;
-  top: 250px;
+  top: 235px;
   width: 99%;
 }
  .group-745-TdZx3J {

@@ -18,7 +18,7 @@
                 </div>
                 <div class="text-right">
                   <span class="text-xs font-semibold inline-block text-pink-600">
-                    {{ `Level ` + lesson.studentchallengeid + ` ` + lesson.completionprogress * 100 + `%`}}
+                    {{ `Level ` + lesson.studentlevelid + ` ` + lesson.completionprogress * 100 + `%`}}
                   </span>
                 </div>
                 <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-pink-200">
@@ -37,7 +37,7 @@
                 </div>
                 <div class="text-right">
                   <span class="text-xs font-semibold inline-block text-pink-600">
-                    {{ `Level ` + lesson.studentchallengeid + ` ` + lesson.completionprogress * 100 + `%`}}
+                    {{ `Level ` + lesson.studentlevelid + ` ` + lesson.completionprogress * 100 + `%`}}
                   </span>
                 </div>
              </div>
@@ -70,7 +70,7 @@ export default {
       `http://localhost:3000/v1/userLessons?lessonID=${this.$route.query.studentlessonID}`
     ).then(res => res.json())
     this.currentLevel = await fetch(
-      `http://localhost:3000/v1/userChallenge?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=true`
+      `http://localhost:3000/v1/userLevels?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=true`
     ).then(res => res.json())
   },
 }
