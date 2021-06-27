@@ -1,37 +1,23 @@
 <template>
     <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
     <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
-    <div v-else>
-      <table class="table-fixed w-full bg-gray-100 text-sm text-gray-500 font-mono " >
-      <thead/>
-      <tbody>
-        <tr class="break-words">
-          <td class="w-1/10 pl-4  pb-4 pt-4 ...">
-          <nuxt-link to="/" > Menu </nuxt-link>
-          </td>
-          <td class="w-1/2 pb-4 pt-4 ...">
-          <a href="#" class="block.."> De Woordenfabriek - een leeromgeving van Radboud Universiteit Nijmegen </a>
-          </td>
-          <td class="float-right w-2/5 pb-4 pt-4  ,,," >
-          <div v-if="isAuthenticated" class="block"> Jaap </div>
-          <div v-else >
-            <button class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
-              <nuxt-link to="/login"> log in </nuxt-link>
-            </button>
-          </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
+    <div v-else class="flex flex-wrap content-start">
+      <Mainheader/>
       <div v-for="lesson in currentLevel.vwUsers">
-        <div class="rectangle-570-8DUsak"></div>
-        <div class="rectangle-571-Eabc5t">
-              <span class="span0-eySr01 lato-bold-cerise-36px"> {{ `Level ` + lesson.studentlevelid }} </span>
-              <span class="span1-eySr01 lato-bold-sonic-silver-36px"> | </span>
-              <span class="span2-eySr01 lato-bold-curious-blue-36px-2">{{ lesson.levelsubtitle }}</span>
+        <div class="bg-green-300 h-14 w-screen flex content-center">
+              <hr class="border-0 bg-gray-500 text-gray-500 h-px">
+              <hr class="border-0 bg-gray-500 text-gray-500 h-px">
+              <hr class="border-0 bg-gray-500 text-gray-500 h-px">
+              <span class=" pt-2 ml-6 font-sans  font-bold text-gray-500 text-4xl"> {{ `Level ` + lesson.studentlevelid }} </span>
+              <span class=" pt-2 font-mono font-bold text-gray-500 text-4xl"> &nbsp | &nbsp </span>
+              <span class=" pt-2 font-mono font-bold text-gray-500 text-4xl">{{ lesson.levelsubtitle }}</span>
         </div>
+        <hr class="border-0 bg-gray-500 text-gray-500 h-px">
+        <hr class="border-0 bg-gray-500 text-gray-500 h-px">
+        <hr class="border-0 bg-gray-500 text-gray-500 h-px">
+        <hr class="border-0 bg-gray-500 text-gray-500 h-px">
       </div>
-      <div class="group-761-Foijvq">
+      <div class="LevelIcon">
         <img src="~/assets/path-537-1@1x.png" />
         <div>
           <img src="~/assets/path-538-1@1x.png" />
@@ -43,8 +29,10 @@
   </template>
 <script>
 import { mapGetters } from 'vuex'
+import Mainheader from '../components/Mainheader.vue'
 
 export default {
+  components: { Mainheader },
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser'])
   },
@@ -60,3 +48,15 @@ export default {
   },
 }
 </script>
+<style scoped>
+  .LevelIcon  {
+    background-color: transparent;
+    height: 49px;
+    position: absolute;
+    right: calc(20% - 55px);
+    top: 0px;
+    width: 114px;
+    float: right;
+    z-index: 100;
+  }
+</style>

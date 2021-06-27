@@ -1,12 +1,12 @@
 <template>
-  <div>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <div class="text-center text-yellow-700">
+  <div class="w-full">
+
+      <img class="object-contain h-80 w-full ..." src="~/assets/woordenfabriektext.png">
+      <img class="object-contain h-80 w-full ..." src="~/assets/component-85---1@1x.png">
+       <div class="text-center text-yellow-700">
           <p> &nbsp; </p>
-          <p> Your Lessons </p>
           <Lessons />
       </div>
-      <img class="component-85-1-TdZx3J" src="~/assets/component-85---1@1x.png">
    </div>
 </template>
 

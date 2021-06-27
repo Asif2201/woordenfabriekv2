@@ -1,17 +1,14 @@
 <template>
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
-  <div v-else>
+  <div v-else class="flex" >
     <div v-for="Object in Challenges1.Challenge">
-      <div class="group-745-TdZx3J">
-        <div class="rectangle-533-qI9Ebe"></div>
-        <div class="v1-verwissel-de-er-de-betekenis-qI9Ebe lato-bold-white-28px">
-          <span class="span0-iddOTT h1"> {{ Object.ChallengeTitle }}</span>
+      <div class="relative w-full h-20 bg-black text-white w-screen z-index:0">
+          <p> &nbsp </p>
+          <span class="text-gray-300 text-xl font-sans ml-6"> {{ Object.ChallengeTitle }}</span><p></p>
+          <span class="text-gray-500 text-lg font-sans ml-6"> {{ Object.ChallengeSubtitle }}</span>
+        <p>&nbsp</p>
         </div>
-        <p class="maak-zoveel-mog-ndere-betekenis-qI9Ebe paragraph">
-          {{ Object.ChallengeSubtitle }}
-        </p>
-      </div>
       <div v-if="true">
         <ChallengeK1 :Challenge="Object.challenge_x_levelid" />
       </div>

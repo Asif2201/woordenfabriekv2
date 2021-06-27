@@ -2,35 +2,76 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="group-744-TdZx3J">
-        <div v-for="(Object, ObjIndex) in Challenge2">
-            <div  class="lato-bold-sonic-silver-24px">
-              <span v-for="(char, index) in Object.word" v-on:click="morphemeClick(ObjIndex, index, $event);" v-bind:id="ObjIndex + '-' + index">
-                {{ char }}
-              </span>
-            </div>
-            <div v-if="Object.answer.length<2" class="buttondisabled-TdZx3J">
-              <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed" v-bind:id="btnObjIndex + '-' + index">
-                OK
-              </button>
-            </div>
-            <div v-else class="buttondisabled-TdZx3J">
-              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" v-on:click="morphemeClickOk(ObjIndex)" v-bind:id="btnObjIndex + '-' + index">
-                OK
-              </button>
-            </div>
-            <div v-if="Object.answer.length<2" class="buttondisabled-XRxZD4">
-              <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed" v-bind:id="btnOkObjIndex + '-' + index">
-                  Wis
-              </button>
-            </div>
-            <div v-else class="buttondisabled-XRxZD4">
-              <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" v-on:click="morphemeClickWis(ObjIndex)" v-bind:id="btnWisObjIndex + '-' + index">
-                Wis
-              </button>
-            </div>
-        </div>
-        <div v-if="this.AllquestionsAnswered" class=buttondefault-4ZAul6>
+      <div class="relative ml-20 mt-10">
+        <table class="table-fixed w-full align-center">
+          <thead/>
+          <tbody>
+            <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
+              <tr>
+                <td class="w-2/3">
+                  <div class="questionwords">
+                    <span v-for="(char, index) in Object.word" v-on:click="morphemeClick(ObjIndex, index, $event);">
+                      {{ char }}
+                    </span>
+                  </div>
+                </td>
+                <td>
+                  <div v-if="Object.answerConfirmed" class="">
+                    <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed">
+                      OK
+                    </button>
+                  </div>
+                  <div v-else class="">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" v-on:click="morphemeClickOk(ObjIndex)">
+                      OK
+                    </button>
+                  </div>
+                </td>
+                <td> &nbsp  &nbsp </td>
+                <td>
+                  <div v-if="!Object.answerConfirmed" class="">
+                    <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed">
+                        Wis
+                    </button>
+                  </div>
+                  <div v-else class="">
+                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" v-on:click="morphemeClickWis(ObjIndex)">
+                      Wis
+                    </button>
+                  </div>
+                </td>
+                <td> &nbsp  &nbsp </td>
+                <td v-show="ShowResult" :key="ResultKey">
+                  <div class="object-scale-down">
+                    <p v-show="Object.answerCorrect" class="text-blue">
+                      <img src="~/assets/correct.jpeg" />
+                    </p>
+                    <p v-show="!Object.answerCorrect" class="text-blue">
+                      <img src="~/assets/incorrect.jpeg" />
+                    </p>
+                  </div>
+                </td>
+            </tr>
+            <tr>
+              <td> &nbsp </td>
+              <td> &nbsp </td>
+              <td> &nbsp </td>
+              <td> &nbsp </td>
+              <td> &nbsp </td>
+              <td> &nbsp </td>
+            </tr>
+            <tr>
+              <td> &nbsp </td>
+              <td> &nbsp </td>
+              <td> &nbsp </td>
+              <td> &nbsp </td>
+              <td> &nbsp </td>
+              <td> &nbsp </td>
+            </tr>
+          </div>
+        </tbody>
+        </table>
+        <div v-if="AllquestionsAnswered" class=buttondefault-4ZAul6>
             <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
                Klaar
             </button>
@@ -54,12 +95,13 @@ export default {
       Challenge2: [],
       knipWords: [],
       AllquestionsAnswered: false,
+      ShowResult: false,
+      ResultKey: 0,
     }
   },
   watch: {
     Challenge1()  {
       this.Challenge2 = this.JSONtoObj();
-      console.log(this.Challenge2)
     }
   },
   async fetch() {
@@ -77,6 +119,9 @@ export default {
         return '';
       }
     },
+    forceRerender() {
+      this.ResultKey += 1;
+    },
     JSONtoObj()  {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
@@ -84,6 +129,7 @@ export default {
           QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].word);
           QuestionObjectList[i].answer = Array('');
           QuestionObjectList[i].answerConfirmed = false;
+          QuestionObjectList[i].answerCorrect = false;
         }
       return QuestionObjectList;
     },
@@ -116,10 +162,35 @@ export default {
       for (var i = 0; i < this.Challenge2.length; i++) {
         this.EvaluateAnswer(i);
       }
+      this.ShowResult = true;
+      this.forceRerender();
     },
     EvaluateAnswer: function(index)  {
-      console.log(i);
+      let useranswer = '';
+      let correctAnswer = '';
+
+      this.Challenge2[index].answerCorrect = false;
+      for(var i = 1; i < this.Challenge2[index].answer.length;i++)  {
+        correctAnswer = this.Challenge2[index].answer1 + '|' + this.Challenge2[index].answer2;
+        if(this.Challenge2[index].answer3 !== null) {
+          correctAnswer = correctAnswer + '|' + this.Challenge2[index].answer3;
+        }
+        useranswer = this.Challenge2[index].word.join("");
+        if(correctAnswer === useranswer) {
+          this.Challenge2[index].answerCorrect = true;
+        }
+      }
     }
   },
+
 }
 </script>
+<style scoped>
+  .questionwords {
+    color: var(--grey);
+    font-family: var(--font-family-lato);
+    font-size: var(--font-size-l);
+    font-style: normal;
+    font-weight: 700;
+  }
+</style>
