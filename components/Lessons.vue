@@ -3,28 +3,28 @@
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else class="flex flex-col relative">
     <table class="min-w-full table-auto">
-      <thead class="justify-between">
-        <tr class="bg-gray-800">
-          <th class="px-16 py-2">id</th>
-          <th class="px-16 py-2">title</th>
-          <th class="px-16 py-2">status</th>
-          <th class="px-16 py-2">date assigned</th>
-          <th class="px-16 py-2">date completed</th>
-        </tr>
-      </thead>
+
       <tbody class="bg-gray-200">
-        <tr v-for="lesson of lessons.vwUsers">
-          <td v-for="value2,key in lesson">
-            <p v-if="key === 'studentlessonid' " class="text-sm font-medium text-gray-900">
-              <nuxt-link :to="{ path: `/lessonhome?studentlessonID=` + value2 }" >
+
+        <tr v-for="lesson of lessons.vwUsers" >
+          <template v-if="lesson.status === 'Assigned'">
+            <td v-for="value2,key in lesson">
+              <p v-if="key === 'studentlessonid' " class="text-sm font-medium text-gray-900">
+                <nuxt-link :to="{ path: `/lessonhome?studentlessonID=` + value2 }" >
+                  Click to start lesson
+                </nuxt-link>
+              </p>
+            </td>
+          </template>
+          <template v-else>
+            <td v-for="value2,key in lesson">
+            <p v-if="key === 'studentlessonid' " class="text-sm font-medium text-gray-300">
                 {{ value2 }}
-              </nuxt-link>
-            </p>
-            <p v-else-if="key !== 'studentemail' " class="text-sm font-medium text-gray-900">
-              {{   dateTime(value2)  }}
             </p>
           </td>
+          </template>
         </tr>
+
       </tbody>
     </table>
   </div>
