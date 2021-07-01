@@ -27,7 +27,7 @@
                     </button>
                   </div>
                 </td>
-                <td> &nbsp  &nbsp </td>
+                <td> &nbsp;  &nbsp; </td>
                 <td>
                   <div v-if="!Object.answerConfirmed" class="">
                     <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed">
@@ -40,7 +40,7 @@
                     </button>
                   </div>
                 </td>
-                <td> &nbsp  &nbsp </td>
+                <td> &nbsp;  &nbsp; </td>
                 <td v-show="ShowResult" :key="ResultKey">
                   <div class="object-scale-down">
                     <p v-show="Object.answerCorrect" class="text-blue">
@@ -53,20 +53,20 @@
                 </td>
             </tr>
             <tr>
-              <td> &nbsp </td>
-              <td> &nbsp </td>
-              <td> &nbsp </td>
-              <td> &nbsp </td>
-              <td> &nbsp </td>
-              <td> &nbsp </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
             </tr>
             <tr>
-              <td> &nbsp </td>
-              <td> &nbsp </td>
-              <td> &nbsp </td>
-              <td> &nbsp </td>
-              <td> &nbsp </td>
-              <td> &nbsp </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
             </tr>
           </div>
         </tbody>
@@ -84,7 +84,9 @@ import { mapGetters } from 'vuex'
 
 export default {
   props:  [
-    'Challenge'
+    'Challenge',
+    'Level',
+    'LessonID'
   ],
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser'])
@@ -97,6 +99,8 @@ export default {
       AllquestionsAnswered: false,
       ShowResult: false,
       ResultKey: 0,
+      TotalCorrect: 0,
+      TotalQuestions: 0,
     }
   },
   watch: {
@@ -130,7 +134,8 @@ export default {
           QuestionObjectList[i].answer = Array('');
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
-        }
+      }
+      this.TotalQuestions = this.Challenge1.LearningQuestions.length;
       return QuestionObjectList;
     },
     morphemeClick: function(word, char, event) {
@@ -159,11 +164,40 @@ export default {
       this.AllquestionsAnswered = false;
     },
     challengeCompleted: function() {
+      var PostString = '';
+      var newPropertyID = '';
       for (var i = 0; i < this.Challenge2.length; i++) {
         this.EvaluateAnswer(i);
+
+        PostString = '{ '
+        newPropertyID = this.Challenge2[i].id;
+        PostString += `"'` + newPropertyID + `'"  : "id",`;
+        PostString += `"'S1'" : "studentID",`;
+        newPropertyID = this.LessonID + `L`;
+        PostString += `"'` + newPropertyID + `'": "LessonID",`;
+        newPropertyID = this.Level;
+        PostString += `"'` + newPropertyID + `'": "LevelID",`;
+        newPropertyID = this.Challenge2[i].word.join("");
+        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
+        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+        PostString += `"'` + newPropertyID + `'": "answerCorrect" }`;
+
+        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
+          'content-type': 'application/json',},})
+        .then((response) => {
+          console.log('Ok');
+        }, (error) => {
+          console.log(error);
+        });
+        console.log(PostString);
+        PostString = '';
       }
+
+
       this.ShowResult = true;
+
       this.forceRerender();
+      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
       let useranswer = '';
@@ -178,6 +212,7 @@ export default {
         useranswer = this.Challenge2[index].word.join("");
         if(correctAnswer === useranswer) {
           this.Challenge2[index].answerCorrect = true;
+          this.TotalCorrect += 1;
         }
       }
     }

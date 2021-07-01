@@ -50,7 +50,7 @@ export default {
   ],
 
   axios: {
-    baseURL: 'http://localhost:3000/v1/',
+    baseURL: process.env.API_URL,
     browserBaseURL: 'http://localhost:3000/v1/'
   },
 

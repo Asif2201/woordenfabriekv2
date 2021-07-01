@@ -48,27 +48,27 @@
               </div>
               <div class="h-6 w-full bg-gray-300">
                 <div v-if="lesson.completionprogress ===0">
-                  <div class="h-full bg-gray-800" style="width:0%">
+                  <div class="h-6 bg-gray-800" style="width:0%">
                     0%
                   </div>
                 </div>
-                <div v-else-if="lesson.completionprogress ===25">
-                  <div class="h-full bg-gray-800" style="width:25%">
+                <div v-else-if="lesson.completionprogress === 0.25">
+                  <div class="h-6 bg-gray-800" style="width:25%">
                     25%
                   </div>
                 </div>
-                <div v-else-if="lesson.completionprogress ===50">
-                  <div class="h-full bg-gray-800" style="width:50%">
+                <div v-else-if="lesson.completionprogress === 0.5">
+                  <div class="h-6 bg-gray-800" style="width:50%">
                     50%
                   </div>
                 </div>
-                <div v-else-if="lesson.completionprogress ===75">
-                  <div class="h-full bg-gray-800" style="width:75%">
+                <div v-else-if="lesson.completionprogress === 0.75">
+                  <div class="h-6 bg-gray-800" style="width:75%">
                     75%
                   </div>
                 </div>
                 <div v-else>
-                  <div class="h-full bg-gray-800" style="width:100%">
+                  <div class="h-6 bg-gray-800" style="width:100%">
                     100%
                   </div>
                 </div>
@@ -104,7 +104,7 @@ export default {
       `http://localhost:3000/v1/userLessons?lessonID=${this.$route.query.studentlessonID}`
     ).then(res => res.json())
     this.currentLevel = await fetch(
-      `http://localhost:3000/v1/userLevels?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=true`
+      `http://localhost:3000/v1/userLevels?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=Yes`
     ).then(res => res.json())
     this.levels = await fetch(
       `http://localhost:3000/v1/userLevels?lessonID=${this.$route.query.studentlessonID}`
