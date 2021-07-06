@@ -8,36 +8,20 @@
           <tbody>
             <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
               <tr>
-                <td class="w-2/3">
+                <td class="w-1/3">
                   <div class="questionwords">
-                    <span v-for="(char, index) in Object.word" v-on:click="morphemeClick(ObjIndex, index, $event);">
-                      {{ char }}
+                    <span>
+                      {{ Object.Sentence }}
                     </span>
                   </div>
                 </td>
-                <td>
-                  <div v-if="Object.answerConfirmed" class="">
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed">
-                      OK
-                    </button>
+                <td class="w-1/3"> &nbsp </td>
+                <td class="w-1/3 questionwords ml-20">
+                  <div v-if="Object.answerConfirmed" class="cursor not-allowed">
+                      <dropdown :data="AnswerOptions" />
                   </div>
-                  <div v-else class="">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" v-on:click="morphemeClickOk(ObjIndex)">
-                      OK
-                    </button>
-                  </div>
-                </td>
-                <td> &nbsp;  &nbsp; </td>
-                <td>
-                  <div v-if="!Object.answerConfirmed" class="">
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed">
-                        Wis
-                    </button>
-                  </div>
-                  <div v-else class="">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" v-on:click="morphemeClickWis(ObjIndex)">
-                      Wis
-                    </button>
+                  <div v-else>
+                        <dropdown :data="AnswerOptions" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                   </div>
                 </td>
                 <td> &nbsp;  &nbsp; </td>
@@ -58,10 +42,8 @@
               <td> &nbsp; </td>
               <td> &nbsp; </td>
               <td> &nbsp; </td>
-              <td> &nbsp; </td>
             </tr>
             <tr>
-              <td> &nbsp; </td>
               <td> &nbsp; </td>
               <td> &nbsp; </td>
               <td> &nbsp; </td>
@@ -71,7 +53,7 @@
           </div>
         </tbody>
         </table>
-        <div v-if="AllquestionsAnswered" class=buttondefault-4ZAul6>
+        <div class=buttondefault-4ZAul6>
             <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
                Klaar
             </button>
@@ -81,6 +63,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import Dropdown from './dropdown.vue';
 
 export default {
   props:  [
@@ -101,6 +84,7 @@ export default {
       ResultKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
+      AnswerOptions: [],
     }
   },
   watch: {
@@ -111,18 +95,16 @@ export default {
   async fetch() {
     const ChallengeID = this._props.Challenge;
 
+    this.AnswerOptions.push({id:0, name:'Waar'});
+    this.AnswerOptions.push({id:1, name:'Deel waar'});
+    this.AnswerOptions.push({id:2, name:'Niet waar'});
+
     this.Challenge1 = await fetch(
-      `http://localhost:3000/v1/ChallengeQuestions?ChallengeID=${ChallengeID}`
+      `http://localhost:3000/v1/ChallengeQuestionsC01?ChallengeID=${ChallengeID}`
     ).then(res => res.json())
+
   },
   methods:  {
-    splitWord(word)  {
-      if (word) {
-        return word.split('');
-      } else  {
-        return '';
-      }
-    },
     forceRerender() {
       this.ResultKey += 1;
     },
@@ -130,37 +112,18 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].word);
+          QuestionObjectList[i].UserAnswer = 0;
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
+
       return QuestionObjectList;
     },
-    morphemeClick: function(word, char, event) {
-      if(this.Challenge2[word].word[char] !== '|')  {
-        this.Challenge2[word].word.splice(char, 0, '|');
-      }
+    answerSelected(Index, answer) {
+      this.Challenge2[Index].useranswer = Index;
     },
-    morphemeClickOk: function(word, event) {
-      this.Challenge2[word].answerConfirmed = true;
-      this.AllquestionsAnswered = true;
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        if(!this.Challenge2[i].answerConfirmed)  {
-          this.AllquestionsAnswered = false;
-        }
-      }
-    },
-    morphemeClickWis: function(word, event) {
-      this.Challenge2[word].answerConfirmed = false;
-      this.Challenge2[word].answer.length=0;
-      let index = this.Challenge2[word].word.indexOf('|');
-      while(index>0)  {
-        this.Challenge2[word].word.splice(index,1);
-        index = this.Challenge2[word].word.indexOf('|');
-      }
-      this.AllquestionsAnswered = false;
-    },
+
     challengeCompleted: function() {
       var PostString = '';
       var newPropertyID = '';
@@ -175,7 +138,7 @@ export default {
         PostString += `"'` + newPropertyID + `'": "LessonID",`;
         newPropertyID = this.Level;
         PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].word.join("");
+        newPropertyID = 0;
         PostString += `"'` + newPropertyID + `'": "userAnswer",`;
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect" }`;
@@ -191,9 +154,7 @@ export default {
         PostString = '';
       }
 
-
       this.ShowResult = true;
-
       this.forceRerender();
       this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
@@ -201,12 +162,14 @@ export default {
       let useranswer = '';
       let correctAnswer = '';
 
+      this.Challenge2[index].answerCorrect = false;
       correctAnswer = this.Challenge2[index].answer;
-      useranswer = this.Challenge2[index].word.join("");
+      useranswer = this.Challenge2[index].useranswer;
       if(correctAnswer === useranswer) {
         this.Challenge2[index].answerCorrect = true;
         this.TotalCorrect += 1;
       }
+
     }
   },
 

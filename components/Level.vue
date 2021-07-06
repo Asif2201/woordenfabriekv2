@@ -4,13 +4,16 @@
   <div v-else class="flex" :key="ChallengeIndex">
     <div>
     <div class="relative w-full h-20 bg-black text-white w-screen z-index:0">
-        <p> &nbsp </p>
+        <p> &nbsp; </p>
         <span class="text-gray-300 text-xl font-sans ml-6"> {{ Challenges1.Challenge[ChallengeIndex].ChallengeTitle }}</span><p></p>
         <span class="text-gray-500 text-lg font-sans ml-6"> {{ Challenges1.Challenge[ChallengeIndex].ChallengeSubtitle }}</span>
-      <p>&nbsp</p>
+      <p> &nbsp; </p>
       </div>
-    <div v-if="true">
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'K01'">
       <ChallengeK1 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+    </div>
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'C01'">
+      <ChallengeC01 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <hr>
     <template v-if="challengeCompleted">
@@ -71,16 +74,20 @@ export default {
       this.isModalVisible = true;
     },
     closeModal()  {
-      if(this.ChallengeIndex > this.Challenges1.Challenge.length)  {
+      console.log(this.ChallengeIndex);
+      console.log(this.Challenges1.Challenge.length);
+      if(this.ChallengeIndex === this.Challenges1.Challenge.length -1)  {
         this.LevelCompleted('100');
       this.ChallengeIndex = 0;
       }
       else  {
         const progress = this.ChallengeIndex + 1 / this.Challenges1.Challenge.length;
-        this.LevelCompleted(progress.toString());
+        console.log(this.ChallengeIndex + 1);
+        console.log(progress);
+        this.LevelCompleted(progress);
       }
       this.isModalVisible = false;
-      this.ChallengeIndex = this.ChallengeIndex +1;
+      this.ChallengeIndex += 1;
     },
     completeChallenge(totalCorrect, totalQuestions) {
       var PostString = '';
@@ -103,7 +110,7 @@ export default {
       }, (error) => {
         console.log(error);
       });
-      console.log(PostString);
+
       this.challengeCompleted = true;
       this.isModalVisible = true;
       this.totalCorrect = totalCorrect;
@@ -113,12 +120,12 @@ export default {
         let PostString = `{ `
         let newPropertyID;
 
-        newPropertyID = this.currentLevel;
+        newPropertyID = this.Challenges1.Challenge[0].TheLevelID;
         PostString += `"'` + newPropertyID + `'"  : "LevelID",`;
         const d = new Date();
         newPropertyID = this.formatDate(d);
         PostString += `"'` + newPropertyID + `'"  : "CompletionDate",`;
-        newPropertyID = CompletionProgress;
+        newPropertyID = CompletionProgress + 'P';
         PostString += `"'` + newPropertyID + `'"  : "OverallProgress",`;
         newPropertyID = this.LessonID + `L`;
         PostString += `"'` + newPropertyID + `'"  : "LessonID",`;
@@ -137,6 +144,9 @@ export default {
         }, (error) => {
           console.log(error);
         });
+        if(CompletionProgress === '100')  {
+          this.$nuxt.$options.router.push({ path: `lessonhome?studentlessonID=${this._props.LessonID}` } );
+        }
     },
     formatDate(date) {
     var d = new Date(date),

@@ -22,13 +22,13 @@
             <div class="flex flex-row w-full py-1">
               <template v-for="level in levels.vwUsers">
                   <div class=" w-full ">
-                    <div v-if="!level.iscurrent && level.completionprogress!==100" class="px-4">
-                      <StarRating value="`${level.earnedstars}`"></StarRating>
+                    <div v-if="level.completionprogress===100" class="px-4">
+                      <StarRating :value="`${level.earnedstars}`"></StarRating>
                     </div>
                     <div v-else class="px-4">
                       <StarRating value="0"></StarRating>
                     </div>
-                    <button v-if="level.iscurrent" class="bg-pink-500 text-white text-md font-bold font-mono px-8  mt-2  rounded">
+                    <button v-if="level.iscurrent==='Yes'" class="bg-pink-500 text-white text-md font-bold font-mono px-8  mt-2  rounded">
                       {{ ` Level ` + level.studentlevelid }}
                     </button>
                     <button v-else class="bg-gray-200 text-white text-md font-bold font-mono px-8  mt-2  rounded">
@@ -39,7 +39,12 @@
             </div>
            </td>
           <td class=" border border-green-600 w=1/6 float-right mr-20">
-            <div class="align-middle ">
+            <div v-if="lessons.vwUsers[0].completionprogress === 100" class="align-middle ">
+              <span class="text-xs font-semibold inline-block text-gray-600">
+                 Lesson Completed
+                </span>
+            </div>
+            <div v-else class="align-middle " >
             <template v-for="lesson in currentLevel.vwUsers">
               <div class="text-right">
                 <span class="text-xs font-semibold inline-block text-gray-600">

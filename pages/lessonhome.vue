@@ -9,7 +9,7 @@
       </p>
       </div>
     </div>
-    <div class="relative h-8 m-8 overflow-hidden rounded-lg bg-gray-500 text-white text-center">
+    <div v-if="lessons.vwUsers[0].completionprogress !== 100" class="relative h-8 m-8 overflow-hidden rounded-lg bg-gray-500 text-white text-center">
       <nuxt-link :to="{ path: `/levelhome?studentlessonID=` + this.$route.query.studentlessonID }" >
                 Continue with learning challenge
       </nuxt-link>

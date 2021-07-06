@@ -4,7 +4,7 @@
     <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
     <div v-else>
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <Level :currentLevel="levels.vwUsers[0].studentlevelid" :LessonID = "this.$route.query.studentlessonID" />
+      <Level :currentLevel="levels.vwUsers[0].Levelid" :LessonID = "this.$route.query.studentlessonID" />
     </div>
   </div>
 </template>
