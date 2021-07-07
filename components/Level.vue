@@ -15,6 +15,9 @@
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'C01'">
       <ChallengeC01 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'K02'">
+      <ChallengeK02 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+    </div>
     <hr>
     <template v-if="challengeCompleted">
     <modalChallenge v-show="isModalVisible" @close="closeModal">
@@ -30,7 +33,6 @@
     </modalChallenge>
     </template>
     </div>
-  </div>
   </div>
 </template>
 <script>
@@ -74,16 +76,12 @@ export default {
       this.isModalVisible = true;
     },
     closeModal()  {
-      console.log(this.ChallengeIndex);
-      console.log(this.Challenges1.Challenge.length);
       if(this.ChallengeIndex === this.Challenges1.Challenge.length -1)  {
         this.LevelCompleted('100');
       this.ChallengeIndex = 0;
       }
       else  {
         const progress = this.ChallengeIndex + 1 / this.Challenges1.Challenge.length;
-        console.log(this.ChallengeIndex + 1);
-        console.log(progress);
         this.LevelCompleted(progress);
       }
       this.isModalVisible = false;

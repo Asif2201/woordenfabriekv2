@@ -153,7 +153,6 @@ export default {
     },
     morphemeClickWis: function(word, event) {
       this.Challenge2[word].answerConfirmed = false;
-      this.Challenge2[word].answer.length=0;
       let index = this.Challenge2[word].word.indexOf('|');
       while(index>0)  {
         this.Challenge2[word].word.splice(index,1);

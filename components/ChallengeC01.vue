@@ -15,7 +15,7 @@
                     </span>
                   </div>
                 </td>
-                <td class="w-1/3"> &nbsp </td>
+                <td class="w-1/3"> &nbsp; </td>
                 <td class="w-1/3 questionwords ml-20">
                   <div v-if="Object.answerConfirmed" class="cursor not-allowed">
                       <dropdown :data="AnswerOptions" />
@@ -121,7 +121,7 @@ export default {
       return QuestionObjectList;
     },
     answerSelected(Index, answer) {
-      this.Challenge2[Index].useranswer = Index;
+      this.Challenge2[Index].UserAnswer = answer;
     },
 
     challengeCompleted: function() {
@@ -159,13 +159,13 @@ export default {
       this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
-      let useranswer = '';
+      let useranswer2 = '';
       let correctAnswer = '';
 
       this.Challenge2[index].answerCorrect = false;
       correctAnswer = this.Challenge2[index].answer;
-      useranswer = this.Challenge2[index].useranswer;
-      if(correctAnswer === useranswer) {
+      useranswer2 = this.Challenge2[index].UserAnswer;
+      if(correctAnswer === useranswer2) {
         this.Challenge2[index].answerCorrect = true;
         this.TotalCorrect += 1;
       }
