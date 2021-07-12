@@ -5,11 +5,11 @@
     <div class="flex flex-wrap h-64 m-8 w-full content-center rounded bg-gray-100">
       <div class="justify-self-center ">
       <p class="text-center">
-      {{ lessons.vwUsers[0].lessonsubtitle }}
+      {{ lessons.vwUsers[IndexOfCurrent].lessonsubtitle }}
       </p>
       </div>
     </div>
-    <div v-if="lessons.vwUsers[0].completionprogress !== 100" class="relative h-8 m-8 overflow-hidden rounded-lg bg-gray-500 text-white text-center">
+    <div v-if="lessons.vwUsers[IndexOfCurrent].completionprogress !== 100" class="relative h-8 m-8 overflow-hidden rounded-lg bg-gray-500 text-white text-center">
       <nuxt-link :to="{ path: `/levelhome?studentlessonID=` + this.$route.query.studentlessonID }" >
                 Continue with learning challenge
       </nuxt-link>
@@ -26,9 +26,22 @@ export default {
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser'])
   },
+
   data() {
     return {
-      lessons: []
+      lessons: [],
+      IndexOfCurrent: 0,
+    }
+  },
+  watch: {
+    lessons() {
+      console.log('X---' + this.lessons.vwUsers.length);
+      for(var i = 0; i < this.lessons.vwUsers.length; i++) {
+        console.log(this.lessons.vwUsers[i]);
+        if(this.lessons.vwUsers[i].iscurrent === 'Yes') {
+          this.IndexOfCurrent = i;
+        }
+      }
     }
   },
   async fetch() {

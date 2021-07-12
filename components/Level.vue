@@ -18,7 +18,22 @@
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'K02'">
       <ChallengeK02 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'K03'">
+      <ChallengeK03 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+    </div>
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'V01'">
+      <ChallengeV01 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+    </div>
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'V02'">
+      <ChallengeV02 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+    </div>
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'H01'">
+      <ChallengeH01 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+    </div>
     <hr>
+
+    <button class="helpbutton inline-block" v-on:click="ToggleshowHelpText">  ?  </button>
+    <label class="inline-block align-middle text-green-300 mr-8 ml-6" v-show="helptextvisible" > {{ Challenges1.Challenge[ChallengeIndex].HelpText }} </label>
     <template v-if="challengeCompleted">
     <modalChallenge v-show="isModalVisible" @close="closeModal">
       <template v-slot:header>
@@ -38,9 +53,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import modalChallenge from '../components/modalChallenge.vue';
-import { ref } from 'Vue'
-import ChallengeK1Vue from './ChallengeK1.vue';
-import { now } from 'moment';
+import Default from '../layouts/default.vue';
 
 
 export default {
@@ -53,6 +66,7 @@ export default {
   },
   components: {
       modalChallenge,
+    Default,
     },
   data() {
     return {
@@ -63,6 +77,7 @@ export default {
       totalCorrect: 0,
       totalQuestions: 0,
       currentLevel: '',
+      helptextvisible: false,
     }
   },
   async fetch() {
@@ -77,15 +92,18 @@ export default {
     },
     closeModal()  {
       if(this.ChallengeIndex === this.Challenges1.Challenge.length -1)  {
-        this.LevelCompleted('100');
+        this.LevelCompleted('1');
       this.ChallengeIndex = 0;
       }
       else  {
-        const progress = this.ChallengeIndex + 1 / this.Challenges1.Challenge.length;
+        const progress = Math.round(((this.ChallengeIndex + 1) / this.Challenges1.Challenge.length)* 100) / 100;
         this.LevelCompleted(progress);
       }
       this.isModalVisible = false;
       this.ChallengeIndex += 1;
+    },
+    ToggleshowHelpText()  {
+      this.helptextvisible = !this.helptextvisible;
     },
     completeChallenge(totalCorrect, totalQuestions) {
       var PostString = '';
@@ -127,7 +145,7 @@ export default {
         PostString += `"'` + newPropertyID + `'"  : "OverallProgress",`;
         newPropertyID = this.LessonID + `L`;
         PostString += `"'` + newPropertyID + `'"  : "LessonID",`;
-        if(CompletionProgress === '100')  {
+        if(CompletionProgress === '1')  {
           newPropertyID = 'No'
         }
         else  {
@@ -142,7 +160,7 @@ export default {
         }, (error) => {
           console.log(error);
         });
-        if(CompletionProgress === '100')  {
+        if(CompletionProgress === '1')  {
           this.$nuxt.$options.router.push({ path: `lessonhome?studentlessonID=${this._props.LessonID}` } );
         }
     },
@@ -162,3 +180,10 @@ export default {
   }
 }
 </script>
+<style>
+@layer components {
+  .helpbutton {
+    @apply ml-20 mt-20 h-10 px-3 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50
+  }
+}
+</style>

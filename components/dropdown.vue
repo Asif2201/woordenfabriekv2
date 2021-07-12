@@ -20,8 +20,6 @@ export default ({
   },
   watch:  {
     selectedAnswer()  {
-      console.log(this.data);
-      console.log(this.selectedAnswer);
       this.$emit("AnswerSelected", this.selectedAnswer);
     }
   }

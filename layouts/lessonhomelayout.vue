@@ -22,7 +22,7 @@
             <div class="flex flex-row w-full py-1">
               <template v-for="level in levels.vwUsers">
                   <div class=" w-full ">
-                    <div v-if="level.completionprogress===100" class="px-4">
+                    <div v-if="level.completionprogress===1" class="px-4">
                       <StarRating :value="`${level.earnedstars}`"></StarRating>
                     </div>
                     <div v-else class="px-4">
@@ -39,7 +39,7 @@
             </div>
            </td>
           <td class=" border border-green-600 w=1/6 float-right mr-20">
-            <div v-if="lessons.vwUsers[0].completionprogress === 100" class="align-middle ">
+            <div v-if="lessons.vwUsers[0].completionprogress === 1" class="align-middle ">
               <span class="text-xs font-semibold inline-block text-gray-600">
                  Lesson Completed
                 </span>
