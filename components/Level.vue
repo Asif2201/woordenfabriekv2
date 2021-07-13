@@ -83,7 +83,7 @@ export default {
   async fetch() {
     this.currentLevel = this._props.currentLevel;
     this.Challenges1 = await fetch(
-      `http://localhost:3000/v1/Challenges?LevelID=${this.currentLevel}`
+      `${this.$config.baseURL}/v1/Challenges?LevelID=${this.currentLevel}`
     ).then(res => res.json())
   },
   methods:  {

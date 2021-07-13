@@ -106,13 +106,13 @@ export default {
   },
   async fetch() {
     this.lessons = await fetch(
-      `http://localhost:3000/v1/userLessons?lessonID=${this.$route.query.studentlessonID}`
+      `${this.$config.baseURL}/v1/userLessons?lessonID=${this.$route.query.studentlessonID}`
     ).then(res => res.json())
     this.currentLevel = await fetch(
-      `http://localhost:3000/v1/userLevels?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=Yes`
+      `${this.$config.baseURL}/v1/userLevels?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=Yes`
     ).then(res => res.json())
     this.levels = await fetch(
-      `http://localhost:3000/v1/userLevels?lessonID=${this.$route.query.studentlessonID}`
+      `${this.$config.baseURL}/v1/userLevels?lessonID=${this.$route.query.studentlessonID}`
     ).then(res => res.json())
   },
 }
