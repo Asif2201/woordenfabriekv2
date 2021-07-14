@@ -50,8 +50,8 @@ export default {
   ],
 
   axios: {
-    baseURL: 'http://localhost:3000/v1/',
-    browserBaseURL: 'http://localhost:3000/v1/'
+    baseURL: 'http://localhost:3000/v1',
+    browserBaseURL: 'http://localhost:3000/v1'
   },
 
   auth: {

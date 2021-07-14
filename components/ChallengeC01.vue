@@ -100,7 +100,7 @@ export default {
     this.AnswerOptions.push({id:2, name:'Niet waar'});
 
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/v1/ChallengeQuestionsC01?ChallengeID=${ChallengeID}`
+      `http://localhost:3000/v1/ChallengeQuestionsC01?ChallengeID=${ChallengeID}`
     ).then(res => res.json())
 
   },

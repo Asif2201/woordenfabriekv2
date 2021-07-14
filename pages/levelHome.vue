@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Mainheader />
     <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
     <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
     <div v-else>
@@ -14,7 +15,6 @@ import Levels from '../components/Level.vue';
 
 export default {
   components: { Levels },
-  layout: 'levelHomelayout',
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser'])
   },
@@ -26,7 +26,7 @@ export default {
   async fetch() {
     console.log(this.$route.query.studentlessonID)
     this.levels = await fetch(
-      `${this.$config.baseURL}/v1/userLevels?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=Yes`
+      `http://localhost:3000/v1/userLevels?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=Yes`
     ).then(res => res.json())
   },
 

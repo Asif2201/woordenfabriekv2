@@ -1,4 +1,6 @@
 <template>
+  <div>
+  <LessonHeader :key="HeaderKey"/>
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else class="flex" :key="ChallengeIndex">
@@ -49,6 +51,7 @@
     </template>
     </div>
   </div>
+  </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
@@ -76,19 +79,35 @@ export default {
       challengeCompleted: false,
       totalCorrect: 0,
       totalQuestions: 0,
-      currentLevel: '',
+      currentLevel1: '',
       helptextvisible: false,
+      HeaderKey: 0,
+    }
+  },
+  watch: {
+    Challenges1()  {
+      this.GetCurrentChallenge();
     }
   },
   async fetch() {
-    this.currentLevel = this._props.currentLevel;
+    this.currentLevel1 = this._props.currentLevel;
     this.Challenges1 = await fetch(
-      `${this.$config.baseURL}/v1/Challenges?LevelID=${this.currentLevel}`
+      `http://localhost:3000/v1/Challenges?LevelID=${this.currentLevel1}`
     ).then(res => res.json())
   },
   methods:  {
     showModal() {
       this.isModalVisible = true;
+    },
+    GetCurrentChallenge() {
+      let current = 0;
+      for(var i = 0; i < this.Challenges1.Challenge.length; i++)  {
+        if(this.Challenges1.Challenge[i].IsCurrent === 'Yes')  {
+          current = i;
+        }
+      }
+      console.log(current);
+      this.ChallengeIndex = current;
     },
     closeModal()  {
       if(this.ChallengeIndex === this.Challenges1.Challenge.length -1)  {
@@ -99,6 +118,7 @@ export default {
         const progress = Math.round(((this.ChallengeIndex + 1) / this.Challenges1.Challenge.length)* 100) / 100;
         this.LevelCompleted(progress);
       }
+      this.HeaderKey += 1;
       this.isModalVisible = false;
       this.ChallengeIndex += 1;
     },
@@ -165,25 +185,18 @@ export default {
         }
     },
     formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
+      var d = new Date(date),
+          month = '' + (d.getMonth() + 1),
+          day = '' + d.getDate(),
+          year = d.getFullYear();
 
-    if (month.length < 2)
-        month = '0' + month;
-    if (day.length < 2)
-        day = '0' + day;
+      if (month.length < 2)
+          month = '0' + month;
+      if (day.length < 2)
+          day = '0' + day;
 
-    return [year, month, day].join('-');
-}
+      return [year, month, day].join('-');
+    }
   }
 }
 </script>
-<style>
-@layer components {
-  .helpbutton {
-    @apply ml-20 mt-20 h-10 px-3 bg-gray-200 hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-opacity-50
-  }
-}
-</style>

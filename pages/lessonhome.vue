@@ -1,4 +1,7 @@
 <template>
+  <div>
+  <Mainheader />
+  <LessonHeader/>
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
@@ -15,6 +18,7 @@
       </nuxt-link>
     </div>
   </div>
+  </div>
 </template>
 
 <script>
@@ -22,7 +26,6 @@ import { mapGetters } from 'vuex'
 import moment from 'moment';
 
 export default {
-    layout: 'lessonhomelayout',
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser'])
   },
@@ -31,13 +34,12 @@ export default {
     return {
       lessons: [],
       IndexOfCurrent: 0,
+      levelProgressKey: 0,
     }
   },
   watch: {
     lessons() {
-      console.log('X---' + this.lessons.vwUsers.length);
       for(var i = 0; i < this.lessons.vwUsers.length; i++) {
-        console.log(this.lessons.vwUsers[i]);
         if(this.lessons.vwUsers[i].iscurrent === 'Yes') {
           this.IndexOfCurrent = i;
         }
@@ -46,7 +48,7 @@ export default {
   },
   async fetch() {
     this.lessons = await fetch(
-      `${this.$config.baseURL}/v1/userLessons?lessonID=${this.$route.query.studentlessonID}`
+      `http://localhost:3000/v1/userLessons?lessonID=${this.$route.query.studentlessonID}`
     ).then(res => res.json())
   },
   methods:  {

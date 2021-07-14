@@ -41,7 +41,7 @@
     },
     async fetch() {
       this.lessons = await fetch(
-        '${this.$config.baseURL}/v1/userLessons?studentEmail=jaap@appalot.com'
+        'http://localhost:3000/v1/userLessons?studentEmail=jaap@appalot.com'
       ).then(res => res.json())
     },
     methods:  {
