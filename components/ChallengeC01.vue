@@ -1,6 +1,6 @@
 <template>
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
-  <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
+  <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
   <div v-else>
       <div class="relative ml-20 mt-10">
         <table class="table-fixed w-full align-center">
@@ -98,9 +98,8 @@ export default {
     this.AnswerOptions.push({id:0, name:'Waar'});
     this.AnswerOptions.push({id:1, name:'Deel waar'});
     this.AnswerOptions.push({id:2, name:'Niet waar'});
-
     this.Challenge1 = await fetch(
-      `http://localhost:3000/v1/ChallengeQuestionsC01?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsC01?ChallengeID=${ChallengeID}`
     ).then(res => res.json())
 
   },

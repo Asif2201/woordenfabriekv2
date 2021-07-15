@@ -26,7 +26,7 @@ export default {
   async fetch() {
     console.log(this.$route.query.studentlessonID)
     this.levels = await fetch(
-      `http://localhost:3000/v1/userLevels?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=Yes`
+      `${this.$config.baseURL}/userLevels?lessonID=${this.$route.query.studentlessonID}&OnlyCurrent=Yes`
     ).then(res => res.json())
   },
 

@@ -83,7 +83,7 @@ export default {
     const ChallengeID = this._props.Challenge;
 
     this.Challenge1 = await fetch(
-      `http://localhost:3000/v1/ChallengeQuestionsV02?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsV02?ChallengeID=${ChallengeID}`
     ).then(res => res.json())
 
   },
