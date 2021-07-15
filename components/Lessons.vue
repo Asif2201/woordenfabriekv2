@@ -1,6 +1,6 @@
 <template>
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
-  <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
+  <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
   <div v-else class="flex flex-col relative">
     <table class="min-w-full table-auto">
 
@@ -41,7 +41,7 @@
     },
     async fetch() {
       this.lessons = await fetch(
-        '${this.$config.baseURL}/userLessons?studentEmail=jaap@appalot.com'
+        `${this.$config.baseURL}/userLessons?studentEmail=jaap@appalot.com`
       ).then(res => res.json())
     },
     methods:  {
