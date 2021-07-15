@@ -40,6 +40,7 @@
       }
     },
     async fetch() {
+      console.log(`${this.$config.baseURL}/userLessons?studentEmail=jaap@appalot.com`);
       this.lessons = await fetch(
         `${this.$config.baseURL}/userLessons?studentEmail=jaap@appalot.com`
       ).then(res => res.json())
