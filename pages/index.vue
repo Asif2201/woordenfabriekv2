@@ -1,7 +1,7 @@
 <template>
   <div class="w-full">
 
-      <img class="object-contain h-80 w-full ..." src="~/assets/woordenfabriektext.png">
+      <img class="object-contain h-80 w-full ..." src="~/assets/Woordenfabriektext.png">
       <img class="object-contain h-80 w-full ..." src="~/assets/component-85---1@1x.png">
        <div class="text-center text-yellow-700">
           <p> &nbsp; </p>
