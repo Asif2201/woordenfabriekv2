@@ -41,7 +41,7 @@
       <template v-slot:header>
         Challenge Completed!
       </template>
-      <template v-slot:body>
+      <template v-slot:body v-if="Challenges1.Challenge[ChallengeIndex].feedbackType === 2">
         {{ `You answered ` + totalCorrect + ` out of ` + totalQuestions + ` questions correctly. ` }}
       </template>
       <template v-slot:footer>

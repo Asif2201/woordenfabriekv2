@@ -141,7 +141,7 @@ export default {
         PostString += `"'` + newPropertyID + `'": "userAnswer",`;
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect",`;
-        newPropertyID = this.Challenge2[i].feedbackType;
+        newPropertyID = this.Challenge2[i].feedbackType + `F`;
         PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
 
 
@@ -152,11 +152,14 @@ export default {
         }, (error) => {
           console.log(error);
         });
-        console.log(PostString);
         PostString = '';
       }
-
-      this.ShowResult = true;
+      if(this.Challenge2[0].feedbackType === 2) {
+              this.ShowResult = true;
+      }
+      else {
+        this.ShowResult = true;
+      }
       this.forceRerender();
       this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },

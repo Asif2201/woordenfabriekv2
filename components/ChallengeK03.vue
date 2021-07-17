@@ -147,7 +147,7 @@ export default {
         PostString += `"'` + newPropertyID + `'": "userAnswers",`;
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
-        newPropertyID = this.Challenge2[i].feedbackType;
+        newPropertyID = this.Challenge2[i].feedbackType + `F`;
         PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
@@ -160,7 +160,12 @@ export default {
         PostString = '';
       }
 
-      this.ShowResult = true;
+      if(this.Challenge2[0].feedbackType === 2) {
+        this.ShowResult = true;
+      }
+      else {
+        this.ShowResult = true;
+      }
       this.forceRerender();
       this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
