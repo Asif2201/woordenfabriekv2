@@ -197,7 +197,10 @@ export default {
         }
         PostString += `"'` + newPropertyID + `'": "userAnswer",`;
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect" }`;
+        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
+        newPropertyID = this.Challenge2[i].feedbackType;
+        PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
+
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
         .then((response) => {
