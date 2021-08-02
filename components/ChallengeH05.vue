@@ -2,32 +2,21 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20 mt-10 overflow-x-auto">
-        <table class="border-collapse w-full">
+      <div class="relative ml-20 mt-10">
+        <table class="table-fixed w-full align-center">
           <thead/>
           <tbody>
-            <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
-              <tr class="bg-white w-full lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-                <template v-if="Object.BeforeWord==='Yes'">
-                  <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                    <div class="questionwords">
-                      <input v-model="Object.UserAnswer" />
+            <div v-for="(Object, ObjIndex) in Challenge2" v-bind:key="Object.id">
+              <tr>
+                <template v-for="(char, index) in Object.word">
+                  <td :key="forceRenderVariable[ObjIndex][index]">
+                    <div :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }" >
+                        <span v-on:click="morphemeClick(ObjIndex, index, $event);">
+                          {{ char }}
+                        </span>
                     </div>
                   </td>
-                </template>
-                <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <div class="questionwords">
-                    <span>
-                      {{ Object.word }}
-                    </span>
-                  </div>
-                </td>
-                <template v-if="Object.BeforeWord==='No'">
-                  <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                    <div class="questionwords">
-                      <input v-model="Object.UserAnswer" />
-                    </div>
-                  </td>
+                  <td> &nbsp;  &nbsp; </td>
                 </template>
                 <td v-show="ShowResult" :key="ResultKey">
                   <div class="object-scale-down">
@@ -41,21 +30,18 @@
                 </td>
             </tr>
           </div>
-          <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td>
-                <div>
-                  <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold border border-blue-700 rounded">
-                    Klaar
-                  </button>
-                 </div>
-              </td>
-          </tr>
+          <tr>
+                <td>
+                  <textarea v-model="lAnswerExplanation" placeholder="add multiple lines"></textarea>
+                </td>
+              </tr>
         </tbody>
         </table>
-
+        <div  class=buttondefault-4ZAul6>
+            <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
+               Klaar
+            </button>
+        </div>
       </div>
   </div>
 </template>
@@ -71,16 +57,21 @@ export default {
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser'])
   },
+  created() {
+    this.initWordGrid();
+  },
   data() {
     return {
       Challenge1: [],
       Challenge2: [],
-      knipWords: [],
+      forceRenderVariable: [],
       AllquestionsAnswered: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
+      lAnswerExplanation: '',
+
     }
   },
   watch: {
@@ -92,25 +83,51 @@ export default {
     const ChallengeID = this._props.Challenge;
 
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsV02?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsH05?ChallengeID=${ChallengeID}`
     ).then(res => res.json())
-
   },
   methods:  {
-    forceRerender() {
-      this.ResultKey += 1;
+    initWordGrid()  {
+      console.clear();
+      for (var i = 0; i <= 10; i++) {
+        this.forceRenderVariable.push([]);
+        for (var j = 0; j <= 7; j++) {
+          this.forceRenderVariable[i].push(false);
+        }
+      }
+    },
+    splitWord(word)  {
+      if (word) {
+        return word.split(';');
+      } else  {
+        return '';
+      }
     },
     JSONtoObj()  {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].UserAnswer = '';
+          QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].wordlist);
+          QuestionObjectList[i].UserAnswerList = [];
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
-
       return QuestionObjectList;
+    },
+    morphemeClick: function(word, char, event) {
+      if(this.IsClicked(word,char))  {
+          this.Challenge2[word].UserAnswerList = this.Challenge2[word].UserAnswerList.splice(char, 1);
+          this.forceRenderVariable[word].splice(char, 1, false);
+      }
+      else {
+        this.Challenge2[word].UserAnswerList.push(char);
+        this.forceRenderVariable[word].splice(char, 1, true);
+
+      }
+    },
+    IsClicked(word, char) {
+      return(this.Challenge2[word].UserAnswerList.includes(char));
     },
 
     challengeCompleted: function() {
@@ -127,12 +144,15 @@ export default {
         PostString += `"'` + newPropertyID + `'": "LessonID",`;
         newPropertyID = this.Level;
         PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].UserAnswer;
+        newPropertyID = this.Challenge2[i].UserAnswerList.join(";");
         PostString += `"'` + newPropertyID + `'": "userAnswer",`;
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
         newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
+        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
+        newPropertyID = this.lAnswerExplanation;
+        PostString += `"'` + newPropertyID + `'": "AnswerExplanation" }`;
+
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -141,35 +161,44 @@ export default {
         }, (error) => {
           console.log(error);
         });
+        console.log(PostString);
         PostString = '';
       }
-
       if(this.Challenge2[0].feedbackType === 2) {
-        this.ShowResult = true;
+              this.ShowResult = true;
       }
       else {
         this.ShowResult = true;
       }
-      this.forceRerender();
       this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
-      this.Challenge2[index].answerCorrect = true;
-      this.Challenge2[index].answer = this.Challenge2[index].UserAnswer.trim();
-      this.Challenge2[index].answer = this.Challenge2[index].UserAnswer.toLowerCase();
-      this.Challenge2[index].UserAnswer = this.Challenge2[index].UserAnswer.trim();
-      this.Challenge2[index].UserAnswer = this.Challenge2[index].UserAnswer.toLowerCase();
-      if(this.Challenge2[index].answer !== this.Challenge2[index].UserAnswer)  {
-        this.Challenge2[index].answerCorrect = false;
+      let answerIsCorrect = true;
+
+      for(var i = 0; i < this.Challenge2[index].UserAnswerList.length;i++)  {
+        if(this.Challenge2[index].answerlist.indexOf(this.Challenge2[index].word[this.Challenge2[index].UserAnswerList[i]]) < 0)  {
+          answerIsCorrect = false;
+        }
       }
-    },
+      if(answerIsCorrect) {
+        this.Challenge2[index].answerCorrect = true;
+        this.TotalCorrect += 1;
+      }
+    }
   },
 
 }
 </script>
 <style scoped>
   .questionwords {
-    color: var(--grey);
+    color: grey;
+    font-family: var(--font-family-lato);
+    font-size: var(--font-size-l);
+    font-style: normal;
+    font-weight: 700;
+  }
+  .questionwordsClicked {
+    color: green;
     font-family: var(--font-family-lato);
     font-size: var(--font-size-l);
     font-style: normal;

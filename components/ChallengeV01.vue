@@ -8,11 +8,18 @@
           <tbody>
             <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
               <tr class="bg-white w-full lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-                <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <div class="questionwords">
-                    <dropdown :data="convertToDropDownData(Object.MorfeemList,1, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,1)" />
-                  </div>
-                </td>
+                <template v-if="Object.BeforeWord==='Yes'">
+                  <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+                    <div class="questionwords">
+                      <dropdown :data="convertToDropDownData(Object.MorfeemList,1, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,1)" />
+                    </div>
+                  </td>
+                  <td v-if="Object.MorfeemList2" class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+                    <div class="questionwords">
+                      <dropdown :data="convertToDropDownData(Object.MorfeemList2,2, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,2)" />
+                    </div>
+                  </td>
+                </template>
                 <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                   <div class="questionwords">
                     <span>
@@ -20,6 +27,18 @@
                     </span>
                   </div>
                 </td>
+                <template v-if="Object.BeforeWord==='No'">
+                  <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+                    <div class="questionwords">
+                      <dropdown :data="convertToDropDownData(Object.MorfeemList,1, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,1)" />
+                    </div>
+                  </td>
+                  <td v-if="Object.MorfeemList2" class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+                    <div class="questionwords">
+                      <dropdown :data="convertToDropDownData(Object.MorfeemList2,2, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,2)" />
+                    </div>
+                  </td>
+                </template>
                 <td v-show="ShowResult" :key="ResultKey">
                   <div class="object-scale-down">
                     <p v-show="Object.answerCorrect" class="text-blue">
@@ -99,6 +118,10 @@ export default {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
           QuestionObjectList[i].correctAnswer1 = -1;
           QuestionObjectList[i].UserAnswer1 = 0;
+          if(this.Challenge1.LearningQuestions[i].MorfeemList2) {
+            QuestionObjectList[i].correctAnswer2 = -1;
+            QuestionObjectList[i].UserAnswer2 = 0;
+          }
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
       }
@@ -109,6 +132,8 @@ export default {
     answerSelected(Index, answer, WhichOne) {
       if(WhichOne === 1)  {
         this.Challenge2[Index].UserAnswer1 = answer;
+      } else{
+          this.Challenge2[Index].UserAnswer2 = answer;
       }
     },
     convertToDropDownData(strData, whichOne, Index) {
@@ -123,12 +148,15 @@ export default {
           if(whichOne === 1)  {
             this.Challenge2[Index].correctAnswer1 = i;
           }
+          else  {
+            this.Challenge2[Index].correctAnswer2 = i;
+          }
           DropDownOption.id = i;
           DropDownOption.name = dataarray[i].replace('*', '');
           DropDownOptions.push(DropDownOption);
           DropDownOption = new Object();
         }
-        else  {
+        else {
           DropDownOption.id = i;
           DropDownOption.name = dataarray[i];
           DropDownOptions.push(DropDownOption);

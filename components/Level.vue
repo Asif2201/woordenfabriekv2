@@ -3,7 +3,7 @@
   <LessonHeader :key="HeaderKey"/>
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
-  <div v-else class="flex" :key="ChallengeIndex">
+  <div v-else class="flex" :key="Challenges1.Challenge[ChallengeIndex].StudentChallengeid">
     <div>
     <div class="relative w-full h-20 bg-black text-white w-screen z-index:0">
         <p> &nbsp; </p>
@@ -31,6 +31,12 @@
     </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'H01'">
       <ChallengeH01 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+    </div>
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'H02'">
+      <ChallengeH02 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+    </div>
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'H05'">
+      <ChallengeH05 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <hr>
 

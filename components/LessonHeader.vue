@@ -20,7 +20,7 @@
           <td class=" w-2/6 pb-2 absolute ">
             <div class="flex flex-row w-full py-1">
               <template v-for="level in levels.vwUsers">
-                  <div v-if="level.isevaluationchallenge==='No'" class=" w-full ">
+                  <div v-if="level.isevaluationchallenge==='No'" class=" w-full " v-bind:key="level.studentlevelID">
                     <div v-if="level.completionprogress===1" class="px-4">
                       <StarRating :value="`${level.earnedstars}`"></StarRating>
                     </div>
@@ -34,7 +34,7 @@
                       {{ ` Level ` + level.studentlevelid }}
                     </button>
                   </div>
-                  <div v-else class="w-full">
+                  <div v-else class="w-full" v-bind:key="level.studentlevelID">
                    <div v-if="level.completionprogress===1">
                       <StarRating :value="`${level.earnedstars}`"></StarRating>
                     </div>
