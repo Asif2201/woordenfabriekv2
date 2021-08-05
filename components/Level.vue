@@ -38,6 +38,12 @@
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'H05'">
       <ChallengeH05 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'CA3'">
+      <ChallengeCA3 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+    </div>
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'S01'">
+      <ChallengeS01 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+    </div>
     <hr>
 
     <button class="helpbutton inline-block" v-on:click="ToggleshowHelpText">  ?  </button>
