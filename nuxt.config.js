@@ -52,6 +52,8 @@ export default {
   axios: {
     baseURL: 'https://woordenfabriek.ew.r.appspot.com/V1/',
     browserBaseURL: 'https://woordenfabriek.ew.r.appspot.com/V1/'
+    //baseURL: 'http://localhost:3000/V1/',
+    //browserBaseURL: 'http://localhost:3000/V1/'
   },
 
   auth: {
@@ -72,6 +74,7 @@ export default {
   },
   publicRuntimeConfig: {
     baseURL: 'https://woordenfabriek.ew.r.appspot.com/V1',
+    //baseURL: 'http://localhost:3000/V1',
   },
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {

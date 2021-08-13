@@ -32,17 +32,20 @@
 
 <script>
   import moment from 'moment';
-
+  import { mapGetters } from 'vuex'
   export default {
     data() {
       return {
         lessons: []
       }
     },
+    computed: {
+      ...mapGetters(['isAuthenticated', 'loggedInUser'])
+    },
     async fetch() {
-      console.log(`${this.$config.baseURL}/userLessons?studentEmail=jaap@appalot.com`);
+      console.log(`${this.$config.baseURL}/userLessons?studentEmail=${this.loggedInUser}`)
       this.lessons = await fetch(
-        `${this.$config.baseURL}/userLessons?studentEmail=jaap@appalot.com`
+        `${this.$config.baseURL}/userLessons?studentEmail=${this.loggedInUser}`
       ).then(res => res.json())
     },
     methods:  {

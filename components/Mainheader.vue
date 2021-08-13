@@ -11,7 +11,7 @@
           <a href="#" class="block.."> De Woordenfabriek - een leeromgeving van Radboud Universiteit Nijmegen </a>
           </td>
           <td class="float-right w-2/5 mt-1 " >
-            <div v-if="isAuthenticated" class="block pb-4"> Jaap </div>
+            <div v-if="isAuthenticated" class="block pb-4"> {{ loggedInUser }} </div>
             <div v-else class="block" >
               <button class=" mt-2 bg-gray-400 hover:bg-gray-200 text-gray-500 font-bold py-2 px-4 rounded">
                 <nuxt-link to="/login"> log in </nuxt-link>

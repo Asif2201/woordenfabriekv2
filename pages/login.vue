@@ -63,7 +63,7 @@ export default {
             password: this.password
           }
         }).then(res =>  {
-          const user = res.data.data.username
+          const user = res.data.username
           this.$auth.setUser(user)
           this.$auth.$storage.setUniversal('user', user, true)
           console.log(this.$auth.$storage.getUniversal('user'))

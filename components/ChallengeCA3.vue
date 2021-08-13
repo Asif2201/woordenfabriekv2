@@ -13,7 +13,7 @@
               <td>
                 <span>
                   Morfeem
-                <span>
+                </span>
               </td>
               <td>
                 <span>
@@ -24,6 +24,7 @@
                 <span  v-show="Challenge2[0].showMultiMorfeem === 'True'">
                   Multi-Morfeem
                 </span>
+              </td>
             </tr>
           </thead>
           <tbody>

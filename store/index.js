@@ -4,6 +4,6 @@ export const getters = {
   },
 
   loggedInUser(state) {
-    return 'Jaap'
+    return (state.auth.user)
   }
 }
