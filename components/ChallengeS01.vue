@@ -81,7 +81,7 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-
+    console.log(`Challenge ID for API:  ${ChallengeID}`);
     this.Challenge1 = await fetch(
       `${this.$config.baseURL}/ChallengeQuestionsS01?ChallengeID=${ChallengeID}`
     ).then(res => res.json())
@@ -97,6 +97,7 @@ export default {
       }
     },
     splitWord(word)  {
+      console.log(word);
       if (word) {
         return word.split(';');
       } else  {
@@ -107,27 +108,31 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].Morfemelist);
+          QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].MorfemeList);
           QuestionObjectList[i].UserAnswerList = [];
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
+      console.log(QuestionObjectList);
       return QuestionObjectList;
     },
     morphemeClick: function(word, char, event) {
+      console.log(`word: ${word} - char: ${char}`)
       if(this.IsClicked(word,char))  {
-          this.Challenge2[word].UserAnswerList = this.Challenge2[word].UserAnswerList.splice(char, 1);
+          const whichElement = this.Challenge2[word].UserAnswerList.indexOf(this.Challenge2[word].word[char])
+          console.log(whichElement);
+          this.Challenge2[word].UserAnswerList.splice(whichElement, 1);
+          console.log(this.Challenge2[word].UserAnswerList)
           this.forceRenderVariable[word].splice(char, 1, false);
       }
       else {
-        this.Challenge2[word].UserAnswerList.push(char);
+        this.Challenge2[word].UserAnswerList.push(this.Challenge2[word].word[char]);
         this.forceRenderVariable[word].splice(char, 1, true);
-
       }
     },
     IsClicked(word, char) {
-      return(this.Challenge2[word].UserAnswerList.includes(char));
+      return(this.Challenge2[word].UserAnswerList.includes(this.Challenge2[word].word[char]));
     },
 
     challengeCompleted: function() {

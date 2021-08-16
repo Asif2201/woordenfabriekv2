@@ -66,7 +66,6 @@ export default {
           const user = res.data.username
           this.$auth.setUser(user)
           this.$auth.$storage.setUniversal('user', user, true)
-          console.log(this.$auth.$storage.getUniversal('user'))
           this.$router.push('/')
         })
       } catch (e) {

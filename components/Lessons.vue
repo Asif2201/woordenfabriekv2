@@ -45,7 +45,7 @@
     async fetch() {
       console.log(`${this.$config.baseURL}/userLessons?studentEmail=${this.loggedInUser}`)
       this.lessons = await fetch(
-        `${this.$config.baseURL}/userLessons?studentEmail=${this.loggedInUser}`
+        `${this.$config.baseURL}/userLessons?studentEmail=jaap@appalot.com`
       ).then(res => res.json())
     },
     methods:  {

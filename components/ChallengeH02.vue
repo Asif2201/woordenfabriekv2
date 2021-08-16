@@ -16,18 +16,33 @@
               </tr>
               <tr>
                 <td>
-                <template v-for="(char, index) in Object.paragraphwords">
-                  <div :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }" >
-                      <span v-on:click="morphemeClick(ObjIndex, index, $event);">
-                        {{ char }}
-                      </span>
-                  </div>
-                </template>
+                  &nbsp; &nbsp;
                 </td>
               </tr>
               <tr>
                 <td>
-                  <textarea v-model="lAnswerExplanation" placeholder="add multiple lines"></textarea>
+                  <template v-for="(char, index) in Object.paragraphwords">
+                    <span :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }" >
+                        <span v-on:click="morphemeClick(ObjIndex, index, $event);">
+                          {{ char }}
+                        </span>
+                    </span>
+                  </template>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &nbsp; &nbsp;
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Explain your answer
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <textarea v-model="lAnswerExplanation" placeholder="add multiple lines" style="border:solid 1px orange;"> </textarea>
                 </td>
               </tr>
           </div>
@@ -76,6 +91,7 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
+    console.log(`Challenge ID for API:  ${ChallengeID}`);
 
     this.Challenge1 = await fetch(
       `${this.$config.baseURL}/ChallengeQuestionsH02?ChallengeID=${ChallengeID}`
@@ -102,7 +118,7 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].paragraphwords = QuestionObjectList[i].paragrpah.split(' ');
+          QuestionObjectList[i].paragraphwords = QuestionObjectList[i].paragraph.split(' ');
           QuestionObjectList[i].UserAnswerList = [];
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
@@ -190,6 +206,7 @@ export default {
     font-size: var(--font-size-l);
     font-style: normal;
     font-weight: 700;
+    white-space: nowrap;
   }
   .questionwordsClicked {
     color: green;
