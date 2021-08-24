@@ -1,34 +1,27 @@
 <template>
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
-  <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
+  <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
   <div v-else>
-      <div class="relative ml-20 mt-10 overflow-x-auto">
-        <table class="border-collapse w-full">
+      <div class="relative ml-20 mt-10">
+        <table class="table-fixed w-full align-center">
           <thead/>
           <tbody>
             <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
-              <tr class="bg-white w-full lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-                <template v-if="Object.BeforeWord==='Yes'">
-                  <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                    <div class="questionwords">
-                      <input v-model="Object.UserAnswer" />
-                    </div>
-                  </td>
-                </template>
-                <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+              <tr>
+                <td class="w-1/3">
                   <div class="questionwords">
                     <span>
-                      {{ Object.word }}
+                      {{ Object.Question }}
                     </span>
                   </div>
                 </td>
-                <template v-if="Object.BeforeWord==='No'">
-                  <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                    <div class="questionwords">
-                      <input v-model="Object.UserAnswer" />
-                    </div>
-                  </td>
-                </template>
+                <td class="w-1/3"> &nbsp; </td>
+                <td class="w-1/3 questionwords ml-20">
+                  <div>
+                      <LEButtons :data="AnswerOptions" :SelectedButton="Challenge2.UserAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
+                  </div>
+                </td>
+                <td> &nbsp;  &nbsp; </td>
                 <td v-show="ShowResult" :key="ResultKey">
                   <div class="object-scale-down">
                     <p v-show="Object.answerCorrect" class="text-blue">
@@ -40,27 +33,33 @@
                   </div>
                 </td>
             </tr>
+            <tr>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+            </tr>
+            <tr>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+            </tr>
           </div>
-          <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td>
-                <div>
-                  <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold border border-blue-700 rounded">
-                    Klaar
-                  </button>
-                 </div>
-              </td>
-          </tr>
         </tbody>
         </table>
-
+        <br><br>
+        <div class="center">
+            <KlaarButton @challengeCompleted="challengeCompleted()" />
+        </div>
       </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import Dropdown from './dropdown.vue';
 
 export default {
   props:  [
@@ -81,6 +80,7 @@ export default {
       ResultKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
+      AnswerOptions: [],
     }
   },
   watch: {
@@ -89,10 +89,13 @@ export default {
     }
   },
   async fetch() {
-      const ChallengeID = this._props.Challenge;
+    const ChallengeID = this._props.Challenge;
     console.log(ChallengeID);
+    this.AnswerOptions.push({id:0, name:'Waar'});
+    this.AnswerOptions.push({id:1, name:'Deel waar'});
+    this.AnswerOptions.push({id:2, name:'Niet waar'});
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsV02?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsLE1?ChallengeID=${ChallengeID}`
     ).then(res => res.json())
 
   },
@@ -104,13 +107,15 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].UserAnswer = '';
+          QuestionObjectList[i].UserAnswer = -1;
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
-
       return QuestionObjectList;
+    },
+    answerSelected(Index, answer) {
+      this.Challenge2[Index].UserAnswer = answer;
     },
 
     challengeCompleted: function() {
@@ -127,12 +132,13 @@ export default {
         PostString += `"'` + newPropertyID + `'": "LessonID",`;
         newPropertyID = this.Level;
         PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].UserAnswer;
+        newPropertyID = 0;
         PostString += `"'` + newPropertyID + `'": "userAnswer",`;
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
+        PostString += `"'` + newPropertyID + `'": "answerCorrect",`;
         newPropertyID = this.Challenge2[i].feedbackType + `F`;
         PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
+
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -143,9 +149,8 @@ export default {
         });
         PostString = '';
       }
-
       if(this.Challenge2[0].feedbackType === 2) {
-        this.ShowResult = true;
+              this.ShowResult = true;
       }
       else {
         this.ShowResult = true;
@@ -154,25 +159,32 @@ export default {
       this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
-      this.Challenge2[index].answerCorrect = true;
-      this.Challenge2[index].answer = this.Challenge2[index].UserAnswer.trim();
-      this.Challenge2[index].answer = this.Challenge2[index].UserAnswer.toLowerCase();
-      this.Challenge2[index].UserAnswer = this.Challenge2[index].UserAnswer.trim();
-      this.Challenge2[index].UserAnswer = this.Challenge2[index].UserAnswer.toLowerCase();
-      if(this.Challenge2[index].answer !== this.Challenge2[index].UserAnswer)  {
-        this.Challenge2[index].answerCorrect = false;
+      let useranswer2 = '';
+      let correctAnswer = '';
+
+      this.Challenge2[index].answerCorrect = false;
+      correctAnswer = this.Challenge2[index].answer;
+      useranswer2 = this.Challenge2[index].UserAnswer;
+      if(correctAnswer === useranswer2) {
+        this.Challenge2[index].answerCorrect = true;
+        this.TotalCorrect += 1;
       }
-    },
+
+    }
   },
 
 }
 </script>
 <style scoped>
   .questionwords {
-    color: var(--grey);
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
-    font-style: normal;
-    font-weight: 700;
+    text-align: left;
+    font: normal normal bold 24px/30px Lato;
+    letter-spacing: 0px;
+    color: #000000DE;
+  }
+  .center {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
   }
 </style>

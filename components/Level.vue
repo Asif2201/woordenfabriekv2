@@ -12,37 +12,40 @@
       <p> &nbsp; </p>
       </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'K01'">
-      <ChallengeK1 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+      <ChallengeK1 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'C01'">
-      <ChallengeC01 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+      <ChallengeC01 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'K02'">
-      <ChallengeK02 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+      <ChallengeK02 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'K03'">
-      <ChallengeK03 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+      <ChallengeK03 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'V01'">
-      <ChallengeV01 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+      <ChallengeV01 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'V02'">
-      <ChallengeV02 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+      <ChallengeV02 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'H01'">
-      <ChallengeH01 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+      <ChallengeH01 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'H02'">
-      <ChallengeH02 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+      <ChallengeH02 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'H05'">
-      <ChallengeH05 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+      <ChallengeH05 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'CA3'">
-      <ChallengeCA3 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+      <ChallengeCA3 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'S01'">
-      <ChallengeS01 :Challenge="Challenges1.Challenge[ChallengeIndex].challengeid" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+      <ChallengeS01 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
+    </div>
+    <div v-if="Challenges1.Challenge[ChallengeIndex].ChallengeTypeID === 'LE1'">
+      <ChallengeLE1 :Challenge="Challenges1.Challenge[ChallengeIndex].LevelChallengeID" :Level ="currentLevel" :LessonID ="LessonID" @challenge-completed="completeChallenge" />
     </div>
     <hr>
 

@@ -185,11 +185,7 @@ export default {
     EvaluateAnswer: function(index)  {
       let answerIsCorrect = true;
 
-      for(var i = 0; i < this.Challenge2[index].UserAnswerList.length;i++)  {
-        if(this.Challenge2[index].answerlist.indexOf(this.Challenge2[index].word[this.Challenge2[index].UserAnswerList[i]]) < 0)  {
-          answerIsCorrect = false;
-        }
-      }
+
       if(answerIsCorrect) {
         this.Challenge2[index].answerCorrect = true;
         this.TotalCorrect += 1;
