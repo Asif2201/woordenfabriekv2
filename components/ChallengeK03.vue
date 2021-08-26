@@ -14,8 +14,8 @@
                       {{ Object.Morfeem1 }}
                     </span>
                     <p> &nbsp; </p>
-                    <template class="questionwords" v-if="Object.answer1">
-                      <input  v-model="Object.UserAnswer1" />
+                    <template  v-if="Object.answer1">
+                      <input class="text-base font-lato" v-model="Object.UserAnswer1" />
                     </template>
                   </div>
                 </td>
@@ -25,8 +25,8 @@
                       {{ Object.Morfeem2 }}
                     </span>
                     <p> &nbsp; </p>
-                    <template class="questionwords" v-if="Object.answer2">
-                      <input v-model="Object.UserAnswer2" />
+                    <template v-if="Object.answer2">
+                      <input  class="text-base font-lato" v-model="Object.UserAnswer2" />
                     </template>
                   </div>
                 </td>
@@ -36,20 +36,13 @@
                       {{ Object.Morfeem3 }}
                     </span>
                     <p> &nbsp; </p>
-                    <template class="questionwords" v-if="Object.answer3">
-                      <input  v-model="Object.UserAnswer3" />
+                    <template v-if="Object.answer3">
+                      <input class="text-base font-lato" v-model="Object.UserAnswer3" />
                     </template>
                   </div>
                 </td>
                 <td v-show="ShowResult" :key="ResultKey">
-                  <div class="object-scale-down">
-                    <p v-show="Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/correct.jpeg" />
-                    </p>
-                    <p v-show="!Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/incorrect.jpeg" />
-                    </p>
-                  </div>
+
                 </td>
             </tr>
           </div>
@@ -58,11 +51,8 @@
               <td> &nbsp; </td>
               <td> &nbsp; </td>
               <td>
-                <div>
-                  <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold border border-blue-700 rounded">
-                    Klaar
-                  </button>
-                 </div>
+                  <KlaarButton @challengeCompleted="challengeCompleted()" />
+
               </td>
           </tr>
         </tbody>
@@ -73,11 +63,8 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import dropdown from './dropdown.vue';
-import Dropdown from './dropdown.vue';
 
 export default {
-  components: { dropdown },
   props:  [
     'Challenge',
     'Level',
@@ -148,7 +135,8 @@ export default {
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
         newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
+        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
+        PostString += `"'No Explanation requested'": "Explanation" }`;
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})

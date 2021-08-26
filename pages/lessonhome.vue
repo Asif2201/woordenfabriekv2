@@ -4,17 +4,14 @@
   <LessonHeader/>
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
-  <div v-else>
-    <div class="flex flex-wrap h-64 m-8 w-full content-center rounded bg-gray-100">
-      <div class="justify-self-center ">
-      <p class="text-center">
-      {{ lessons.vwUsers[IndexOfCurrent].lessonsubtitle }}
-      </p>
-      </div>
-    </div>
-    <div v-if="lessons.vwUsers[IndexOfCurrent].completionprogress !== 100" class="relative h-8 m-8 overflow-hidden rounded-lg bg-gray-500 text-white text-center">
+  <div v-else class="ml-96 content-center">
+    <br><br><br>
+
+    <img :src="require(`../assets/radb_img_Lev${lessons.vwUsers[IndexOfCurrent].studentlevelid}.png`)"  width="557" height="349" >
+
+    <div v-if="lessons.vwUsers[IndexOfCurrent].completionprogress !== 100" class=" justify-items-center relative h-8 m-8 w-1/2 overflow-hidden rounded text-black text-center font-bold align-middle">
       <nuxt-link :to="{ path: `/levelhome?studentlessonID=` + this.$route.query.studentlessonID }" >
-                Continue with learning challenge
+                Continue with Lesson
       </nuxt-link>
     </div>
   </div>

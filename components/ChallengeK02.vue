@@ -55,11 +55,7 @@
               <td> &nbsp; </td>
               <td> &nbsp; </td>
               <td>
-                <div>
-                  <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold border border-blue-700 rounded">
-                    Klaar
-                  </button>
-                 </div>
+                <KlaarButton @challengeCompleted="challengeCompleted()" />
               </td>
           </tr>
         </tbody>
@@ -199,7 +195,8 @@ export default {
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
         newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
+        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
+        PostString += `"'No Explanation requested'": "Explanation" }`;
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})

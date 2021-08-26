@@ -64,8 +64,8 @@
                   {{ `Voortgang huidige level ` + level.completionprogress * 100 + `%`}}
                 </span>
               </div>
-              <div class="h-6 w-full bg-gray-300" v-bind:key="level.studentlevelID">
-                  <div class="h-6 bg-gray-800" v-bind:style="{ width: level.completionprogress * 100 + '%' }">
+              <div class="h-6 w-full bg-gray-300 rounded" v-bind:key="level.studentlevelID">
+                  <div class="h-6 bg-gray-800 rounded" v-bind:style="{ width: level.completionprogress * 100 + '%' }">
                     {{ level.completionprogress * 100 + '%' }}
                   </div>
               </div>

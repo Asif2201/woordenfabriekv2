@@ -11,7 +11,7 @@
                 <template v-if="Object.BeforeWord==='Yes'">
                   <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                     <div class="questionwords">
-                      <input v-model="Object.UserAnswer" />
+                      <input class="text-base font-lato" v-model="Object.UserAnswer" />
                     </div>
                   </td>
                 </template>
@@ -25,19 +25,12 @@
                 <template v-if="Object.BeforeWord==='No'">
                   <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                     <div class="questionwords">
-                      <input v-model="Object.UserAnswer" />
+                      <input class="text-base font-lato" v-model="Object.UserAnswer" />
                     </div>
                   </td>
                 </template>
                 <td v-show="ShowResult" :key="ResultKey">
-                  <div class="object-scale-down">
-                    <p v-show="Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/correct.jpeg" />
-                    </p>
-                    <p v-show="!Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/incorrect.jpeg" />
-                    </p>
-                  </div>
+
                 </td>
             </tr>
           </div>
@@ -46,11 +39,8 @@
               <td> &nbsp; </td>
               <td> &nbsp; </td>
               <td>
-                <div>
-                  <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold border border-blue-700 rounded">
-                    Klaar
-                  </button>
-                 </div>
+                <KlaarButton @challengeCompleted="challengeCompleted()" />
+
               </td>
           </tr>
         </tbody>
@@ -132,7 +122,8 @@ export default {
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
         newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
+        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
+        PostString += `"'No Explanation requested'": "Explanation" }`;
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})

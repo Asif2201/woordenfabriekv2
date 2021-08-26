@@ -6,61 +6,60 @@
         <table class="table-fixed w-full align-center">
           <thead>
             <tr>
-              <td>
-                <span>
-                </span>
-              </td>
-              <td>
-                <span>
+              <th class="w=2/5">
+                &nbsp;
+              </th>
+              <th class="w=1/5">
+                <span class="font-lato text-lg font-bold">
                   Morfeem
                 </span>
-              </td>
-              <td>
-                <span>
+              </th>
+              <th class="w=1/5">
+                <span class="font-lato text-lg font-bold">
                   Non-Morfeem
                 </span>
-              </td>
-              <td>
-                <span  v-show="Challenge2[0].showMultiMorfeem === 'True'">
+              </th>
+              <th class="w=1/5">
+                &nbsp;
+                <span class="font-lato text-lg font-bold" v-show="Challenge2[0].showMultiMorfeem === 'True'">
                   Multi-Morfeem
                 </span>
-              </td>
+              </th>
             </tr>
           </thead>
           <tbody>
-            <div v-for="(Object, ObjIndex) in Challenge2" v-bind:key="Object.id">
+            <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
-                  <td>
-                    <div class="questionwords">
-                        <span>
-                          {{ Object.word }}
-                        </span>
-                    </div>
+                <td>
+                      <span class="questionwords">
+                        {{ Object.word }}
+                      </span>
                   </td>
                   <td>
-                    <input type="radio" value="Morfeem" v-model="Object.UserAnswer">
+                    <input type="radio" :name="'wordtype_' + ObjIndex" value="Morfeem" v-model="Object.UserAnswer">
                     <label for="one"> Selecteer categorie </label>
                   </td>
                   <td>
-                    <input type="radio" value="Non-Morfeem" v-model="Object.UserAnswer">
+                    <input type="radio" :name="'wordtype_' + ObjIndex" value="Non-Morfeem" v-model="Object.UserAnswer">
                     <label for="one"> Selecteer categorie </label>
                   </td>
-                  <template v-if="Object.showMultiMorfeem === 'True'">
-                    <td>
-                      <input type="radio" value="Multi-Morfeem" v-model="Object.UserAnswer">
-                      <label for="one"> Selecteer categorie </label>
-                    </td>
-                  </template>
-                  <td> &nbsp;  &nbsp; </td>
+                  <td v-show=" Challenge2[0].showMultiMorfeem ===  'True' ">
+                    <input type="radio" :name="'wordtype_' + ObjIndex" value="Multi-Morfeem" v-model="Object.UserAnswer">
+                    <label for="one"> Selecteer categorie </label>
+                  </td>
               </tr>
-            </div>
+            </template>
+              <tr>
+
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td><KlaarButton @challengeCompleted="challengeCompleted()" /></td>
+
+              </tr>
         </tbody>
         </table>
-        <div  class=buttondefault-4ZAul6>
-            <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
-               Klaar
-            </button>
-        </div>
+
       </div>
   </div>
 </template>
@@ -150,7 +149,8 @@ export default {
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
         newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
+        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
+        PostString += `"'No Explanation requested'": "Explanation" }`;
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -199,5 +199,9 @@ export default {
     font-size: var(--font-size-l);
     font-style: normal;
     font-weight: 700;
+  }
+  th, td {
+    padding: 25px;
+    text-align: center;
   }
 </style>

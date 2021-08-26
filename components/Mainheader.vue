@@ -1,8 +1,7 @@
 <template>
   <div>
-
     <nuxt-link to="/" >
-      <img source="~/assets/Mainheader.png" width="1940" height="64">
+      <img src="~/assets/Mainheader.png" width="1940" height="64">
     </nuxt-link>
   </div>
 </template>

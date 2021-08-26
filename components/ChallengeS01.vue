@@ -4,46 +4,52 @@
   <div v-else>
       <div class="relative ml-20 mt-10">
         <table class="table-fixed w-full align-center">
-          <thead/>
+            <thead>
+            <tr>
+              <th class="w-1/5 ..."></th>
+              <th class="w-3/5"></th>
+              <th class="w-1/5 ..."></th>
+            </tr>
+          </thead>
           <tbody>
-            <div v-for="(Object, ObjIndex) in Challenge2" v-bind:key="Object.id">
+            <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
-                <template v-for="(char, index) in Object.word">
-                  <td :key="forceRenderVariable[ObjIndex][index]">
-                    <div :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }" >
-                        <span v-on:click="morphemeClick(ObjIndex, index, $event);">
-                          {{ char }}
-                        </span>
-                    </div>
+                <td> &nbsp;  &nbsp; </td>
+                  <td>
+                    <template v-for="(char, index) in Object.word">
+                      <span :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }"  v-on:click="morphemeClick(ObjIndex, index, $event);">
+                        {{  '      ' + char + '      '}}
+                      </span>
+                    </template>
                   </td>
                   <td> &nbsp;  &nbsp; </td>
-                </template>
               </tr>
               <tr>
-                <template v-for="(char, index) in Object.UserAnswerList">
-                  <td :key="forceRenderVariable[ObjIndex][index]">
-                    <div>
+                <td> &nbsp;  &nbsp; </td>
+                  <td>
+                    <template v-for="(char, index) in Object.UserAnswerList">
                       <span>
-                        {{ char }}
+                        {{ char + '  |  ' }}
                       </span>
-                    </div>
+                    </template>
                   </td>
                   <td> &nbsp;  &nbsp; </td>
-                </template>
             </tr>
             <tr>
               <td> &nbsp; </td>
               <td> &nbsp; </td>
               <td> &nbsp; </td>
             </tr>
-          </div>
+          </template>
+          <tr>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td>
+                <KlaarButton @challengeCompleted="challengeCompleted()" />
+             </td>
+            </tr>
         </tbody>
         </table>
-        <div  class=buttondefault-4ZAul6>
-            <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
-               Klaar
-            </button>
-        </div>
       </div>
   </div>
 </template>
@@ -154,7 +160,8 @@ export default {
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
         newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
+        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
+        PostString += `"'No Explanation requested'": "Explanation" }`;
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -200,5 +207,8 @@ export default {
     font-size: var(--font-size-l);
     font-style: normal;
     font-weight: 700;
+  }
+  th, td {
+    padding: 10px;
   }
 </style>

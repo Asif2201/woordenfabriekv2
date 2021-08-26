@@ -137,13 +137,13 @@ export default {
         PostString += `"'` + newPropertyID + `'": "LessonID",`;
         newPropertyID = this.Level;
         PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = 0;
+        newPropertyID = this.Challenge2[i].UserAnswer;
         PostString += `"'` + newPropertyID + `'": "userAnswer",`;
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect",`;
         newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
-
+        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
+        PostString += `"'No Explanation requested'": "Explanation" }`;
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})

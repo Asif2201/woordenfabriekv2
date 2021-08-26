@@ -3,15 +3,13 @@
   <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
   <div v-else class="flex flex-col relative">
     <table class="min-w-full table-auto">
-
-      <tbody class="bg-gray-200">
-
+      <tbody>
         <tr v-for="lesson of lessons.vwUsers" >
           <template v-if="lesson.status === 'Assigned'">
             <td v-for="value2,key in lesson">
-              <p v-if="key === 'studentlessonid' " class="text-sm font-medium text-gray-900">
-                <nuxt-link :to="{ path: `/lessonhome?studentlessonID=` + value2 }" >
-                  Click to start lesson
+              <p v-if="key === 'studentlessonid' " class="text-md font-medium text-green-900 rounded">
+                <nuxt-link :to="{ path: `lessonhome?studentlessonID=` + value2 }" >
+                   Start lesson
                 </nuxt-link>
               </p>
             </td>

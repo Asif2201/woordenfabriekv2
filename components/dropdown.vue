@@ -1,6 +1,6 @@
 <template>
   <div class="relative">
-    <select class="form-control text-blue-800" v-model="selectedAnswer" >
+    <select class="form-control text-blue-600 text-md" v-model="selectedAnswer" >
       <option  value=""  selected disabled>Kies</option>
       <option v-for="answer in data" :value="answer.id" :Key="answer.id"> {{  answer.name }} </option>
     </select>

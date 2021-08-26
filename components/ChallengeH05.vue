@@ -3,10 +3,17 @@
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
       <div class="relative ml-20 mt-10">
-        <table class="table-fixed w-full align-center">
-          <thead/>
+        <table class="table-fixed w-full align-center space-y-6">
+          <thead>
+            <tr>
+              <th class="w-1/4 ..."> </th>
+              <th class="w-1/4 ..."> </th>
+              <th class="w-1/4 ..."> </th>
+              <th class="w-1/4 ..."> </th>
+            </tr>
+          </thead>
           <tbody>
-            <div v-for="(Object, ObjIndex) in Challenge2" v-bind:key="Object.id">
+            <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <template v-for="(char, index) in Object.word">
                   <td :key="forceRenderVariable[ObjIndex][index]">
@@ -16,7 +23,6 @@
                         </span>
                     </div>
                   </td>
-                  <td> &nbsp;  &nbsp; </td>
                 </template>
                 <td v-show="ShowResult" :key="ResultKey">
                   <div class="object-scale-down">
@@ -29,19 +35,21 @@
                   </div>
                 </td>
             </tr>
-          </div>
-          <tr>
-                <td>
-                  <textarea v-model="lAnswerExplanation" placeholder="add multiple lines"></textarea>
-                </td>
-              </tr>
-        </tbody>
+          </template>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+            </tr>
+            <tr>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td>&nbsp;</td>
+              <td><KlaarButton @challengeCompleted="challengeCompleted()" /></td>
+            </tr>
+          </tbody>
         </table>
-        <div  class=buttondefault-4ZAul6>
-            <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
-               Klaar
-            </button>
-        </div>
       </div>
   </div>
 </template>
@@ -203,5 +211,8 @@ export default {
     font-size: var(--font-size-l);
     font-style: normal;
     font-weight: 700;
+  }
+  th, td {
+    padding: 25px;
   }
 </style>

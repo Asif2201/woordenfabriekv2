@@ -1,60 +1,86 @@
 <template>
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
-  <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
+  <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
       <div class="relative ml-20 mt-10">
-        <table class="table-fixed w-full align-center ">
+        <table class="table-auto w-full align-center">
           <thead>
             <tr>
+              <th class="w-1/5 ..."></th>
               <th class="w-3/5 ..."></th>
-              <th class="w-2/5 ..."></th>
+              <th class="w-1/5 ..."></th>
             </tr>
           </thead>
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
-                  <span class="questionwords">
-                    {{ Object.Question }}
-                  </span>`
+                  &nbsp;
                 </td>
                 <td>
-                      <LEButtons :data="AnswerOptions" :SelectedButton="Challenge2.UserAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
-
+                  <span class="paragraphheading">
+                        {{ Object.Question }}
+                  </span>
                 </td>
-            </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
+                <td>
+                  &nbsp;
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &nbsp;
+                </td>
+                <td>
+                  &nbsp;
+                </td>
+                <td>
+                  &nbsp;
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &nbsp;
+                </td>
+                <td class="align-right">
+                  <br>
+                  <textarea v-model="Object.UserAnswer" placeholder="geed je antwoord hier" style="explainbox" rows="6" cols="60"> </textarea>
+                </td>`
+                <td>
+                  &nbsp;
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  &nbsp;
+                </td>
+                <td>
+                  &nbsp;
+                </td>
+                <td>
+                  &nbsp;
+                </td>
+              </tr>
+
           </template>
-             <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
-             <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
             <tr>
-              <td> &nbsp; </td>
+              <td>
+                  &nbsp;
+                </td>
+              <td>
+                &nbsp;
+              </td>
               <td>
                 <KlaarButton @challengeCompleted="challengeCompleted()" />
               </td>
             </tr>
         </tbody>
-      </table>
+        </table>
 
       </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import Dropdown from './dropdown.vue';
 
 export default {
   props:  [
@@ -65,17 +91,20 @@ export default {
   computed: {
     ...mapGetters(['isAuthenticated', 'loggedInUser'])
   },
+  created() {
+    this.initWordGrid();
+  },
   data() {
     return {
       Challenge1: [],
       Challenge2: [],
-      knipWords: [],
+      forceRenderVariable: [],
       AllquestionsAnswered: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
-      AnswerOptions: [],
+      lAnswerExplanation: '',
     }
   },
   watch: {
@@ -85,32 +114,39 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-    console.log(ChallengeID);
-    this.AnswerOptions.push({id:0, name:'Waar'});
-    this.AnswerOptions.push({id:1, name:'Deel waar'});
-    this.AnswerOptions.push({id:2, name:'Niet waar'});
-    this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsLE1?ChallengeID=${ChallengeID}`
-    ).then(res => res.json())
+    console.log(`Challenge ID for API:  ${ChallengeID}`);
 
+    this.Challenge1 = await fetch(
+      `${this.$config.baseURL}/ChallengeQuestionsLE2?ChallengeID=${ChallengeID}`
+    ).then(res => res.json())
   },
   methods:  {
-    forceRerender() {
-      this.ResultKey += 1;
+    initWordGrid()  {
+      console.clear();
+      for (var i = 0; i <= 10; i++) {
+        this.forceRenderVariable.push([]);
+        for (var j = 0; j <= 70; j++) {
+          this.forceRenderVariable[i].push(false);
+        }
+      }
+    },
+    splitWord(word)  {
+      if (word) {
+        return word.split(';');
+      } else  {
+        return '';
+      }
     },
     JSONtoObj()  {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].UserAnswer = -1;
+          QuestionObjectList[i].UserAnswer = '';
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
       return QuestionObjectList;
-    },
-    answerSelected(Index, answer) {
-      this.Challenge2[Index].UserAnswer = answer;
     },
 
     challengeCompleted: function() {
@@ -130,10 +166,11 @@ export default {
         newPropertyID = this.Challenge2[i].UserAnswer;
         PostString += `"'` + newPropertyID + `'": "userAnswer",`;
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect",`;
+        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
         newPropertyID = this.Challenge2[i].feedbackType + `F`;
         PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        PostString += `"'No Explanation requested'": "Explanation" }`;
+        newPropertyID = this.lAnswerExplanation;
+        PostString += `"'` + newPropertyID + `'": "AnswerExplanation" }`;
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -142,6 +179,7 @@ export default {
         }, (error) => {
           console.log(error);
         });
+        console.log(PostString);
         PostString = '';
       }
       if(this.Challenge2[0].feedbackType === 2) {
@@ -150,21 +188,16 @@ export default {
       else {
         this.ShowResult = true;
       }
-      this.forceRerender();
       this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
-      let useranswer2 = '';
-      let correctAnswer = '';
+      let answerIsCorrect = true;
 
-      this.Challenge2[index].answerCorrect = false;
-      correctAnswer = this.Challenge2[index].answer;
-      useranswer2 = this.Challenge2[index].UserAnswer;
-      if(correctAnswer === useranswer2) {
+
+      if(answerIsCorrect) {
         this.Challenge2[index].answerCorrect = true;
         this.TotalCorrect += 1;
       }
-
     }
   },
 
@@ -172,14 +205,34 @@ export default {
 </script>
 <style scoped>
   .questionwords {
-    text-align: left;
-    font: normal normal bold 24px/30px Lato;
-    letter-spacing: 0px;
-    color: #000000DE;
+    color: grey;
+    font-family: var(--font-family-lato);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    white-space: wrap;
+    line-height: 200%;
   }
-  .center {
-    margin: auto;
-    width: 60%;
-    padding: 10px;
+  .questionwordsClicked {
+    color: green;
+    font-family: var(--font-family-lato);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 200%;
+
+  }
+  .paragraphheading {
+    color: black;
+    font-family: var(--font-family-lato);
+    font-size: 22px;
+    font-style: normal;
+    font-weight: bold;
+
+  }
+  .explainbox {
+    border:solid 1px orange;
+    resize: none;
+    float: right;
   }
 </style>

@@ -3,7 +3,7 @@
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
       <div class="relative ml-20 mt-10">
-        <table class="table-fixed w-full align-center">
+        <table class="table-auto w-full align-center">
           <thead/>
           <tbody>
             <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
@@ -16,7 +16,7 @@
                   </div>
                 </td>
                 <td>
-                  <div v-if="Object.answerConfirmed" class="">
+                  <div v-if="Object.answerConfirmed">
                     <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed">
                       OK
                     </button>
@@ -60,23 +60,24 @@
               <td> &nbsp; </td>
               <td> &nbsp; </td>
             </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
+
           </div>
+          <tr>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+
+              <td>
+                <KlaarButton @challengeCompleted="challengeCompleted()" />
+               </td>
+            </tr>
         </tbody>
         </table>
-        <div v-if="AllquestionsAnswered" class=buttondefault-4ZAul6>
-            <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
-               Klaar
-            </button>
-        </div>
       </div>
+
   </div>
 </template>
 <script>
@@ -179,7 +180,9 @@ export default {
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
         newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType" }`;
+        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
+        PostString += `"'No Explanation requested'": "Explanation" }`;
+
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -196,7 +199,7 @@ export default {
         this.ShowResult = true;
       }
       else {
-        this.ShowResult = true;
+        this.ShowResult = false;
       }
       this.forceRerender();
       this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
@@ -223,5 +226,9 @@ export default {
     font-size: var(--font-size-l);
     font-style: normal;
     font-weight: 700;
+  }
+  .right {
+    margin-right: 20px;
+    float: right;
   }
 </style>
