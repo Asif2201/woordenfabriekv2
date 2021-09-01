@@ -1,9 +1,9 @@
-export const getters = {
-  isAuthenticated(state) {
-    return (state.auth.loggedIn)
-  },
+export const state = () => ({
+  userEmail: 'jaap@appalot.com'
+})
 
-  loggedInUser(state) {
-    return (state.auth.user)
+export const mutations = {
+  increment(state) {
+    state.counter++
   }
 }

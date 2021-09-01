@@ -63,7 +63,6 @@
 </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
 import modalChallenge from '../components/modalChallenge.vue';
 import Default from '../layouts/default.vue';
 
@@ -73,12 +72,10 @@ export default {
     'currentLevel',
     'LessonID'
   ],
-  computed: {
-    ...mapGetters(['isAuthenticated', 'loggedInUser'])
-  },
+
   components: {
       modalChallenge,
-    Default,
+      Default,
     },
   data() {
     return {

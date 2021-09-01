@@ -80,13 +80,7 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
-import StarRating from '../components/StarRating.vue'
-
 export default {
-  computed: {
-    ...mapGetters(['isAuthenticated', 'loggedInUser']),
-  },
   data() {
     return {
       lessons: [],

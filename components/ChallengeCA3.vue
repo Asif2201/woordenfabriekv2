@@ -64,17 +64,12 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   props:  [
     'Challenge',
     'Level',
     'LessonID'
   ],
-  computed: {
-    ...mapGetters(['isAuthenticated', 'loggedInUser'])
-  },
   created() {
     this.initWordGrid();
   },

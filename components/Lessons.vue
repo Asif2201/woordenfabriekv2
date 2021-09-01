@@ -1,6 +1,4 @@
 <template>
-  <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
-  <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
   <div v-else class="flex flex-col relative">
     <table class="min-w-full table-auto">
       <tbody>
@@ -22,30 +20,17 @@
           </td>
           </template>
         </tr>
-
-      </tbody>
+     </tbody>
     </table>
+    <br><br>
+    <button @click="ResetData" class="text-red"> Reset Data (all answer data will be deleted)</button>
+
   </div>
 </template>
 
 <script>
   import moment from 'moment';
-  import { mapGetters } from 'vuex'
   export default {
-    data() {
-      return {
-        lessons: []
-      }
-    },
-    computed: {
-      ...mapGetters(['isAuthenticated', 'loggedInUser'])
-    },
-    async fetch() {
-      console.log(`${this.$config.baseURL}/userLessons?studentEmail=${this.loggedInUser}`)
-      this.lessons = await fetch(
-        `${this.$config.baseURL}/userLessons?studentEmail=jaap@appalot.com`
-      ).then(res => res.json())
-    },
     methods:  {
       dateTime(value) {
         if(moment(value).format('YYYY-MM-DD') !== 'Invalid date')  {
@@ -54,6 +39,15 @@
         else  {
           return value;
         }
+      },
+      ResetData() {
+        this.$axios.post('/ResetData', {headers: {
+          'content-type': 'application/json',},})
+        .then((response) => {
+          console.log('Ok');
+        }, (error) => {
+          console.log(error);
+        });
       }
     }
   }

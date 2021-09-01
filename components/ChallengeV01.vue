@@ -66,7 +66,6 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
 import dropdown from './dropdown.vue';
 
 export default {
@@ -76,9 +75,7 @@ export default {
     'Level',
     'LessonID'
   ],
-  computed: {
-    ...mapGetters(['isAuthenticated', 'loggedInUser'])
-  },
+
   data() {
     return {
       Challenge1: [],

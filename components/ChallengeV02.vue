@@ -50,7 +50,6 @@
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
 
 export default {
   props:  [
@@ -58,9 +57,7 @@ export default {
     'Level',
     'LessonID'
   ],
-  computed: {
-    ...mapGetters(['isAuthenticated', 'loggedInUser'])
-  },
+
   data() {
     return {
       Challenge1: [],
