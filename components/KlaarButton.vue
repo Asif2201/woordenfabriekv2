@@ -17,6 +17,7 @@ export default ({
     }
   },
 
+
 })
 
 </script>
@@ -34,6 +35,7 @@ export default ({
   top: 740px;
   left: 880px;
   clear: left;
+  z-index: 1;
 }
 
 </style>

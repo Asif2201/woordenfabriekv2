@@ -44,7 +44,7 @@
                 <td>
                   <template v-for="(char, index) in Object.paragraphwords">
                     <span :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }" >
-                        <span v-on:click="morphemeClick(ObjIndex, index, $event);">
+                        <span>
                           {{ char }}
                         </span>
                     </span>
@@ -69,8 +69,8 @@
                 <td>
                   &nbsp;
                 </td>
-                <td class="questionwords">
-                  Explain the answer
+                <td class = "questionwords">
+                  Your explanation
                 </td>
                 <td>
                   &nbsp;
@@ -81,9 +81,9 @@
                 <td>
                   &nbsp;
                 </td>
-                <td class="questionswords align-right">
+                <td class="questionwords">
                   <br>
-                  <textarea v-model="lAnswerExplanation" placeholder="leg je antwoord uit" style="explainbox" rows="4" cols="60"> </textarea>
+                  <p> {{ lAnswerExplanation }} </p>
                 </td>
                 <td>
                   &nbsp;
@@ -98,7 +98,6 @@
                 &nbsp;
               </td>
               <td>
-                <KlaarButton @challengeCompleted="challengeCompleted()" />
               </td>
             </tr>
         </tbody>
@@ -116,9 +115,6 @@ export default {
     'LessonID'
   ],
 
-  created() {
-    this.initWordGrid();
-  },
   data() {
     return {
       Challenge1: [],
@@ -139,22 +135,12 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-    console.log(`Challenge ID for API:  ${ChallengeID}`);
 
     this.Challenge1 = await fetch(
       `${this.$config.baseURL}/ChallengeQuestionsH02?ChallengeID=${ChallengeID}`
     ).then(res => res.json())
   },
   methods:  {
-    initWordGrid()  {
-      console.clear();
-      for (var i = 0; i <= 10; i++) {
-        this.forceRenderVariable.push([]);
-        for (var j = 0; j <= 70; j++) {
-          this.forceRenderVariable[i].push(false);
-        }
-      }
-    },
     splitWord(word)  {
       if (word) {
         return word.split(';');
@@ -165,80 +151,25 @@ export default {
     JSONtoObj()  {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
-          QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].paragraphwords = QuestionObjectList[i].paragraph.split(' ');
-          QuestionObjectList[i].UserAnswerList = [];
-          QuestionObjectList[i].answerConfirmed = false;
-          QuestionObjectList[i].answerCorrect = false;
+        QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
+        QuestionObjectList[i].paragraphwords = QuestionObjectList[i].paragraph.split(' ');
+        QuestionObjectList[i].UserAnswerList = QuestionObjectList[i].studentAnswer;
+        this.forceRenderVariable.push([]);
+        for(var j=0;j < QuestionObjectList[i].paragraphwords.length;j++)  {
+          if(QuestionObjectList[i].UserAnswerList.includes(j))  {
+            this.forceRenderVariable[i].push(true);
+          }
+          else  {
+            this.forceRenderVariable[i].push(false);
+          }
+        }
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
       return QuestionObjectList;
     },
-    morphemeClick: function(word, char, event) {
-      if(this.IsClicked(word,char))  {
-          this.Challenge2[word].UserAnswerList = this.Challenge2[word].UserAnswerList.splice(char, 1);
-          this.forceRenderVariable[word].splice(char, 1, false);
-      }
-      else {
-        this.Challenge2[word].UserAnswerList.push(char);
-        this.forceRenderVariable[word].splice(char, 1, true);
-
-      }
-    },
-    IsClicked(word, char) {
-      return(this.Challenge2[word].UserAnswerList.includes(char));
-    },
-
-    challengeCompleted: function() {
-      var PostString = '';
-      var newPropertyID = '';
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        this.EvaluateAnswer(i);
-
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].UserAnswerList.join(";");
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        newPropertyID = this.lAnswerExplanation;
-        PostString += `"'` + newPropertyID + `'": "AnswerExplanation" }`;
-
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        console.log(PostString);
-        PostString = '';
-      }
-      if(this.Challenge2[0].feedbackType === 2) {
-              this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
-    },
-    EvaluateAnswer: function(index)  {
-      let answerIsCorrect = true;
 
 
-      if(answerIsCorrect) {
-        this.Challenge2[index].answerCorrect = true;
-        this.TotalCorrect += 1;
-      }
-    }
+
   },
 
 }
@@ -273,5 +204,8 @@ export default {
     border:solid 1px orange;
     resize: none;
     float: right;
+    font-family: lato;
+    font-size: 14px;
+
   }
 </style>

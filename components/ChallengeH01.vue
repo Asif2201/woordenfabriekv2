@@ -154,7 +154,7 @@ export default {
         newPropertyID = this.Challenge2[i].feedbackType + `F`;
         PostString += `"'` + newPropertyID + `'": "feedbackType", `;
         PostString += `"'No Explanation requested'": "Explanation" }`;
-
+        console.log(PostString);
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
         .then((response) => {
@@ -193,15 +193,15 @@ export default {
 <style scoped>
   .questionwords {
     color: grey;
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    font-family: lato;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }
   .questionwordsClicked {
-    color: green;
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    color: blue;
+    font-family: lato;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }

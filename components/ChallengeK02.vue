@@ -1,42 +1,36 @@
 <template>
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
-  <div v-else>
-      <div class="relative ml-20 mt-10 overflow-x-auto">
-        <table class="border-collapse w-full">
-          <thead/>
+  <div v-else class="tablecontainer">
+        <table class="challengetable">
           <tbody>
-            <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
-              <tr class="bg-white w-full lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-                <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <div class="questionwords">
-                    <span>
+            <template v-for="(Object, ObjIndex) in Challenge2" >
+              <tr>
+                <td>
+                    <span class="questionwords">
                       {{ Object.Morfeem1 }}
                     </span>
-                    <template class="questionwords" v-if="Object.answer1">
+                    <template v-if="Object.answer1">
                       <dropdown :data="convertToDropDownData(Object.answer1,1, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,1)" />
                     </template>
-                  </div>
                 </td>
-                <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <div class="questionwords">
-                    <span>
+                <td>
+                    <span class="questionwords">
                       {{ Object.Morfeem2 }}
                     </span>
-                    <template v-if="Object.answer2" class="questionwords">
+                    <template v-if="Object.answer2">
                       <dropdown :data="convertToDropDownData(Object.answer2,2, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,2)" />
                     </template>
-                  </div>
                 </td>
-                <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <div v-if="Object.Morfeem3" class="questionwords">
-                    <span>
+                <td>
+                  <template v-if="Object.Morfeem3">
+                    <span class="questionwords">
                       {{ Object.Morfeem3 }}
                     </span>
-                    <template v-if="Object.answer3" class="questionwords">
+                    <template v-if="Object.answer3">
                       <dropdown :data="convertToDropDownData(Object.answer3,3, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,3)" />
                     </template>
-                  </div>
+                  </template>
                 </td>
                 <td v-show="ShowResult" :key="ResultKey">
                   <div class="object-scale-down">
@@ -49,8 +43,8 @@
                   </div>
                 </td>
             </tr>
-          </div>
-          <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
+          </template>
+          <tr>
               <td> &nbsp; </td>
               <td> &nbsp; </td>
               <td> &nbsp; </td>
@@ -61,7 +55,6 @@
         </tbody>
         </table>
 
-      </div>
   </div>
 </template>
 <script>
@@ -238,10 +231,25 @@ export default {
 </script>
 <style scoped>
   .questionwords {
-    color: var(--grey);
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    color: black;
+    font-family: Lato;
+    font-size: 16px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: bold;
   }
+  .challengetable {
+    width: 80%;
+    padding: 20px;
+    margin-top:20px;
+    margin-left:30px
+  }
+  .challengetable th, td  {
+    text-align: left;
+    color: black;
+    line-height: 1.6;
+  }
+  .tablecontainer {
+    text-align: center;
+  }
+
 </style>

@@ -11,7 +11,7 @@
                 <template v-if="Object.BeforeWord==='Yes'">
                   <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                     <div class="questionwords">
-                      <input class="text-base font-lato" v-model="Object.UserAnswer" />
+                      <span class="answer"> {{ Object.studentAnswer }} </span>
                     </div>
                   </td>
                 </template>
@@ -25,7 +25,7 @@
                 <template v-if="Object.BeforeWord==='No'">
                   <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                     <div class="questionwords">
-                      <input class="text-base font-lato" v-model="Object.UserAnswer" />
+                      <span class="answer"> {{ Object.studentAnswer }} </span>
                     </div>
                   </td>
                 </template>
@@ -34,15 +34,6 @@
                 </td>
             </tr>
           </div>
-          <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td>
-                <KlaarButton @challengeCompleted="challengeCompleted()" />
-
-              </td>
-          </tr>
         </tbody>
         </table>
 
@@ -91,76 +82,30 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].UserAnswer = '';
-          QuestionObjectList[i].answerConfirmed = false;
-          QuestionObjectList[i].answerCorrect = false;
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
 
       return QuestionObjectList;
     },
 
-    challengeCompleted: function() {
-      var PostString = '';
-      var newPropertyID = '';
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        this.EvaluateAnswer(i);
 
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].UserAnswer;
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        PostString += `"'No Explanation requested'": "Explanation" }`;
-
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        PostString = '';
-      }
-
-      if(this.Challenge2[0].feedbackType === 2) {
-        this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.forceRerender();
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
-    },
-    EvaluateAnswer: function(index)  {
-      this.Challenge2[index].answerCorrect = true;
-      this.Challenge2[index].answer = this.Challenge2[index].UserAnswer.trim();
-      this.Challenge2[index].answer = this.Challenge2[index].UserAnswer.toLowerCase();
-      this.Challenge2[index].UserAnswer = this.Challenge2[index].UserAnswer.trim();
-      this.Challenge2[index].UserAnswer = this.Challenge2[index].UserAnswer.toLowerCase();
-      if(this.Challenge2[index].answer !== this.Challenge2[index].UserAnswer)  {
-        this.Challenge2[index].answerCorrect = false;
-      }
-    },
   },
 
 }
 </script>
 <style scoped>
   .questionwords {
-    color: black;
+    color: var(--grey);
     font-family: var(--font-family-lato);
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
+  }
+  .answer {
+    color: blue;
+    font-family: Lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: bold;
   }
 </style>

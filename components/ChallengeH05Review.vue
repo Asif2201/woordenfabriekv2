@@ -18,7 +18,7 @@
                 <template v-for="(char, index) in Object.word">
                   <td :key="forceRenderVariable[ObjIndex][index]">
                     <div :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }" >
-                        <span v-on:click="morphemeClick(ObjIndex, index, $event);">
+                        <span>
                           {{ char }}
                         </span>
                     </div>
@@ -47,7 +47,6 @@
               <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>
-                <button  @click="challengeCompleted()" class="klaarButton" > Klaar </button>
               </td>
             </tr>
           </tbody>
@@ -64,9 +63,6 @@ export default {
     'LessonID'
   ],
 
-  created() {
-    this.initWordGrid();
-  },
   data() {
     return {
       Challenge1: [],
@@ -94,15 +90,7 @@ export default {
     ).then(res => res.json())
   },
   methods:  {
-    initWordGrid()  {
-      console.clear();
-      for (var i = 0; i <= 10; i++) {
-        this.forceRenderVariable.push([]);
-        for (var j = 0; j <= 7; j++) {
-          this.forceRenderVariable[i].push(false);
-        }
-      }
-    },
+
     splitWord(word)  {
       if (word) {
         return word.split(';');
@@ -113,87 +101,23 @@ export default {
     JSONtoObj()  {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
-          QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].wordlist);
-          QuestionObjectList[i].UserAnswerList = [];
-          QuestionObjectList[i].answerConfirmed = false;
-          QuestionObjectList[i].answerCorrect = false;
+        QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
+        QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].wordlist);
+        QuestionObjectList[i].UserAnswerList = QuestionObjectList[i].studentAnswer;
+        this.forceRenderVariable.push([]);
+        for(var j=0;j < QuestionObjectList[i].word.length;j++)  {
+          if(QuestionObjectList[i].UserAnswerList.includes(j))  {
+            this.forceRenderVariable[i].push(true);
+          }
+          else  {
+            this.forceRenderVariable[i].push(false);
+          }
+        }
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
       return QuestionObjectList;
     },
-    morphemeClick: function(word, char, event) {
-      if(this.IsClicked(word,char))  {
-          this.Challenge2[word].UserAnswerList = this.Challenge2[word].UserAnswerList.splice(char, 1);
-          this.forceRenderVariable[word].splice(char, 1, false);
-      }
-      else {
-        this.Challenge2[word].UserAnswerList.push(char);
-        this.forceRenderVariable[word].splice(char, 1, true);
 
-      }
-    },
-    IsClicked(word, char) {
-      return(this.Challenge2[word].UserAnswerList.includes(char));
-    },
-
-    challengeCompleted: function() {
-      var PostString = '';
-      var newPropertyID = '';
-
-      alert('c com h5')
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        this.EvaluateAnswer(i);
-
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].UserAnswerList.join(";");
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        newPropertyID = this.lAnswerExplanation;
-        PostString += `"'` + newPropertyID + `'": "AnswerExplanation" }`;
-
-
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        console.log(PostString);
-        PostString = '';
-      }
-      if(this.Challenge2[0].feedbackType === 2) {
-              this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
-    },
-    EvaluateAnswer: function(index)  {
-      let answerIsCorrect = true;
-
-      for(var i = 0; i < this.Challenge2[index].UserAnswerList.length;i++)  {
-        if(this.Challenge2[index].answerlist.indexOf(this.Challenge2[index].word[this.Challenge2[index].UserAnswerList[i]]) < 0)  {
-          answerIsCorrect = false;
-        }
-      }
-      if(answerIsCorrect) {
-        this.Challenge2[index].answerCorrect = true;
-        this.TotalCorrect += 1;
-      }
-    }
   },
 
 }

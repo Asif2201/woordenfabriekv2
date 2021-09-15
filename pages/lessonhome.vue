@@ -6,10 +6,8 @@
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else class="ml-96 content-center">
     <br><br><br>
-
-    <img :src="require(`../assets/radb_img_Lev${lessons.vwUsers[IndexOfCurrent].studentlevelid}.png`)"  width="557" height="349" >
-
-    <div v-if="lessons.vwUsers[IndexOfCurrent].completionprogress !== 100" class=" justify-items-center relative h-8 m-8 w-1/2 overflow-hidden rounded text-black text-center font-bold align-middle">
+    <img :src="require(`../assets/radb_img_Lev${levels.vwUsers[IndexOfCurrent].studentlevelid}.png`)"  width="557" height="349" >
+    <div v-if="levels.vwUsers[IndexOfCurrent].completionprogress !== 100" class=" justify-items-center relative h-8 m-8 w-1/2 overflow-hidden rounded text-black text-center font-bold align-middle">
       <nuxt-link :to="{ path: `/levelhome?studentlessonID=` + this.$route.query.studentlessonID }" >
                 Continue with Lesson
       </nuxt-link>
@@ -29,24 +27,26 @@ export default {
 
   data() {
     return {
-      lessons: [],
+      levels: [],
       IndexOfCurrent: 0,
       levelProgressKey: 0,
     }
   },
   watch: {
-    lessons() {
-      for(var i = 0; i < this.lessons.vwUsers.length; i++) {
-        if(this.lessons.vwUsers[i].iscurrent === 'Yes') {
+    levels() {
+      for(var i = 0; i < this.levels.vwUsers.length; i++) {
+        if(this.levels.vwUsers[i].iscurrent === 'Yes') {
           this.IndexOfCurrent = i;
         }
       }
     }
   },
   async fetch() {
-    this.lessons = await fetch(
-      `${this.$config.baseURL}/userLessons?lessonID=${this.$route.query.studentlessonID}`
-    ).then(res => res.json())
+
+    this.levels = await fetch(
+      `${this.$config.baseURL}/userLevels?lessonID=${this.$route.query.studentlessonID}`
+    ).then(res => res.json());
+    this.$store.commit({ type:'storeLevels', levels: this.levels.vwUsers, slid: this.levels.vwUsers[0].studentlessonID });
   },
   methods:  {
     dateTime(value) {

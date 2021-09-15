@@ -1,5 +1,8 @@
 <template>
 <div>
+  <Mainheader />
+  <p v-if="$fetchState.pending">Fetching Lessons...</p>
+  <p v-else-if="$fetchState.error">An error occurred :(</p>
   <div class="flex align-center justify-center w-full">
       <img class="object-contain align-middle ..." src="~/assets/Woordenfabriektext.png" width=600 height=80 >
   </div>
@@ -64,14 +67,29 @@
     </table>
   </div>
   <br><br>
-  <button @click="ResetData" style="color:red"> Reset Data (all answer data will be deleted)</button>
+
+  <div class="flex align-center justify-center w-full">
+    <button @click="ResetData" style="color:red"> &#9888; X  &#9888; </button>
+    <button @click="LoadData" style="color:green">  &#9432; Load Lesson data &#9432; </button>
+
+  </div>
 </div>
 </template>
 
 <script>
 
 export default {
-  layout: 'mainHome',
+  data() {
+    return {
+      tempLessons: []
+    }
+  },
+  async fetch() {
+    const urlAPI = `${this.$config.baseURL}/userLessons?studentEmail=jaap@appalot.com`;
+    this.tempLessons = await fetch(
+      urlAPI
+    ).then(res => res.json())
+  },
   methods:  {
     ResetData() {
       this.$axios.post('/ResetData', {headers: {
@@ -81,9 +99,14 @@ export default {
       }, (error) => {
         console.log(error);
       });
+    },
+    LoadData()  {
+      this.$fetch();
+      this.$store.commit('initialiseLessons', this.tempLessons);
+
     }
   }
-};
+}
 
 </script>
 

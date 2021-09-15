@@ -1,5 +1,5 @@
 <template>
-  <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
+  <div class="align-top" v-if="$fetchState.pending">Fetching challenges...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
       <div class="relative ml-20 mt-10">

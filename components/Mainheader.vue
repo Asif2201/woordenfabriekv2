@@ -1,7 +1,5 @@
 <template>
-  <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
-  <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
-  <div v-else id="MainHeader" class="w-full height=64px">
+  <div id="MainHeader" class="MainHeaderPanel">
     <nav class="main-nav">
       <Burger>
       </Burger>
@@ -15,7 +13,7 @@
             </nuxt-link>
           </td>
         </tr>
-        <template v-for="lesson in lessons.vwUsers">
+        <template v-for="lesson in UserLessons">
           <tr class="sidebar-table-row">
             <td class="sidebar-table-column">
               <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.studentlessonid }" >
@@ -39,11 +37,7 @@ export default {
       lessons: []
     }
   },
-  async fetch() {
-      this.lessons = await fetch(
-        `${this.$config.baseURL}/userLessons?studentEmail=${this.$store.state.userEmail}`
-      ).then(res => res.json())
-    },
+
   components: {
     Burger,
     Sidebar
@@ -51,6 +45,9 @@ export default {
   computed: {
     isBurgerActive() {
       return this.$store.state.Menu.isNavOpen;
+    },
+    UserLessons() {
+      return this.$store.state.Lessons;
     }
   },
   methods: {
@@ -62,6 +59,10 @@ export default {
 }
 </script>
 <style scoped>
+.MainHeaderPanel  {
+  width: 1920px;
+  height: 64px;
+}
 .main-nav {
   display: flex;
   justify-content: space-between;
@@ -108,5 +109,11 @@ ul.sidebar-panel-nav > li > a {
 ul.sidebar-panel-nav > li > a:hover {
   background-color: #7B7B7B;
   color: white;
+}
+.RadboudBanner  {
+  width: 1000px;
+  background-color: lightgrey;
+
+
 }
  </style>

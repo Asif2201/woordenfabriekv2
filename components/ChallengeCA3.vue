@@ -2,7 +2,7 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20 mt-10">
+      <div class="relative ml-10 mt-5">
         <table class="table-fixed w-full align-center">
           <thead>
             <tr>
@@ -10,18 +10,18 @@
                 &nbsp;
               </th>
               <th class="w=1/5">
-                <span class="font-lato text-lg font-bold">
+                <span class="questionwordsClicked">
                   Morfeem
                 </span>
               </th>
               <th class="w=1/5">
-                <span class="font-lato text-lg font-bold">
+                <span class="questionwordsClicked">
                   Non-Morfeem
                 </span>
               </th>
               <th class="w=1/5">
                 &nbsp;
-                <span class="font-lato text-lg font-bold" v-show="Challenge2[0].showMultiMorfeem === 'True'">
+                <span class="questionwordsClicked" v-show="Challenge2[0].showMultiMorfeem === 'True'">
                   Multi-Morfeem
                 </span>
               </th>
@@ -37,15 +37,15 @@
                   </td>
                   <td>
                     <input type="radio" :name="'wordtype_' + ObjIndex" value="Morfeem" v-model="Object.UserAnswer">
-                    <label for="one"> Selecteer categorie </label>
+                    <label for="one" class="questionwordsClicked"> Selecteer categorie </label>
                   </td>
                   <td>
                     <input type="radio" :name="'wordtype_' + ObjIndex" value="Non-Morfeem" v-model="Object.UserAnswer">
-                    <label for="one"> Selecteer categorie </label>
+                    <label for="one" class="questionwordsClicked"> Selecteer categorie </label>
                   </td>
                   <td v-show=" Challenge2[0].showMultiMorfeem ===  'True' ">
                     <input type="radio" :name="'wordtype_' + ObjIndex" value="Multi-Morfeem" v-model="Object.UserAnswer">
-                    <label for="one"> Selecteer categorie </label>
+                    <label for="one" class="questionwordsClicked"> Selecteer categorie </label>
                   </td>
               </tr>
             </template>
@@ -183,15 +183,15 @@ export default {
 <style scoped>
   .questionwords {
     color: grey;
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    font-family: lato;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }
   .questionwordsClicked {
-    color: green;
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    color: darkgrey;
+    font-family: lato;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }

@@ -173,7 +173,10 @@ export default {
         PostString += `"'` + newPropertyID + `'": "LessonID",`;
         newPropertyID = this.Level;
         PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].UserAnswer1;
+        newPropertyID = this.Challenge2[i].UserAnswer1 + '-';
+        if(this.Challenge2[i].UserAnswer2)  {
+          newPropertyID += this.Challenge2[i].UserAnswer2;
+        }
         PostString += `"'` + newPropertyID + `'": "userAnswer",`;
         newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
@@ -212,9 +215,9 @@ export default {
 </script>
 <style scoped>
   .questionwords {
-    color: var(--grey);
+    color: black;
     font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }

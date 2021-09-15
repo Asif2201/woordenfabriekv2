@@ -1,8 +1,8 @@
 <template>
   <div class="relative">
-    <select class="form-control text-blue-600 text-md" v-model="selectedAnswer" >
+    <select class="dropdowntext" v-model="selectedAnswer" >
       <option  value=""  selected disabled>Kies</option>
-      <option v-for="answer in data" :value="answer.id" :Key="answer.id"> {{  answer.name.substring(0,30) }} </option>
+      <option v-for="answer in data" :value="answer.id" :Key="answer.id">{{  answer.name.substring(0,30) }}</option>
     </select>
     <br><br>
 </div>
@@ -25,4 +25,13 @@ export default ({
   }
 })
 </script>
+<style scoped>
+  .dropdowntext {
+    color: grey;
+    font-family: Lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: bold;
+  }
+</style>
 
