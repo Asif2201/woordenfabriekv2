@@ -44,10 +44,10 @@
                 <td v-show="ShowResult" :key="ResultKey">
                   <div class="object-scale-down">
                     <p v-show="Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/correct.jpeg" />
+                      <img src="~/assets/correct.png" width="40" height="40" />
                     </p>
                     <p v-show="!Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/incorrect.jpeg" />
+                      <img src="~/assets/incorrect.png" width="40" height="40" />
                     </p>
                   </div>
                 </td>

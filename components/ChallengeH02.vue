@@ -182,7 +182,6 @@ export default {
       else {
         this.Challenge2[word].UserAnswerList.push(char);
         this.forceRenderVariable[word].splice(char, 1, true);
-
       }
     },
     IsClicked(word, char) {

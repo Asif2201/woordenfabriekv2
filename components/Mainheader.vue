@@ -8,7 +8,7 @@
       <table class="sidebar-table">
         <tr class="sidebar-table-row">
           <td class="sidebar-table-column">
-            <nuxt-link v-on:click.native="closeSidebarPanel()" to="" >
+            <nuxt-link v-on:click.native="closeSidebarPanel()" to="/" >
                 Home
             </nuxt-link>
           </td>

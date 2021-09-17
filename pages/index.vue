@@ -70,6 +70,7 @@
 
   <div class="flex align-center justify-center w-full">
     <button @click="ResetData" style="color:red"> &#9888; X  &#9888; </button>
+    <br>
     <button @click="LoadData" style="color:green">  &#9432; Load Lesson data &#9432; </button>
 
   </div>
@@ -99,10 +100,12 @@ export default {
       }, (error) => {
         console.log(error);
       });
+      alert('Reset complete')
     },
     LoadData()  {
       this.$fetch();
       this.$store.commit('initialiseLessons', this.tempLessons);
+      alert('Data load complete')
 
     }
   }

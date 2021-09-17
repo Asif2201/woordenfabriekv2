@@ -7,21 +7,16 @@
     <div v-else class="ChallengePanel">
     <LevelHeader :key="RenderLevel" :LevelID="UserLevels[$store.state.Lessons[$store.state.Lessons.currentDisplayLesson].currentDisplayLevel].Levelid" :LevelTitle="UserLevels[$store.state.Lessons[$store.state.Lessons.currentDisplayLesson].currentDisplayLevel].leveltitle" />
     <Level  :key="RenderLevel" @LevelComplete()="showModal()" />
-     <modalChallenge
-      :key=isModalVisible
-      v-show="isModalVisible"
-      @close="closeModal"
-    >
+     <modalLevelEnd :Top="'300px'" :Left="'600px'" :width="'400px'" :height="'300px'" :key=isModalVisible v-show="isModalVisible" @close="closeModal">
     <template v-slot:header>
       Image comes here
     </template>
     <template v-slot:body>
-      Level Af
+      Dit Level is Af
     </template>
     <template v-slot:footer>
-      Close to move to next level`
     </template>
-     </modalChallenge>
+     </modalLevelEnd>
     <LevelFooter :key="RenderFooter"  @ScrollClick="PrevNextChallenge($event)" />
     </div>
   </div>

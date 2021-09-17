@@ -90,10 +90,28 @@
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'LE3'">
         <ChallengeLE3 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
       </div>
+      <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'I01'">
+        <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
+          <ChallengeI01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
+        <template v-else>
+          <ChallengeI01 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
+      </div>
       <br>
       <div class="footerbox">
       <button class="ml-10 hover:bg-gray-500 bg-gray-300 px-4 py-4 font-bold text-black" v-on:click="ToggleshowHelpText">  ?  </button>
-      <p class="text-blue-500 text-xs font-lato ml-8" v-show="helptextvisible" > {{ Challenges1[ChallengeIndex].HelpText }} </p>
+      <modalChallenge :Top="'700px'" :Left="'100px'" :width="'800px'" :key=helptextvisible v-show="helptextvisible" @close="closeModal">
+
+        <template v-slot:header>
+            Help!
+        </template>
+        <template v-slot:body>
+          {{ Challenges1[ChallengeIndex].HelpText }}
+        </template>
+        <template v-slot:footer>
+        </template>
+      </modalChallenge>
       <div v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'" :key="isModalVisible" class="ChallengeResult">
         <template v-if="Challenges1[ChallengeIndex].feedbackType === 2">
           <ChallengeFooter :Correct="Challenges1[ChallengeIndex].TotalCorrect" :Total="Challenges1[ChallengeIndex].TotalQuestions" :Missed=0 />
@@ -138,6 +156,7 @@ export default {
     Challenges1() {
       const x = this.$store.state.Lessons.currentDisplayLesson;
       const y = this.$store.state.Lessons[x].currentDisplayLevel;
+      console.log(this.$store.state.Lessons[x].Levels[y].Challenges);
       return this.$store.state.Lessons[x].Levels[y].Challenges;
     },
     ChallengeIndex()  {
@@ -148,8 +167,8 @@ export default {
   },
 
   methods:  {
-    showModal() {
-      this.isModalVisible = true;
+    closeModal() {
+      this.helptextvisible = false;
     },
 
     ToggleshowHelpText()  {

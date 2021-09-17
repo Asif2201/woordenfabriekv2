@@ -2,8 +2,8 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20 mt-10">
-        <span class="font-Lato text-pink-500 text-xl text-bold">
+      <div class="relative ml-20 mt-5">
+        <span class="LE3Heading">
           Eerdere evaluaties
         </span>
         <br><br><br><br>
@@ -26,14 +26,7 @@
                     <LEAnswers :data="AnswerOptions" :SelectedButton="Object.studentAnswer" />
                 </td>
             </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
+
           </template>
         </tbody>
       </table>
@@ -65,33 +58,11 @@
               </tr>
               <tr>
                 <td>
-                  &nbsp;
-                </td>
-                <td>
-                  &nbsp;
-                </td>
-                <td>
-                  &nbsp;
-                </td>
-              </tr>
-              <tr>
-                <td>
                   <p style="explainbox"> {{ Object.studentAnswer }} </p>
                 </td>
                 <td>
                   &nbsp;
                 </td>`
-                <td>
-                  &nbsp;
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  &nbsp;
-                </td>
-                <td>
-                  &nbsp;
-                </td>
                 <td>
                   &nbsp;
                 </td>
@@ -102,8 +73,8 @@
         </tbody>
         </table>
 
-<br>
-        <span class="font-Lato text-pink-500 text-xl text-bold">
+        <br>
+        <span class="LE3Heading">
           Nieuwe conclusie
         </span>
         <table class="table-auto w-full align-center">
@@ -223,7 +194,6 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-    console.log(ChallengeID);
     this.AnswerOptions.push({id:0, name:'Waar'});
     this.AnswerOptions.push({id:1, name:'Deel waar'});
     this.AnswerOptions.push({id:2, name:'Niet waar'});
@@ -321,17 +291,22 @@ export default {
   .questionwords {
     color: black;
     font-family: var(--font-family-lato);
-    font-size: 18px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
     white-space: wrap;
-    line-height: 200%;
+    line-height: 100%;
   }
-
+  .LE3Heading {
+    color:pink;
+    font-family: lato;
+    font-size: 18px;
+    font-weight: bold;
+  }
   .paragraphheading {
     color: black;
     font-family: var(--font-family-lato);
-    font-size: 22px;
+    font-size: 18px;
     font-style: normal;
     font-weight: bold;
 
@@ -340,5 +315,9 @@ export default {
     border:solid 1px orange;
     resize: none;
     float: right;
+    font-family: var(--font-family-lato);
+    font-size: 14px;
+    font-style: normal;
+
   }
 </style>

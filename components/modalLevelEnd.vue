@@ -2,15 +2,7 @@
   <div class="modal-backdrop">
     <div id="a" :style="cssProps">
       <header class="modal-header">
-        <slot name="header">
-        </slot>
-        <button
-          type="button"
-          class="btn-close"
-          @click="close"
-        >
-          x
-        </button>
+        <img src="~/assets/radb_img_level-end@4x.png" width="150" height="200" />
       </header>
       <section class="modal-body">
         <slot name="body">
@@ -20,6 +12,13 @@
         <slot name="footer">
         </slot>
       </footer>
+      <button
+          type="button"
+          class="btn-green"
+          @click="close"
+        >
+        Volgende Level
+      </button>
     </div>
   </div>
 </template>
@@ -80,9 +79,11 @@
 
   .modal-header {
     position: relative;
-    border-bottom: 1px solid #eeeeee;
     color: #4AAE9B;
     justify-content: space-between;
+    text-align: center;
+    left: 100px;
+    border:none;
   }
 
   .modal-footer {
@@ -94,17 +95,17 @@
     position: relative;
     padding: 20px 10px;
     font-family: lato;
-    font-size: 14px;
-    color: black;
-    align-self: center;
-    vertical-align: middle;
+    font-size: 24px;
+    color: darksalmon;
+    font-weight: bold;
+    text-align: center;
+    vertical-align:middle;
   }
 
   .btn-close {
     position: absolute;
     top: 0;
     right: 0;
-    border: none;
     font-size: 20px;
     padding: 10px;
     cursor: pointer;
@@ -113,5 +114,19 @@
     background: transparent;
   }
 
+  .btn-green {
+    color: white;
+    background: blue;
+    border: 1px solid blue;
+    border-radius: 2px;
+    font-family: lato;
+    font-size: 16px;
+    text-align: center;
+    position: absolute;
+    top: 250px;
+    left: 130px;
+    padding: 10px;
+    border-radius: 4px;
 
+  }
 </style>
