@@ -13,11 +13,22 @@
             </nuxt-link>
           </td>
         </tr>
-        <template v-for="lesson in UserLessons">
+        <template v-if="userEmail !== ''">
+          <template v-for="lesson in UserLessons">
+            <tr class="sidebar-table-row">
+              <td class="sidebar-table-column">
+                <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.studentlessonid }" >
+                  Les {{ lesson.studentlessonid}}
+                </nuxt-link>
+              </td>
+            </tr>
+          </template>
+        </template>
+        <template v-else>
           <tr class="sidebar-table-row">
             <td class="sidebar-table-column">
-              <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.studentlessonid }" >
-                Les {{ lesson.studentlessonid}}
+              <nuxt-link v-on:click.native="closeSidebarPanel()" to="login" >
+                  Login
               </nuxt-link>
             </td>
           </tr>
@@ -48,6 +59,10 @@ export default {
     },
     UserLessons() {
       return this.$store.state.Lessons;
+    },
+    userEmail() {
+      console.log(this.$store.state.userEmail);
+      return this.$store.state.userEmail;
     }
   },
   methods: {

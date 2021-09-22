@@ -1,9 +1,11 @@
 <template>
   <div class="flex h-screen">
+    <p v-if="$fetchState.pending">Fetching Lessons...</p>
+    <p v-else-if="$fetchState.error">An error occurred :(</p>
     <div class="mt-10 px-12 sm:px-24 md:px-48 lg:px-12 lg:mt-16 xl:px-24 xl:max-w-2xl">
       <h2 class="text-center text-4xl text-indigo-900 font-display font-semibold lg:text-left xl:text-5xl xl:text-bold">Log in</h2>
       <div class="mt-12">
-        <form @submit.prevent="login">
+        <form @submit.prevent="Login">
           <div>
               <div class="text-sm font-bold text-gray-700 tracking-wide">Email Address</div>
               <input v-model = "username" name="username" class="w-full text-lg py-2 border-b border-gray-300 focus:outline-none focus:border-indigo-500" placeholder="jaap@appalot.com">
@@ -49,27 +51,37 @@ export default {
     return {
       username: '',
       password: '',
-      error: null
+      error: null,
+      tempLessons: []
+
     }
   },
+  computed: {
+    userEmail() {
+      return this.$store.state.userEmail;
+    }
+  },
+  async fetch() {
+    if(this.userEmail !== '') {
+      const urlAPI = `${this.$config.baseURL}/userLessons?studentEmail=${this.userEmail}`;
+      console.log(urlAPI);
+      this.tempLessons = await fetch(
+        urlAPI
+      ).then(res => res.json())
+      this.$store.commit('initialiseLessons', this.tempLessons);
 
+    }
+  },
   methods: {
-    async login() {
-      this.error = null
-      try {
-        await this.$auth.loginWith('local', {
-          data: {
-            username: this.username,
-            password: this.password
-          }
-        }).then(res =>  {
-          const user = res.data.username
-          this.$auth.setUser(user)
-          this.$auth.$storage.setUniversal('user', user, true)
-          this.$router.push('/')
-        })
-      } catch (e) {
-        this.error = e.response.data.message
+    Login() {
+      if(this.$store.getters.isValidEmail(this.username)) {
+        this.$store.commit('setUserEmail', this.username);
+        this.$fetch();
+        console.log(this.tempLessons);
+        this.$router.push("/");
+      }
+      else{
+        alert('Invalid User')
       }
     }
   }

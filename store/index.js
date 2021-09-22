@@ -1,10 +1,20 @@
 export const state = () => ({
-  userEmail: 'jaap@appalot.com',
+  userEmail: '',
   Lessons: [],
   currentProgressLesson: -1,
+  validEmails: ['jaap@appalot.com', 'veronique.verhagen@fontys.nl', 'e.m.b.mulder@rug.nl', 'j.vandergraaf@pwo.ru.nl']
 })
-
+export const getters =  {
+  isValidEmail: (state) => (loginEmail) => {
+    return state.validEmails.includes(loginEmail);
+  }
+}
 export const mutations = {
+  setUserEmail(state, userEmail) {
+    if(userEmail) {
+      state.userEmail = userEmail;
+    }
+  },
   initialiseLessons(state, newLessons) {
     state.Lessons = [];
     for(var i = 0; i < newLessons.vwUsers.length;i++) {

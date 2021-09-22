@@ -18,19 +18,19 @@
                     <div  id="completedstars" v-if="level.completionprogress===1" class="w-full px-1">
                       <StarRating :value="`${level.earnedstars}`"></StarRating>
                       <button v-if="CurrentLesson.currentDisplayLevel === index" class="CurrentButtonText" @click="GotoLevel(level.Levelid)">
-                        {{ ` Level ` + level.studentlevelid }}
+                        {{ ` Level ` + index  }}
                       </button>
                       <button v-else class="NotCurrentButtonText" @click="GotoLevel(level.Levelid)">
-                        {{ ` Level ` + level.studentlevelid  }}
+                        {{ ` Level ` + index  }}
                       </button>
                     </div>
                     <div v-else id="nostars" class="w-full px-1">
                       <StarRating value="0"></StarRating>
                       <button v-if="CurrentLesson.currentDisplayLevel === index" class="CurrentButtonText" @click="GotoLevel(level.Levelid)">
-                        {{ ` Level ` + level.studentlevelid }}
+                        {{ ` Level ` + index  }}
                       </button>
                       <button v-else class="NotCurrentButtonText" @click="GotoLevel(level.Levelid)">
-                        {{ ` Level ` + level.studentlevelid }}
+                        {{ ` Level ` + index }}
                       </button>
                     </div>
                   </div>

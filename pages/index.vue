@@ -1,8 +1,6 @@
 <template>
 <div>
   <Mainheader />
-  <p v-if="$fetchState.pending">Fetching Lessons...</p>
-  <p v-else-if="$fetchState.error">An error occurred :(</p>
   <div class="flex align-center justify-center w-full">
       <img class="object-contain align-middle ..." src="~/assets/Woordenfabriektext.png" width=600 height=80 >
   </div>
@@ -68,11 +66,8 @@
   </div>
   <br><br>
 
-  <div class="flex align-center justify-center w-full">
-    <button @click="ResetData" style="color:red"> &#9888; X  &#9888; </button>
-    <br>
-    <button @click="LoadData" style="color:green">  &#9432; Load Lesson data &#9432; </button>
-
+  <div v-if="userEmail !== ''" class="flex align-center justify-center w-full">
+    <button @click="ResetData" style="color:red"> || &#9888; X  &#9888; ||  </button>
   </div>
 </div>
 </template>
@@ -85,15 +80,20 @@ export default {
       tempLessons: []
     }
   },
-  async fetch() {
-    const urlAPI = `${this.$config.baseURL}/userLessons?studentEmail=jaap@appalot.com`;
-    this.tempLessons = await fetch(
-      urlAPI
-    ).then(res => res.json())
+  computed: {
+    userEmail() {
+      console.log(this.$store.state.userEmail);
+      return this.$store.state.userEmail;
+    }
   },
   methods:  {
     ResetData() {
-      this.$axios.post('/ResetData', {headers: {
+      var PostString = '{ '
+      var newPropertyID = this.userEmail;
+      PostString += `"'` + newPropertyID + `'"  : "StudentEmail",`;
+      PostString += `"1" : "LessonID" }`;
+      console.log(PostString);
+      this.$axios.post('/ResetData', PostString, {headers: {
         'content-type': 'application/json',},})
       .then((response) => {
         console.log('Ok');
@@ -102,12 +102,6 @@ export default {
       });
       alert('Reset complete')
     },
-    LoadData()  {
-      this.$fetch();
-      this.$store.commit('initialiseLessons', this.tempLessons);
-      alert('Data load complete')
-
-    }
   }
 }
 

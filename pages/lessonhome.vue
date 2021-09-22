@@ -6,7 +6,7 @@
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else class="ml-96 content-center">
     <br><br><br>
-    <img :src="require(`../assets/radb_img_Lev${levels.vwUsers[IndexOfCurrent].studentlevelid}.png`)"  width="557" height="349" >
+    <img :src="require(`../assets/radb_img_Lev${levels.vwUsers[IndexOfCurrent].Levelid}.png`)"  width="557" height="349" >
     <div v-if="levels.vwUsers[IndexOfCurrent].completionprogress !== 100" class=" justify-items-center relative h-8 m-8 w-1/2 overflow-hidden rounded text-black text-center font-bold align-middle">
       <nuxt-link :to="{ path: `/levelhome?studentlessonID=` + this.$route.query.studentlessonID }" >
                 Continue with Lesson
