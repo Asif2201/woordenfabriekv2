@@ -1,12 +1,12 @@
 <template>
   <div>
   <Mainheader />
-  <LessonHeader/>
+  <LessonHeader key="$route.query.index" />
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else class="ml-96 content-center">
     <br><br><br>
-    <img :src="require(`../assets/radb_img_Lev${levels.vwUsers[IndexOfCurrent].Levelid}.png`)"  width="557" height="349" >
+    <img :src="require(`../assets/radb_img_Lev1.${WhichImage()}.png`)"  width="557" height="349" >
     <div v-if="levels.vwUsers[IndexOfCurrent].completionprogress !== 100" class=" justify-items-center relative h-8 m-8 w-1/2 overflow-hidden rounded text-black text-center font-bold align-middle">
       <nuxt-link :to="{ path: `/levelhome?studentlessonID=` + this.$route.query.studentlessonID }" >
                 Continue with Lesson
@@ -17,23 +17,21 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import moment from 'moment';
 
 export default {
-  computed: {
-    ...mapGetters(['isAuthenticated', 'loggedInUser'])
-  },
 
   data() {
     return {
       levels: [],
       IndexOfCurrent: 0,
       levelProgressKey: 0,
+      ImageIndex: 1
     }
   },
   watch: {
     levels() {
+      this.IndexOfCurrent = 0;
       for(var i = 0; i < this.levels.vwUsers.length; i++) {
         if(this.levels.vwUsers[i].iscurrent === 'Yes') {
           this.IndexOfCurrent = i;
@@ -42,11 +40,12 @@ export default {
     }
   },
   async fetch() {
-
-    this.levels = await fetch(
-      `${this.$config.baseURL}/userLevels?lessonID=${this.$route.query.studentlessonID}`
-    ).then(res => res.json());
-    this.$store.commit({ type:'storeLevels', levels: this.levels.vwUsers, slid: this.levels.vwUsers[0].studentlessonID });
+    this.$store.commit('setCurrentDisplayLesson', this.$route.query.index);
+    const URLforAPI = `${this.$config.baseURL}/userLevels?studentlessonid=${this.$route.query.studentlessonID}`;
+    console.log(URLforAPI);
+    const response = await fetch(URLforAPI);
+    this.levels = await response.json();
+    this.$store.commit({ type:'storeLevels', levels: this.levels.vwUsers, slid: this.$route.query.studentlessonID });
   },
   methods:  {
     dateTime(value) {
@@ -57,6 +56,13 @@ export default {
         return value;
       }
     },
+    WhichImage()  {
+      var X = Math.floor(Math.random() * 5) ;
+      if(X===0) {
+        X++;
+      }
+      return X
+    }
   }
 };
 

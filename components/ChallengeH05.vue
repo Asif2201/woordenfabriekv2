@@ -45,10 +45,11 @@
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
-              <td>&nbsp;</td>
               <td>
                 <button  @click="challengeCompleted()" class="klaarButton" > Klaar </button>
               </td>
+              <td>&nbsp;</td>
+
             </tr>
           </tbody>
         </table>
@@ -90,7 +91,7 @@ export default {
     const ChallengeID = this._props.Challenge;
 
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsH05?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=H05&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
   },
   methods:  {
@@ -105,6 +106,7 @@ export default {
     },
     splitWord(word)  {
       if (word) {
+        word = word.replace('*', '');
         return word.split(';');
       } else  {
         return '';
@@ -115,7 +117,7 @@ export default {
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
           QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].wordlist);
-          QuestionObjectList[i].UserAnswerList = [];
+          QuestionObjectList[i].UserAnswerList = '';
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
       }
@@ -123,43 +125,36 @@ export default {
       return QuestionObjectList;
     },
     morphemeClick: function(word, char, event) {
-      if(this.IsClicked(word,char))  {
-          this.Challenge2[word].UserAnswerList = this.Challenge2[word].UserAnswerList.splice(char, 1);
-          this.forceRenderVariable[word].splice(char, 1, false);
-      }
-      else {
-        this.Challenge2[word].UserAnswerList.push(char);
-        this.forceRenderVariable[word].splice(char, 1, true);
+      this.forceRenderVariable[word].splice(this.Challenge2[word].UserAnswerList, 1, false);
+      this.Challenge2[word].UserAnswerList = char;
+      this.forceRenderVariable[word].splice(this.Challenge2[word].UserAnswerList, 1, true);
 
-      }
     },
     IsClicked(word, char) {
-      return(this.Challenge2[word].UserAnswerList.includes(char));
+      return(this.Challenge2[word].UserAnswerList= char);
     },
 
     challengeCompleted: function() {
       var PostString = '';
-      var newPropertyID = '';
+      var PostObject = {};
 
       for (var i = 0; i < this.Challenge2.length; i++) {
         this.EvaluateAnswer(i);
 
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].UserAnswerList.join(";");
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        newPropertyID = this.lAnswerExplanation;
-        PostString += `"'` + newPropertyID + `'": "AnswerExplanation" }`;
+        PostObject = {};
+
+        PostObject.id = this.Challenge2[i].id;
+        PostObject.studentID = 'S1';
+        PostObject.LessonID = this.LessonID;
+        PostObject.LevelID = this.Level;
+        PostObject.userAnswer = this.Challenge2[i].UserAnswerList;
+        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+        PostObject.feedbackType = this.Challenge2[i].feedbackType;
+        PostObject.Explanation = this.lAnswerExplanation;
+
+        PostString = JSON.stringify(PostObject);
+
+        console.log(PostString);
 
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
@@ -181,14 +176,14 @@ export default {
       this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
-      let answerIsCorrect = true;
-
-      for(var i = 0; i < this.Challenge2[index].UserAnswerList.length;i++)  {
-        if(this.Challenge2[index].answerlist.indexOf(this.Challenge2[index].word[this.Challenge2[index].UserAnswerList[i]]) < 0)  {
-          answerIsCorrect = false;
+      var correctanswer = '';
+      const x = this.Challenge2[index].wordlist.split(';');
+      for(var i = 0;i < x.length; i++)  {
+        if(x[i].indexOf('*') > 0) {
+          correctanswer = x[i];
         }
       }
-      if(answerIsCorrect) {
+      if(this.Challenge2[index].UserAnswerList = correctanswer) {
         this.Challenge2[index].answerCorrect = true;
         this.TotalCorrect += 1;
       }

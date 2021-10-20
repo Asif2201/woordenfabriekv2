@@ -83,7 +83,7 @@
                 </td>
                 <td class="questionwords">
                   <br>
-                  <p> {{ lAnswerExplanation }} </p>
+                  <p> {{ Object.AnswerExplanation }} </p>
                 </td>
                 <td>
                   &nbsp;
@@ -137,7 +137,7 @@ export default {
     const ChallengeID = this._props.Challenge;
 
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsH02?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=H02&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
   },
   methods:  {

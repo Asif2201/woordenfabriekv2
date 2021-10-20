@@ -14,7 +14,9 @@
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
-                  &nbsp;
+                  <span class="voorbeeldzin">
+                    {{ Object.voorbeeldzin }}
+                  </span>
                 </td>
                 <td>
                   &nbsp;
@@ -92,7 +94,7 @@ export default {
     const ChallengeID = this._props.Challenge;
     console.log('ChallengeID: I01' + ChallengeID)
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsI01?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=I01&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
   },
   methods:  {
@@ -107,6 +109,8 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
+          console.log(QuestionObjectList[i]);
+
           QuestionObjectList[i].paragraphwords = QuestionObjectList[i].Question.split('_');
           QuestionObjectList[i].UserAnswerList = QuestionObjectList[i].studentAnswer.split(';');
       }
@@ -125,6 +129,15 @@ export default {
     color: grey;
     font-family: lato;
     font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    white-space: wrap;
+    line-height: 200%;
+  }
+  .voorbeeldzin {
+    color: lightgray;
+    font-family: lato;
+    font-size: 12px;
     font-style: normal;
     font-weight: 700;
     white-space: wrap;

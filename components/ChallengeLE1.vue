@@ -3,7 +3,7 @@
   <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
   <div v-else>
       <div class="relative ml-20 mt-10">
-        <table class="table-fixed w-full align-center ">
+        <table :key="tablechanged" class="table-fixed w-full align-center ">
           <thead>
             <tr>
               <th class="w-3/5 ..."></th>
@@ -19,7 +19,7 @@
                   </span>`
                 </td>
                 <td>
-                      <LEButtons :data="AnswerOptions" :SelectedButton="Challenge2.UserAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
+                      <LEButtons :data="AnswerOptions" :SelectedButton="Object.UserAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
 
                 </td>
             </tr>
@@ -41,10 +41,11 @@
               <td> &nbsp; </td>
             </tr>
             <tr>
-              <td> &nbsp; </td>
               <td>
                 <KlaarButton @challengeCompleted="challengeCompleted()" />
               </td>
+              <td> &nbsp; </td>
+
             </tr>
         </tbody>
       </table>
@@ -63,6 +64,7 @@ export default {
 
   data() {
     return {
+      tablechanged:0,
       Challenge1: [],
       Challenge2: [],
       knipWords: [],
@@ -81,12 +83,11 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-    console.log(ChallengeID);
     this.AnswerOptions.push({id:0, name:'Waar'});
     this.AnswerOptions.push({id:1, name:'Deel waar'});
     this.AnswerOptions.push({id:2, name:'Niet waar'});
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsLE1?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=LE1&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
 
   },
@@ -107,29 +108,31 @@ export default {
     },
     answerSelected(Index, answer) {
       this.Challenge2[Index].UserAnswer = answer;
+      this.tablechanged++;
     },
 
     challengeCompleted: function() {
       var PostString = '';
       var newPropertyID = '';
+      var PostObject = {};
       for (var i = 0; i < this.Challenge2.length; i++) {
         this.EvaluateAnswer(i);
+        PostObject = {};
 
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
+        PostObject.id = this.Challenge2[i].id;
+        PostObject.studentID = 'S1';
+        PostObject.LessonID = this.LessonID;
+        PostObject.LevelID = this.Level;
+
         newPropertyID = this.Challenge2[i].UserAnswer;
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect",`;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        PostString += `"'No Explanation requested'": "Explanation" }`;
+        PostObject.userAnswer = newPropertyID;
+        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+        PostObject.feedbackType = this.Challenge2[i].feedbackType;
+        PostObject.Explanation = 'No Explanation requested';
+
+        PostString = JSON.stringify(PostObject);
+
+        console.log(PostString);
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -168,10 +171,11 @@ export default {
 </script>
 <style scoped>
   .questionwords {
-    text-align: left;
-    font: normal normal bold 24px/30px Lato;
-    letter-spacing: 0px;
-    color: #000000DE;
+    color: var(--grey);
+    font-family: lato;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
   }
   .center {
     margin: auto;

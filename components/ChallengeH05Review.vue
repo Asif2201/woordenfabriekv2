@@ -24,16 +24,14 @@
                     </div>
                   </td>
                 </template>
-                <td v-show="ShowResult" :key="ResultKey">
-                  <div class="object-scale-down">
-                    <p v-show="Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/correct.png" />
-                    </p>
-                    <p v-show="!Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/incorrect.png" />
-                    </p>
-                  </div>
-                </td>
+                <div class="object-scale-down">
+                  <p v-show="Object.answerCorrect" class="text-blue">
+                    <img src="~/assets/correct.png" />
+                  </p>
+                  <p v-show="!Object.answerCorrect" class="text-blue">
+                    <img src="~/assets/incorrect.png" />
+                  </p>
+                </div>
             </tr>
           </template>
             <tr>
@@ -86,13 +84,14 @@ export default {
     const ChallengeID = this._props.Challenge;
 
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsH05?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=H05&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
   },
   methods:  {
 
     splitWord(word)  {
       if (word) {
+        word = word.replace('*', '');
         return word.split(';');
       } else  {
         return '';
@@ -103,10 +102,10 @@ export default {
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
         QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
         QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].wordlist);
-        QuestionObjectList[i].UserAnswerList = QuestionObjectList[i].studentAnswer;
+        QuestionObjectList[i].UserAnswerList = QuestionObjectList[i].studentAnswer.replace('*', '');
         this.forceRenderVariable.push([]);
         for(var j=0;j < QuestionObjectList[i].word.length;j++)  {
-          if(QuestionObjectList[i].UserAnswerList.includes(j))  {
+          if(QuestionObjectList[i].word[j] === QuestionObjectList[i].UserAnswerList)  {
             this.forceRenderVariable[i].push(true);
           }
           else  {

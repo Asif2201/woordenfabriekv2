@@ -114,7 +114,7 @@ export default {
     console.log(`Challenge ID for API:  ${ChallengeID}`);
 
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsLE2?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=LE2&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
   },
   methods:  {
@@ -149,25 +149,25 @@ export default {
     challengeCompleted: function() {
       var PostString = '';
       var newPropertyID = '';
+      var PostObject = {};
       for (var i = 0; i < this.Challenge2.length; i++) {
         this.EvaluateAnswer(i);
+        PostObject = {};
 
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
+        PostObject.id = this.Challenge2[i].id;
+        PostObject.studentID = 'S1';
+        PostObject.LessonID = this.LessonID;
+        PostObject.LevelID = this.Level;
+
         newPropertyID = this.Challenge2[i].UserAnswer;
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        newPropertyID = this.lAnswerExplanation;
-        PostString += `"'` + newPropertyID + `'": "AnswerExplanation" }`;
+        PostObject.userAnswer = newPropertyID;
+        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+        PostObject.feedbackType = this.Challenge2[i].feedbackType;
+        PostObject.Explanation = 'No Explanation requested';
+
+        PostString = JSON.stringify(PostObject);
+
+        console.log(PostString);
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -176,7 +176,6 @@ export default {
         }, (error) => {
           console.log(error);
         });
-        console.log(PostString);
         PostString = '';
       }
       if(this.Challenge2[0].feedbackType === 2) {

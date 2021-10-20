@@ -5,7 +5,7 @@
         <tr>
           <td class="w-2/6 align-top pt-4">
             <span class="LessonTitle">
-              {{ 'Les ' + CurrentLesson.studentlessonid + ' |'  }}
+              {{ 'Les ' + CurrentLesson.lessonid + ' |'  }}
             </span>
             <span class="LessonSubtitle">
               {{ CurrentLesson.lessontitle }}
@@ -18,19 +18,19 @@
                     <div  id="completedstars" v-if="level.completionprogress===1" class="w-full px-1">
                       <StarRating :value="`${level.earnedstars}`"></StarRating>
                       <button v-if="CurrentLesson.currentDisplayLevel === index" class="CurrentButtonText" @click="GotoLevel(level.Levelid)">
-                        {{ ` Level ` + index  }}
+                        {{ ` Level ` + (index+1)  }}
                       </button>
                       <button v-else class="NotCurrentButtonText" @click="GotoLevel(level.Levelid)">
-                        {{ ` Level ` + index  }}
+                        {{ ` Level ` + (index+1)  }}
                       </button>
                     </div>
                     <div v-else id="nostars" class="w-full px-1">
                       <StarRating value="0"></StarRating>
                       <button v-if="CurrentLesson.currentDisplayLevel === index" class="CurrentButtonText" @click="GotoLevel(level.Levelid)">
-                        {{ ` Level ` + index  }}
+                        {{ ` Level ` + (index+1)  }}
                       </button>
                       <button v-else class="NotCurrentButtonText" @click="GotoLevel(level.Levelid)">
-                        {{ ` Level ` + index }}
+                        {{ ` Level ` + (index+1) }}
                       </button>
                     </div>
                   </div>
@@ -68,10 +68,10 @@
 export default {
   computed: {
     CurrentLesson() {
-      return this.$store.state.Lessons[this.$store.state.Lessons.currentDisplayLesson];
+      return this.$store.state.Lessons[this.$store.state.currentDisplayLesson];
     },
     UserLevels()  {
-      return this.$store.state.Lessons[this.$store.state.Lessons.currentDisplayLesson].Levels;
+      return this.$store.state.Lessons[this.$store.state.currentDisplayLesson].Levels;
     },
   },
   methods:  {

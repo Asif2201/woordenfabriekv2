@@ -81,13 +81,12 @@ export default {
   async fetch() {
     const ChallengeID = this._props.Challenge;
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsS01?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=S01&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
   },
   methods:  {
 
     splitWord(word)  {
-      console.log(word);
       if (word) {
         return word.split(';');
       } else  {
@@ -111,7 +110,6 @@ export default {
         }
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
-      console.log(QuestionObjectList);
       return QuestionObjectList;
     },
   },

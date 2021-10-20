@@ -2,59 +2,106 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else class="tablecontainer">
-        <table class="challengetable">
+    <template v-for="(Object, ObjIndex) in Challenge2" >
+        <p class="T2_Introduction">
+            {{  Object.introduction }}
+        </p>
+        <table class="T2_Table">
           <tbody>
-            <template v-for="(Object, ObjIndex) in Challenge2" >
               <tr>
                 <td>
-                    <span class="questionwords">
+                    <span class="selectedmorfeem">
                       {{ Object.Morfeem1 }}
                     </span>
-                    <template v-if="Object.answer1">
-                      <dropdown :data="convertToDropDownData(Object.answer1,1, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,1)" />
-                    </template>
-                </td>
-                <td>
-                    <span class="questionwords">
+                    <span v-if="Object.Morfeem2 != Object.word" class="questionwords">
                       {{ Object.Morfeem2 }}
                     </span>
-                    <template v-if="Object.answer2">
-                      <dropdown :data="convertToDropDownData(Object.answer2,2, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,2)" />
-                    </template>
-                </td>
-                <td>
-                  <template v-if="Object.Morfeem3">
-                    <span class="questionwords">
+                    <span v-if="Object.Morfeem3 != Object.word" class="questionwords">
                       {{ Object.Morfeem3 }}
                     </span>
-                    <template v-if="Object.answer3">
-                      <dropdown :data="convertToDropDownData(Object.answer3,3, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,3)" />
-                    </template>
-                  </template>
+                    <span v-if="Object.Morfeem4 != Object.word" class="questionwords">
+                      {{ Object.Morfeem4 }}
+                    </span>
+                    <br>
+                    <input value="0" class="answeroptions" name="M1" type="radio" id="M11" v-model="Object.UserAnswer1">
+                    <label class="answeroptions" for="M11"> {{ Object.answer1.split(";")[0].replace("*", "")}} </label>
+                    <br>
+                    <input value="1" class="answeroptions" name="M1" type="radio" id="M12" v-model="Object.UserAnswer1">
+                    <label class="answeroptions" for="M12"> {{ Object.answer1.split(";")[1].replace("*", "")}} </label>
+                    <br>
+                    <input value="2" class="answeroptions" name="M1" type="radio" id="M13" v-model="Object.UserAnswer1">
+                    <label class="answeroptions" for="M13"> {{ Object.answer1.split(";")[2].replace("*", "")}} </label>
                 </td>
-                <td v-show="ShowResult" :key="ResultKey">
-                  <div class="object-scale-down">
-                    <p v-show="Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/correct.png" width="40" height="40" />
-                    </p>
-                    <p v-show="!Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/incorrect.png" width="40" height="40" />
-                    </p>
-                  </div>
+                <td v-show="Object.Morfeem2.length > 0">
+                    <span v-if="Object.Morfeem2 != Object.word" class="questionwords">
+                      {{ Object.Morfeem1 }}
+                    </span>
+                    <span class="selectedmorfeem">
+                      {{ Object.Morfeem2 }}
+                    </span>
+                    <span v-if="Object.Morfeem3 != Object.word" class="questionwords">
+                      {{ Object.Morfeem3 }}
+                    </span>
+                    <span v-if="Object.Morfeem4 != Object.word" class="questionwords">
+                      {{ Object.Morfeem4 }}
+                    </span>
+                    <br>
+                    <input value="0" class="answeroptions" name="M2" type="radio" id="M21" v-model="Object.UserAnswer2">
+                    <label  class="answeroptions" for="M21"> {{ Object.answer2.split(";")[0].replace("*", "")}} </label>
+                    <br>
+                    <input value="1" class="answeroptions" name="M2" type="radio" id="M22" v-model="Object.UserAnswer2">
+                    <label class="answeroptions" for="M22"> {{ Object.answer2.split(";")[1].replace("*", "")}} </label>
+                    <br>
+                    <input value="2" class="answeroptions" name="M2" type="radio" id="M23" v-model="Object.UserAnswer2">
+                    <label class="answeroptions" for="M23"> {{ Object.answer2.split(";")[2].replace("*", "")}} </label>
                 </td>
-            </tr>
-          </template>
-          <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td>
-                <KlaarButton @challengeCompleted="challengeCompleted()" />
-              </td>
-          </tr>
+              </tr>
+              <tr>
+                <td v-show="Object.Morfeem3.length > 0">
+                    <span v-if="Object.Morfeem3 != Object.word" class="questionwords">
+                      {{ Object.Morfeem1 + Object.Morfeem2 }}
+                    </span>
+                    <span class="selectedmorfeem">
+                      {{ Object.Morfeem3 }}
+                    </span>
+                    <span v-if="Object.Morfeem4 != Object.word" class="questionwords">
+                      {{ Object.Morfeem4}}
+                    </span>
+                    <br>
+                    <input value="0" class="answeroptions" name="M3" type="radio" id="M31" v-model="Object.UserAnswer3">
+                    <label class="answeroptions" for="M31"> {{ Object.answer3.split(";")[0].replace("*", "")}} </label>
+                    <br>
+                    <input value="1" class="answeroptions" name="M3" type="radio" id="M32" v-model="Object.UserAnswer3">
+                    <label class="answeroptions" for="M32"> {{ Object.answer3.split(";")[1].replace("*", "")}} </label>
+                    <br>
+                    <input value="2" class="answeroptions"  name="M3" type="radio" id="M33" v-model="Object.UserAnswer3">
+                    <label class="answeroptions"  for="M33"> {{ Object.answer3.split(";")[2].replace("*", "")}} </label>
+                </td>
+                <td v-show="Object.Morfeem4.length > 0">
+                    <span v-if="Object.Morfeem4 != Object.word" class="questionwords">
+                      {{ Object.Morfeem1 + Object.Morfeem2 + Object.Morfeem3 }}
+                    </span>
+                    <span class="selectedmorfeem">
+                      {{  Object.Morfeem4}}
+                    </span>
+                    <br>
+                    <input value="0" class="answeroptions" name="M4" type="radio" id="M41" v-model="Object.UserAnswer4">
+                    <label class="answeroptions" for="M41"> {{ Object.answer4.split(";")[0].replace("*", "")}} </label>
+                    <br>
+                    <input value="1" class="answeroptions" name="M4" type="radio" id="M42" v-model="Object.UserAnswer4">
+                    <label class="answeroptions" for="M42"> {{ Object.answer4.split(";")[1].replace("*", "")}} </label>
+                    <br>
+                    <input value="2" class="answeroptions" name="M4" type="radio" id="M43" v-model="Object.UserAnswer4">
+                    <label class="answeroptions" for="M43"> {{ Object.answer4.split(";")[2].replace("*", "")}} </label>
+                </td>
+              </tr>
         </tbody>
         </table>
 
+    </template>
+        <div>
+          <button v-on:click ="challengeCompleted()" class="klaarButton"> Klaar </button>
+        </div>
   </div>
 </template>
 <script>
@@ -89,7 +136,7 @@ export default {
     const ChallengeID = this._props.Challenge;
 
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsK02?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K02&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
 
   },
@@ -97,96 +144,82 @@ export default {
     forceRerender() {
       this.ResultKey += 1;
     },
+    FindCorrectAnswerIndex(SearchString)  {
+      const X = SearchString;
+      const Y = X.split(";");
+      for (var j = 0; j < Y.length;j++) {
+        if(Y[j].includes("*"))  {
+          return j;
+        }
+      }
+    },
     JSONtoObj()  {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
+          QuestionObjectList[i].correctAnswer4 = -1;
           QuestionObjectList[i].correctAnswer3 = -1;
           QuestionObjectList[i].correctAnswer2 = -1;
           QuestionObjectList[i].correctAnswer1 = -1;
-          QuestionObjectList[i].UserAnswer1 = 0;
-          QuestionObjectList[i].UserAnswer2 = 0;
+          QuestionObjectList[i].UserAnswer1 = -1;
+          QuestionObjectList[i].correctAnswer1 = this.FindCorrectAnswerIndex(QuestionObjectList[i].answer1);
+
+          if(QuestionObjectList[i].answer2) {
+              QuestionObjectList[i].UserAnswer2 = -1;
+              QuestionObjectList[i].correctAnswer2 = this.FindCorrectAnswerIndex(QuestionObjectList[i].answer2);
+          } else {
+              QuestionObjectList[i].UserAnswer2 = -1;
+          }
           if(QuestionObjectList[i].answer3) {
-            QuestionObjectList[i].UserAnswer3 = 0;
+            QuestionObjectList[i].UserAnswer3 = -1;
+            QuestionObjectList[i].correctAnswer3 = this.FindCorrectAnswerIndex(QuestionObjectList[i].answer3);
           } else {
             QuestionObjectList[i].UserAnswer3 = -1;
           }
-          QuestionObjectList[i].answerConfirmed = false;
+          if(QuestionObjectList[i].answer4) {
+            QuestionObjectList[i].UserAnswer4 = -1;
+            QuestionObjectList[i].correctAnswer4 = this.FindCorrectAnswerIndex(QuestionObjectList[i].answer4);
+
+          } else {
+            QuestionObjectList[i].UserAnswer4 = -1;
+          }
           QuestionObjectList[i].answerCorrect = false;
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
-
       return QuestionObjectList;
-    },
-    answerSelected(Index, answer, WhichOne) {
-      if(WhichOne === 1)  {
-        this.Challenge2[Index].UserAnswer1 = answer;
-      }
-      else if(WhichOne === 2) {
-        this.Challenge2[Index].UserAnswer2 = answer;
-      }
-      else {
-        this.Challenge2[Index].UserAnswer3 = answer;
-
-      }
-    },
-    convertToDropDownData(strData, whichOne, Index) {
-
-      var DropDownOptions = [];
-      var DropDownOption = new Object();
-      const dataarray = strData.split(";");
-      for(var i=0; i < dataarray.length;i++)  {
-        if(dataarray[i].indexOf('*') >= 0) {
-          if(whichOne === 1)  {
-            this.Challenge2[Index].correctAnswer1 = i;
-          }
-          else if(whichOne === 2) {
-            this.Challenge2[Index].correctAnswer2 = i;
-          }
-          else  {
-            this.Challenge2[Index].correctAnswer3 = i;
-
-          }
-          DropDownOption.id = i;
-          DropDownOption.name = dataarray[i].replace('*', '');
-          DropDownOptions.push(DropDownOption);
-          DropDownOption = new Object();
-        }
-        else  {
-          DropDownOption.id = i;
-          DropDownOption.name = dataarray[i];
-          DropDownOptions.push(DropDownOption);
-          DropDownOption = new Object();
-        }
-      }
-
-      return DropDownOptions;
     },
 
     challengeCompleted: function() {
       var PostString = '';
+      var PostObject = {};
       var newPropertyID = '';
       for (var i = 0; i < this.Challenge2.length; i++) {
         this.EvaluateAnswer(i);
+        PostObject = {};
 
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].UserAnswer1 + '-' + this.Challenge2[i].UserAnswer2;
+        PostObject.id = this.Challenge2[i].id;
+        PostObject.studentID = 'S1';
+        PostObject.LessonID = this.LessonID;
+        PostObject.LevelID = this.Level;
+
+        newPropertyID = this.Challenge2[i].UserAnswer1;
+        if(this.Challenge2[i].answer2)  {
+          newPropertyID += '-' + this.Challenge2[i].UserAnswer2;
+        }
         if(this.Challenge2[i].answer3)  {
           newPropertyID += '-' + this.Challenge2[i].UserAnswer3;
         }
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        PostString += `"'No Explanation requested'": "Explanation" }`;
+        if(this.Challenge2[i].answer4)  {
+          newPropertyID += '-' + this.Challenge2[i].UserAnswer4;
+        }
+        PostObject.userAnswer = newPropertyID;
+        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+        PostObject.feedbackType = this.Challenge2[i].feedbackType;
+        PostObject.Explanation = 'No Explanation requested';
+
+        PostString = JSON.stringify(PostObject);
+
+        console.log(PostString);
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -220,6 +253,11 @@ export default {
           this.Challenge2[index].answerCorrect = false;
         }
       }
+      if(this.Challenge2[index].answer4)  {
+        if(this.Challenge2[index].correctAnswer4 !== this.Challenge2[index].UserAnswer4)  {
+          this.Challenge2[index].answerCorrect = false;
+        }
+      }
       if(this.Challenge2[index].answerCorrect === true) {
         this.TotalCorrect += 1;
       }
@@ -233,23 +271,68 @@ export default {
   .questionwords {
     color: black;
     font-family: Lato;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: bold;
   }
-  .challengetable {
-    width: 80%;
+  .selectedmorfeem {
+    color: blue;
+    font-family: Lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: bold;
+  }
+  .T2_Introduction  {
+    color: grey;
+    font-family: Lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    padding-top: 20px;
+    width: 70%;
+    padding-left: 30px;
+    text-align: justify;
+  }
+  .T2_Table {
+    width: 100%;
     padding: 20px;
     margin-top:20px;
-    margin-left:30px
+    margin-left:200px;
+    height: 300px;
   }
-  .challengetable th, td  {
+  .T2_Table tr  {
+    height: 150px;
+  }
+  .T2_Table th, td  {
     text-align: left;
     color: black;
     line-height: 1.6;
   }
   .tablecontainer {
     text-align: center;
+    height: 300px;
   }
-
+  .answeroptions {
+    color: black;
+    font-family: Lato;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    height: 10px;
+    width: 10px;
+  }
+  .klaarButton {
+    font: normal normal bold 20px/25px Lato;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    opacity: 1;
+    background: #2185D0 0% 0% no-repeat padding-box;
+    border-radius: 4px;
+    width: 100px;
+    height: 32px;
+    top: 440px;
+    left: 880px;
+    clear: left;
+    cursor:pointer;
+}
 </style>

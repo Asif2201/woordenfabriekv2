@@ -43,12 +43,12 @@ export default {
   computed: {
     UserChallenges()  {
 
-      const x = this.$store.state.Lessons.currentDisplayLesson;
+      const x = this.$store.state.currentDisplayLesson;
       const y = this.$store.state.Lessons[x].currentDisplayLevel;
       return this.$store.state.Lessons[x].Levels[y].Challenges;
     },
     currentDisplayChallenge() {
-      const x = this.$store.state.Lessons.currentDisplayLesson;
+      const x = this.$store.state.currentDisplayLesson;
       const y = this.$store.state.Lessons[x].currentDisplayLevel;
       return this.$store.state.Lessons[x].Levels[y].currentDisplayChallenge;
     }
@@ -68,6 +68,8 @@ export default {
     top: 1147px;
     height: 52px;
     text-align: center;
+    z-index: 100;
+
   }
   .PrevNext {
     font: lato;

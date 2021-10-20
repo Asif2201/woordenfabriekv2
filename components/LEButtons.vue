@@ -1,8 +1,8 @@
 <template>
   <div class="relative">
-    <button @click ="selectedAnswer = 0" class="buttonWaar">{{ data[0].name  }}</button>
-    <button @click ="selectedAnswer = 1 " class="buttondeelWaar"> {{ data[1].name }}</button>
-    <button @click ="selectedAnswer = 2" class="buttonOnWaar"> {{ data[2].name }}</button>
+    <button @click ="selectedAnswer(0)" :class="{ selectedB:isSelected(0) }" class="buttonWaar"> {{ data[0].name  }}</button>
+    <button @click ="selectedAnswer(1)" :class="{ selectedB:isSelected(1) }" class="buttondeelWaar"> {{ data[1].name }}</button>
+    <button @click ="selectedAnswer(2)" :class="{ selectedB:isSelected(2) }" class="buttonOnWaar"> {{ data[2].name }}</button>
 </div>
 </template>
 
@@ -11,19 +11,21 @@
 export default ({
   props:  {
     data: [],
-
-  },
-  data() {
-    return  {
-      selectedAnswer: 0,
-    }
-  },
-  watch:  {
-    selectedAnswer()  {
-      this.$emit("AnswerSelected", this.selectedAnswer);
-    }
+    SelectedButton:0,
   },
 
+  methods:  {
+    selectedAnswer: function (whichButton, event)  {
+      this.$emit("AnswerSelected", whichButton);
+    },
+    isSelected(index) {
+      if(this.$props['SelectedButton'] === index)  {
+        return true;
+      } else{
+        return false;
+      }
+    }
+  },
 })
 
 </script>
@@ -43,20 +45,10 @@ export default ({
   width: 91px;
   height: 36px;
 }
-.buttonWaar:hover {
-  background-color: white;
-  color: #2185D0;
-}
-.buttonWaar:active {
-  background-color: #333;
-  border-color: red;
-  color: #eee;
-}
-.buttonWaar:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px red;
-}
 
+.selectedB  {
+  border: 4px double black;
+}
 .buttonOnWaar {
   text-align: center;
   font: normal normal bold 14px/17px Lato;
@@ -70,19 +62,6 @@ export default ({
   border-radius: 4px;
   width: 91px;
   height: 36px;
-}
-.buttonOnWaar:hover {
-  background-color: white;
-  color: #DB2828;
-}
-.buttonOnWaar:active {
-  background-color: #333;
-  border-color: #333;
-  color: #eee;
-}
-.buttonOnWaar:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px red;
 }
 
 .buttondeelWaar {
@@ -98,19 +77,6 @@ export default ({
   border-radius: 4px;
   width: 91px;
   height: 36px;
-}
-.buttondeelWaar:hover {
-  background-color: white;
-  color: #6435C9;
-}
-.buttondeelWaar:active {
-  background-color: green;
-  border-color: #333;
-  color: #eee;
-}
-.buttondeelWaar:focus {
-  outline: none;
-  box-shadow: 0 0 0 3px red;
 }
 
 </style>

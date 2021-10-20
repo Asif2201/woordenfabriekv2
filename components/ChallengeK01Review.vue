@@ -3,55 +3,38 @@
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
       <div class="relative ml-20 mt-10">
-        <table class="table-auto w-full align-center">
+        <table class="K01_Table" key="OkKey">
           <thead/>
           <tbody>
-            <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
+            <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
-                <td class="w-2/3">
+                <td>
                   <div class="questionwords">
-                    <span v-for="(char, index) in Object.studentAnswer">
-                      {{ char }}
-                    </span>
+                      {{ Object.studentAnswer }}
                   </div>
                 </td>
-                <td> &nbsp;  &nbsp; </td>
-                <td> &nbsp;  &nbsp; </td>
-                <td> &nbsp;  &nbsp; </td>
-                <td> &nbsp;  &nbsp; </td>
                 <td>
-                  <div class="object-scale-down">
+                  <div>
                     <p v-show="Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/correct.png" />
+                      <img src="~/assets/correct.png" width="40" height="40" />
                     </p>
                     <p v-show="!Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/incorrect.png" />
+                      <img src="~/assets/incorrect.png" width="40" height="40" />
                     </p>
                   </div>
                 </td>
-            </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
+                <td>
+                  <div class="feedback">
+                      {{ Object.feedback }}
+                  </div>
+                </td>
 
-          </div>
-          <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
             </tr>
+          </template>
+
         </tbody>
         </table>
       </div>
-
   </div>
 </template>
 <script>
@@ -79,9 +62,8 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-
-    this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestions?ChallengeID=${ChallengeID}`
+      this.Challenge1 = await fetch(
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K1&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
   },
   methods:  {
@@ -119,14 +101,40 @@ export default {
 </script>
 <style scoped>
   .questionwords {
-    color: var(--grey);
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    color: grey;
+    font-family: lato;
+    font-size: 22px;
     font-style: normal;
     font-weight: 700;
   }
-  .right {
-    margin-right: 20px;
-    float: right;
+  .feedback {
+    color: grey;
+    font-family: lato;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+  }
+
+
+  .K01_Table {
+    width:80%;
+    table-layout: fixed;
+  }
+  .K01_Table tr {
+    height:  60px;
+  }
+   .K01_Table td {
+    vertical-align:initial;
+    width: 60px;
+  }
+  .K01_Table td:first-child {
+    width: 500px;
+    vertical-align: center;
+  }
+
+  .K01_Table td:last-child {
+    width: 500px;
+    vertical-align: top;
+
   }
 </style>

@@ -2,66 +2,61 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20 mt-10 overflow-x-auto">
-        <table class="border-collapse w-full">
+    <div class="relative ml-20 mt-10">
+        <table class="V01_Table" key="OkKey">
           <thead/>
           <tbody>
-            <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
-              <tr class="bg-white w-full lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-                <template v-if="Object.BeforeWord==='Yes'">
-                  <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                    <div class="questionwords">
+            <template v-for="(Object, ObjIndex) in Challenge2">
+              <tr>
+                <td>
+                  <div v-if="Object.MorfeemList !== null" class="questionwords">
                       <dropdown :data="convertToDropDownData(Object.MorfeemList,1, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,1)" />
                     </div>
-                  </td>
-                  <td v-if="Object.MorfeemList2" class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                    <div class="questionwords">
-                      <dropdown :data="convertToDropDownData(Object.MorfeemList2,2, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,2)" />
-                    </div>
-                  </td>
-                </template>
-                <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+                </td>
+               <td>
                   <div class="questionwords">
                     <span>
                       {{ Object.word }}
                     </span>
                   </div>
                 </td>
-                <template v-if="Object.BeforeWord==='No'">
-                  <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                    <div class="questionwords">
-                      <dropdown :data="convertToDropDownData(Object.MorfeemList,1, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,1)" />
-                    </div>
-                  </td>
-                  <td v-if="Object.MorfeemList2" class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                    <div class="questionwords">
+                <td>
+                  <div v-if="Object.MorfeemList2 !== null" class="questionwords">
                       <dropdown :data="convertToDropDownData(Object.MorfeemList2,2, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,2)" />
                     </div>
-                  </td>
-                </template>
-                <td v-show="ShowResult" :key="ResultKey">
-                  <div class="object-scale-down">
-                    <p v-show="Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/correct.png" width="40" height="40" />
-                    </p>
-                    <p v-show="!Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/incorrect.png" width="40" height="40" />
-                    </p>
-                  </div>
+                </td>
+                <td>
+                  <div v-if="Object.MorfeemList3 !== null" class="questionwords">
+                      <dropdown :data="convertToDropDownData(Object.MorfeemList3,3, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,3)" />
+                    </div>
                 </td>
             </tr>
-          </div>
-          <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td>
-                  <KlaarButton @challengeCompleted="challengeCompleted()" />
-              </td>
+          </template>
+          <tr>
+              <td> &nbsp;  &nbsp; </td>
+              <td> &nbsp;  &nbsp; </td>
+              <td> &nbsp;  &nbsp; </td>
+              <td> &nbsp;  &nbsp; </td>
+
           </tr>
+          <tr>
+              <td> &nbsp;  &nbsp; </td>
+              <td> &nbsp;  &nbsp; </td>
+              <td> &nbsp;  &nbsp; </td>
+              <td> &nbsp;  &nbsp; </td>
+          </tr>
+          <tr>
+              <td> &nbsp;  &nbsp; </td>
+              <td> &nbsp;  &nbsp; </td>
+              <td>
+                <div>
+                <button v-on:click ="challengeCompleted()" class="klaarButton"> Klaar </button>
+                </div>
+              </td>
+              <td> &nbsp;  &nbsp; </td>
+            </tr>
         </tbody>
         </table>
-
       </div>
   </div>
 </template>
@@ -95,9 +90,9 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-
+    console.log(ChallengeID);
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsV01?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=V01&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
 
   },
@@ -110,11 +105,13 @@ export default {
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
           QuestionObjectList[i].correctAnswer1 = -1;
-          QuestionObjectList[i].UserAnswer1 = 0;
-          if(this.Challenge1.LearningQuestions[i].MorfeemList2) {
-            QuestionObjectList[i].correctAnswer2 = -1;
-            QuestionObjectList[i].UserAnswer2 = 0;
-          }
+          QuestionObjectList[i].UserAnswer1 = -1;
+          QuestionObjectList[i].correctAnswer2 = -1;
+          QuestionObjectList[i].UserAnswer2 = -1;
+
+          QuestionObjectList[i].correctAnswer3 = -1;
+          QuestionObjectList[i].UserAnswer3 = -1;
+
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
       }
@@ -123,26 +120,33 @@ export default {
       return QuestionObjectList;
     },
     answerSelected(Index, answer, WhichOne) {
-      if(WhichOne === 1)  {
-        this.Challenge2[Index].UserAnswer1 = answer;
-      } else{
+      switch(WhichOne)  {
+        case 1:
+          this.Challenge2[Index].UserAnswer1 = answer;
+          break;
+        case 2:
           this.Challenge2[Index].UserAnswer2 = answer;
+          break;
+        case 3:
+          this.Challenge2[Index].UserAnswer3 = answer;
+          break;
       }
     },
     convertToDropDownData(strData, whichOne, Index) {
       var DropDownOptions = [];
       var DropDownOption = new Object();
-      console.log(whichOne);
-      console.log(strData);
-      console.log(Index);
       const dataarray = strData.split(";");
       for(var i=0; i < dataarray.length;i++)  {
         if(dataarray[i].indexOf('*') >= 0) {
+          console.log(Index+ 'correctAnswer-' + i);
           if(whichOne === 1)  {
             this.Challenge2[Index].correctAnswer1 = i;
           }
-          else  {
+          if(whichOne === 2)  {
             this.Challenge2[Index].correctAnswer2 = i;
+          }
+          if(whichOne === 3)  {
+            this.Challenge2[Index].correctAnswer3 = i;
           }
           DropDownOption.id = i;
           DropDownOption.name = dataarray[i].replace('*', '');
@@ -162,27 +166,23 @@ export default {
     challengeCompleted: function() {
       var PostString = '';
       var newPropertyID = '';
+      var PostObject = {};
       for (var i = 0; i < this.Challenge2.length; i++) {
         this.EvaluateAnswer(i);
+        PostObject = {};
 
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].UserAnswer1 + '-';
-        if(this.Challenge2[i].UserAnswer2)  {
-          newPropertyID += this.Challenge2[i].UserAnswer2;
-        }
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        PostString += `"'No Explanation requested'": "Explanation" }`;
+        PostObject.id = this.Challenge2[i].id;
+        PostObject.studentID = 'S1';
+        PostObject.LessonID = this.LessonID;
+        PostObject.LevelID = this.Level;
+
+        newPropertyID = this.Challenge2[i].UserAnswer1 + ';' + this.Challenge2[i].UserAnswer2 + ';' + this.Challenge2[i].UserAnswer3;
+        PostObject.userAnswer = newPropertyID;
+        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+        PostObject.feedbackType = this.Challenge2[i].feedbackType;
+        PostObject.Explanation = 'No Explanation requested';
+
+        PostString = JSON.stringify(PostObject);
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -208,6 +208,12 @@ export default {
       if(this.Challenge2[index].correctAnswer1 !== this.Challenge2[index].UserAnswer1)  {
         this.Challenge2[index].answerCorrect = false;
       }
+      if(this.Challenge2[index].correctAnswer2 !== this.Challenge2[index].UserAnswer2)  {
+        this.Challenge2[index].answerCorrect = false;
+      }
+      if(this.Challenge2[index].correctAnswer3 !== this.Challenge2[index].UserAnswer3)  {
+        this.Challenge2[index].answerCorrect = false;
+      }
     },
   },
 
@@ -215,10 +221,55 @@ export default {
 </script>
 <style scoped>
   .questionwords {
-    color: black;
-    font-family: var(--font-family-lato);
-    font-size: 14px;
+    color: grey;
+    font-family: lato;
+    font-size: 22px;
     font-style: normal;
     font-weight: 700;
   }
+  .right {
+    margin-right: 20px;
+    float: right;
+  }
+  .WisButton  {
+    background-color: blue;
+    border-radius: 4px;
+    color: white;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    float: right;
+    margin-right: 20px;
+    font-family: lato;
+    font-weight: bold;
+  }
+  .WisButton:hover  {
+    background-color: darkblue; /* Green */
+    color: yellow;
+  }
+  .V01_Table {
+    width:50%;
+    table-layout: fixed;
+  }
+  .V01_Table tr {
+    height:  50px;
+  }
+  .V01_Table td {
+    width: 200px;
+  }
+  .klaarButton {
+    font: normal normal bold 20px/25px Lato;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    opacity: 1;
+    background: #2185D0 0% 0% no-repeat padding-box;
+    border-radius: 4px;
+    width: 100px;
+    height: 32px;
+    top: 740px;
+    left: 880px;
+    clear: left;
+    cursor:pointer;
+}
 </style>

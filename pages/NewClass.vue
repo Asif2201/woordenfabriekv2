@@ -1,0 +1,275 @@
+<template>
+  <div>
+    <Mainheader />
+    <br>
+    <br>
+    <br>
+    <br>
+    <ClassManagementHeader :Title1="'Docent'" :Title2="'klassenmanagement'" />
+    <br>
+    <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
+    <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
+    <div v-else class="grid-container">
+      <div key="selectedClass" class="grid-child">
+        <div align="left" class="shadowPanel">
+          <br>
+          <span align="left" class="ColumnHeading2">
+            Nieuwe klas aanmaken
+          </span>
+          <br>
+          <br>
+          <br>
+          <div align="left">
+            <span class="fieldlabel">
+              Onderwijs
+            </span>
+            <br>
+            <input class="fieldInput" v-model="lOnderwijs">
+            <br>
+            <span class="fieldlabel">
+              Jaar
+            </span>
+            <br>
+            <input class="fieldInput" v-model="lJaar">
+            <br>
+            <span class="fieldlabel">
+              Naam
+            </span>
+            <br>
+            <input class="fieldInput" v-model="lNaam">
+            <br>
+            <br>
+            <div align="center">
+              <button class="savebtn" @click="SaveNewClass"> Save </button>
+              <button class="savebtn" @click="CloseNewClass"> Close </button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+      <div class="grid-child">
+        <div align="right">
+          <button class="newClassbtnRight" @click="AddNewStudent">
+            + nieuwe student
+          </button>
+
+        </div>
+        <br>
+        <div align="left">
+          <table  id="students">
+            <tr>
+              <th> StudentID </th>
+              <th> Name </th>
+              <th> Current Lesson </th>
+              <th> Average Rating </th>
+            </tr>
+            <template v-for="student in selectedStudents">
+              <tr :key="student.ID">
+                  <td> {{ student.UserID }} </td>
+                  <td> {{ student.name }} </td>
+                  <td> Current Lesson </td>
+                  <td> Average Rating </td>
+              </tr>
+            </template>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+export default {
+  data() {
+    return {
+      selectedClass: -1,
+      Challenge1: [],
+      Challenge2:[],
+      Students: [],
+      lOnderwijs: '',
+      lJaar: 0,
+      lNaam: '',
+   }
+  },
+  computed: {
+    userRole() {
+      return this.$store.state.userRole;
+    },
+    userEmail() {
+      return this.$store.state.userEmail;
+    },
+    TeacherID() {
+      return this.$store.state.TeacherID;
+    },
+    selectedStudents()  {
+      var x = Number(this.selectedClass);
+      if(x === -1) {
+        return this.Students.vwUsers;
+      }
+      else  {
+        return this.Students.vwUsers.filter(function(el) { return el.Class === Number(x); });
+      }
+    }
+  },
+  watch: {
+    Challenge1()  {
+      this.Challenge2 = this.Challenge1;
+      var x = [];
+      x.ID = -1;
+      x.Naam = 'All Classes';
+      x.Ondewijs = '';
+      x.TeacherID = this.Challenge1.vwUsers[0].TeacherID;
+      x.UserID = this.Challenge1.vwUsers[0].TeacherID;
+      x.jaar  = -1;
+      this.Challenge2.vwUsers.push(x);
+      this.Challenge2.vwUsers.sort((firstItem, secondItem) => firstItem.ID - secondItem.ID);
+    }
+  },
+  async fetch() {
+    var response;
+    var URLforAPI = '';
+    if(this.userRole === 'Researcher')  {
+      URLforAPI = `${this.$config.baseURL}/classes`;
+    }
+    else {
+      URLforAPI = `${this.$config.baseURL}/classes?UserID=\'${this.userEmail}\'`;
+    }
+    response = await fetch(URLforAPI);
+    this.Challenge1 = await response.json();
+    URLforAPI = `${this.$config.baseURL}/students?TeacherID=\'${this.Challenge1.vwUsers[0].TeacherID}\'`;
+    response = await fetch(URLforAPI);
+    this.Students = await response.json();
+  },
+  methods:  {
+    SaveNewClass() {
+      var PostString = '{ '
+
+      var PostObject = {};
+
+      PostObject.pID = '-1';
+      PostObject.pOndewijs = this.lOnderwijs;
+      PostObject.pJaar = this.lJaar;
+      PostObject.pNaam = this.lNaam;
+      PostObject.pDelete = '0';
+      PostObject.pTeacherID = this.TeacherID;
+
+      PostString = JSON.stringify(PostObject);
+
+      console.log(PostString);
+
+      this.$axios.post('/UpdateClass', PostString, {headers: {
+        'content-type': 'application/json',},})
+      .then((response) => {
+        console.log(response);
+      }, (error) => {
+        console.log(error);
+      });
+
+
+    },
+    AddNewStudent() {
+
+    },
+    CloseNewClass() {
+      this.$router.push({path: 'Classmanagement'});
+    }
+  }
+};
+
+</script>
+
+<style>
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 180px;
+  padding-top:60px;
+  width: 80%;
+}
+.shadowPanel  {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    margin-left: 200px;
+
+}
+.ColumnHeading2  {
+  font-family: Lato;
+  font-size: 16px;
+  color: grey;
+  padding-top: 20px;
+  padding-left: 100px;
+
+}
+.fieldlabel  {
+  font-family: Lato;
+  font-size: 12px;
+  color: grey;
+  line-height: 200%;
+  padding-left: 10px;
+
+}
+.fieldInput {
+  font-family: Lato;
+  font-size: 14px;
+  color: grey;
+  margin-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;;
+  width: 250px;
+}
+.classList  {
+  font-family: Lato;
+  font-size: 14px;
+  color: grey;
+  padding-left: 200px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.savebtn {
+  background-color: lightblue;
+  font-family: Lato;
+  font-size: 14px;
+  color:white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 10px;
+}
+
+#students {
+  font-family: Lato;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+#students td, #students th {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  padding: 8px;
+}
+
+#students tr:nth-child(even){background-color: #f2f2f2;}
+
+#students tr:hover {background-color: #ddd;}
+
+#students th {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: left;
+  background-color: white;
+  color: grey;
+  font-size: 12px;
+  font-family: Lato;
+}
+#students td {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  text-align: left;
+  background-color: white;
+  color: black;
+  font-size: 12px;
+  font-family: Lato;
+}
+</style>

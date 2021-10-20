@@ -80,9 +80,11 @@
 
   .modal-header {
     position: relative;
-    border-bottom: 1px solid #eeeeee;
-    color: #4AAE9B;
-    justify-content: space-between;
+    font-family: lato;
+    font-size: 12px;
+    color: black;
+    align-self: center;
+    vertical-align: text-top;
   }
 
   .modal-footer {
@@ -92,21 +94,19 @@
 
   .modal-body {
     position: relative;
-    padding: 20px 10px;
     font-family: lato;
     font-size: 14px;
     color: black;
     align-self: center;
-    vertical-align: middle;
+    vertical-align: text-top;
   }
 
   .btn-close {
-    position: absolute;
+    position: relative;
     top: 0;
-    right: 0;
+    right:0;
     border: none;
     font-size: 20px;
-    padding: 10px;
     cursor: pointer;
     font-weight: bold;
     color: darkgray;

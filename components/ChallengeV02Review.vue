@@ -8,6 +8,11 @@
           <tbody>
             <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
               <tr class="bg-white w-full lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
+                <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+                    <div class="questionwords">
+                      {{ Object.context }}
+                    </div>
+                </td>
                 <template v-if="Object.BeforeWord==='Yes'">
                   <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                     <div class="questionwords">
@@ -29,8 +34,18 @@
                     </div>
                   </td>
                 </template>
-                <td v-show="ShowResult" :key="ResultKey">
-
+                <td>
+                  <span class="correctanswer"> {{ Object.answer }} </span>
+                </td>
+                <td>
+                  <div class="resultimage">
+                      <p v-show="Object.answerCorrect" class="text-blue">
+                        <img src="~/assets/correct.png" width="40" height="40" />
+                      </p>
+                      <p v-show="!Object.answerCorrect" class="text-blue">
+                        <img src="~/assets/incorrect.png" width="40" height="40" />
+                      </p>
+                    </div>
                 </td>
             </tr>
           </div>
@@ -67,10 +82,9 @@ export default {
     }
   },
   async fetch() {
-      const ChallengeID = this._props.Challenge;
-    console.log(ChallengeID);
+    const ChallengeID = this._props.Challenge;
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsV02?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=V02&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
 
   },
@@ -107,5 +121,15 @@ export default {
     font-size: 14px;
     font-style: normal;
     font-weight: bold;
+  }
+  .correctanswer {
+    color: green;
+    font-family: Lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: bold;
+  }
+  .resultimage  {
+    padding-left: 80px;
   }
 </style>

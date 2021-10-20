@@ -5,7 +5,7 @@
     <div class="align-top" v-if="$fetchState.pending">Fetching Challenges...</div>
     <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
     <div v-else class="ChallengePanel">
-    <LevelHeader :key="RenderLevel" :LevelID="UserLevels[$store.state.Lessons[$store.state.Lessons.currentDisplayLesson].currentDisplayLevel].Levelid" :LevelTitle="UserLevels[$store.state.Lessons[$store.state.Lessons.currentDisplayLesson].currentDisplayLevel].leveltitle" />
+    <LevelHeader :key="RenderLevel" :LevelID="UserLevels[$store.state.Lessons[$store.state.currentDisplayLesson].currentDisplayLevel].Levelid" :LevelTitle="UserLevels[$store.state.Lessons[$store.state.currentDisplayLesson].currentDisplayLevel].leveltitle" />
     <Level  :key="RenderLevel" @LevelComplete()="showModal()" />
      <modalLevelEnd :Top="'300px'" :Left="'600px'" :width="'400px'" :height="'300px'" :key=isModalVisible v-show="isModalVisible" @close="closeModal">
     <template v-slot:header>
@@ -39,27 +39,31 @@ export default {
   },
   async fetch() {
     const sl = this.UserLevels[0].studentlessonid;
-    var lv = this.UserLevels[this.currentLevelPointer].studentlevelid;
+    var lv;
+
+    var response;
+    var URLforAPI = '';
     for(var i = 0; i < this.UserLevels.length;i++)  {
       lv = this.UserLevels[i].studentlevelid;
-      this.Challenges1 = await fetch(
-        `${this.$config.baseURL}/Challenges?LevelID=${this.UserLevels[i].Levelid}`
-      ).then(res => res.json())
+      URLforAPI = `${this.$config.baseURL}/Challenges?StudentLevelID=${lv}`;
+      console.log(URLforAPI);
+      response = await fetch(URLforAPI);
+      this.Challenges1 = await response.json();
       this.$store.commit({ type:'storeChallenges', challenges: this.Challenges1.Challenge, slid: sl, lvlid:lv });
     }
   },
   computed: {
     CurrentLesson() {
-      return this.$store.state.Lessons[this.$store.state.Lessons.currentDisplayLesson];
+      return this.$store.state.Lessons[this.$store.state.currentDisplayLesson];
     },
     UserLevels()  {
-      return this.$store.state.Lessons[this.$store.state.Lessons.currentDisplayLesson].Levels;
+      return this.$store.state.Lessons[this.$store.state.currentDisplayLesson].Levels;
     },
     currentLevelPointer() {
-      return this.$store.state.Lessons[this.$store.state.Lessons.currentDisplayLesson].currentDisplayLevel;
+      return this.$store.state.Lessons[this.$store.state.currentDisplayLesson].currentDisplayLevel;
     },
     currentDisplayChallenge() {
-      const x = this.$store.state.Lessons.currentDisplayLesson;
+      const x = this.$store.state.currentDisplayLesson;
       const y = this.$store.state.Lessons[x].currentDisplayLevel;
       return this.$store.state.Lessons[x].Levels[y].currentDisplayChallenge;
     }
@@ -67,7 +71,7 @@ export default {
   methods:  {
     PrevNextChallenge(dir)  {
         const sl = this.UserLevels[0].studentlessonid;
-        const lv = this.UserLevels[this.$store.state.Lessons[this.$store.state.Lessons.currentDisplayLesson].currentDisplayLevel].studentlevelid;
+        const lv = this.UserLevels[this.$store.state.Lessons[this.$store.state.currentDisplayLesson].currentDisplayLevel].studentlevelid;
         this.$store.commit({ type:'UpdateCurrentChallengePointer', dir: dir, slid: sl, lvlid:lv });
         this.RenderLevel++;
         this.RenderFooter++;
@@ -86,7 +90,8 @@ export default {
     },
     closeModal()  {
       this.isModalVisible = false;
-      this.$router.push({ path: `lessonhome?studentlessonID=` + this.$route.query.studentlessonID });
+      const index = this.$store.state.currentDisplayLesson;
+      this.$router.push({ path: `lessonhome?studentlessonID=` + this.$route.query.studentlessonID  + `&index=${index}`});
     }
   }
 

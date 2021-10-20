@@ -8,6 +8,11 @@
           <tbody>
             <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
               <tr class="bg-white w-full lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
+                <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
+                    <div class="questionwords">
+                      {{ Object.context }}
+                    </div>
+                </td>
                 <template v-if="Object.BeforeWord==='Yes'">
                   <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                     <div class="questionwords">
@@ -34,14 +39,14 @@
                 </td>
             </tr>
           </div>
-          <tr class="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
+          <tr>
+
               <td>
                 <KlaarButton @challengeCompleted="challengeCompleted()" />
-
               </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
           </tr>
         </tbody>
         </table>
@@ -76,10 +81,9 @@ export default {
     }
   },
   async fetch() {
-      const ChallengeID = this._props.Challenge;
-    console.log(ChallengeID);
+    const ChallengeID = this._props.Challenge;
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsV02?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=V02&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
 
   },
@@ -103,24 +107,25 @@ export default {
     challengeCompleted: function() {
       var PostString = '';
       var newPropertyID = '';
+      var PostObject = {};
       for (var i = 0; i < this.Challenge2.length; i++) {
         this.EvaluateAnswer(i);
+        PostObject = {};
 
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
+        PostObject.id = this.Challenge2[i].id;
+        PostObject.studentID = 'S1';
+        PostObject.LessonID = this.LessonID;
+        PostObject.LevelID = this.Level;
+
         newPropertyID = this.Challenge2[i].UserAnswer;
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        PostString += `"'No Explanation requested'": "Explanation" }`;
+        PostObject.userAnswer = newPropertyID;
+        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+        PostObject.feedbackType = this.Challenge2[i].feedbackType;
+        PostObject.Explanation = 'No Explanation requested';
+
+        PostString = JSON.stringify(PostObject);
+
+        console.log(PostString);
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})

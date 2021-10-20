@@ -2,109 +2,117 @@
   <div class="bg-white">
     <div class="challengeBox" :key="ChallengeIndex">
     <div>
-      <ChallengeHeader :key="ChallengeIndex" :Type="Challenges1[ChallengeIndex].ChallengeTypeID" :Title="Challenges1[ChallengeIndex].ChallengeTitle" :Subtitle="Challenges1[ChallengeIndex].ChallengeSubtitle" />
+      <ChallengeHeader :key="HeaderKey" :Type="Challenges1[ChallengeIndex].ChallengeTypeID" :Title="Challenges1[ChallengeIndex].ChallengeTitle" :Subtitle="Challenges1[ChallengeIndex].ChallengeSubtitle" />
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'K01'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
-          <ChallengeK01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeK01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
         <template v-else>
-          <ChallengeK1 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeK1 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'C01'">
-        <ChallengeC01  :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
+          <ChallengeC01Review  :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
+        <template v-else>
+          <ChallengeC01  :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'K02'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
-          <ChallengeK02Review  :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeK02Review  :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
         <template v-else>
-          <ChallengeK02  :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeK02 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'K03'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
-          <ChallengeK03Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeK03Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
         <template v-else>
-          <ChallengeK03 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeK03 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'V01'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
-          <ChallengeV01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeV01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
         <template v-else>
-          <ChallengeV01 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeV01 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'V02'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
-          <ChallengeV02Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeV02Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
         <template v-else>
-          <ChallengeV02 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeV02 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'H01'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
-          <ChallengeH01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeH01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
         <template v-else>
-          <ChallengeH01 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeH01 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'H02'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
-          <ChallengeH02Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeH02Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
         <template v-else>
-          <ChallengeH02 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeH02 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'H05'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
-          <ChallengeH05Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeH05Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
         <template v-else>
-          <ChallengeH05 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeH05 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'CA3'">
-        <ChallengeCA3 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
+          <ChallengeCA3Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
+        <template v-else>
+          <ChallengeCA3 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'S01'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
-          <ChallengeS01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeS01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
         <template v-else>
-          <ChallengeS01 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeS01 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'LE1'">
-        <ChallengeLE1 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        <ChallengeLE1 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'LE2'">
-        <ChallengeLE2 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        <ChallengeLE2 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'LE3'">
-        <ChallengeLE3 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        <ChallengeLE3 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'I01'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
-          <ChallengeI01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeI01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
         <template v-else>
-          <ChallengeI01 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.Lessons.currentDisplayLesson" @challenge-completed="completeChallenge" />
+          <ChallengeI01 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
       <br>
       <div class="footerbox">
       <button class="ml-10 hover:bg-gray-500 bg-gray-300 px-4 py-4 font-bold text-black" v-on:click="ToggleshowHelpText">  ?  </button>
-      <modalChallenge :Top="'700px'" :Left="'100px'" :width="'800px'" :key=helptextvisible v-show="helptextvisible" @close="closeModal">
-
+      <modalChallenge :Top="'800px'" :Left="'200px'" :width="'500px'" :key=helptextvisible v-show="helptextvisible" @close="closeModal">
         <template v-slot:header>
-            Help!
         </template>
         <template v-slot:body>
           {{ Challenges1[ChallengeIndex].HelpText }}
@@ -112,11 +120,7 @@
         <template v-slot:footer>
         </template>
       </modalChallenge>
-      <div v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'" :key="isModalVisible" class="ChallengeResult">
-        <template v-if="Challenges1[ChallengeIndex].feedbackType === 2">
-          <ChallengeFooter :Correct="Challenges1[ChallengeIndex].TotalCorrect" :Total="Challenges1[ChallengeIndex].TotalQuestions" :Missed=0 />
-        </template>
-      </div>
+
       </div>
     </div>
   </div>
@@ -145,22 +149,21 @@ export default {
 
   computed: {
     CurrentLesson() {
-      return this.$store.state.Lessons[this.$store.state.Lessons.currentDisplayLesson];
+      return this.$store.state.Lessons[this.$store.state.currentDisplayLesson];
     },
     UserLevels()  {
-      return this.$store.state.Lessons[this.$store.state.Lessons.currentDisplayLesson].Levels;
+      return this.$store.state.Lessons[this.$store.state.currentDisplayLesson].Levels;
     },
     currentLevelPointer() {
-      return this.$store.state.Lessons[this.$store.state.Lessons.currentDisplayLesson].currentDisplayLevel;
+      return this.$store.state.Lessons[this.$store.state.currentDisplayLesson].currentDisplayLevel;
     },
     Challenges1() {
-      const x = this.$store.state.Lessons.currentDisplayLesson;
+      const x = this.$store.state.currentDisplayLesson;
       const y = this.$store.state.Lessons[x].currentDisplayLevel;
-      console.log(this.$store.state.Lessons[x].Levels[y].Challenges);
       return this.$store.state.Lessons[x].Levels[y].Challenges;
     },
     ChallengeIndex()  {
-      const x = this.$store.state.Lessons.currentDisplayLesson;
+      const x = this.$store.state.currentDisplayLesson;
       const y = this.$store.state.Lessons[x].currentDisplayLevel;
       return this.$store.state.Lessons[x].Levels[y].currentDisplayChallenge;
     }
@@ -176,18 +179,22 @@ export default {
     },
     completeChallenge(totalCorrect, totalQuestions) {
       var PostString = '';
-      var newPropertyID = '';
-      const x = this.$store.state.Lessons.currentDisplayLesson;
+      var PostObject = {};
 
-      PostString = '{ ';
-      newPropertyID = this.Challenges1[this.ChallengeIndex].challengeid;
-      PostString += `"'` + newPropertyID + `'"  : "challengeID",`;
-      newPropertyID = this.Challenges1[this.ChallengeIndex].StudentLevelID +`L`;
-      PostString += `"'` + newPropertyID + `'"  : "studentlevelID",`;
-      newPropertyID = totalCorrect;
-      PostString += `"'` + newPropertyID + `'"  : "totalCorrect",`;
-      PostString += `"'Yes'" : "IsCompleted",`;
-      PostString += `"'No'" : "IsCurrent" }`;
+      const x = this.$store.state.currentDisplayLesson;
+
+      PostObject = {};
+
+      PostObject.challengeID = this.Challenges1[this.ChallengeIndex].challengeid;
+      PostObject.studentlevelID = this.Challenges1[this.ChallengeIndex].StudentLevelID;
+      PostObject.totalCorrect = totalCorrect;
+      PostObject.IsCompleted = 'Yes';
+      PostObject.IsCurrent = 'No';
+
+      PostString = JSON.stringify(PostObject);
+
+      console.log(PostString);
+
       this.$axios.post('/UpdateStudentChallenges', PostString, {headers: {
         'content-type': 'application/json',},})
       .then((response) => {
@@ -195,24 +202,23 @@ export default {
       }, (error) => {
         console.log(error);
       });
-      PostString = `{ `;
+
+      PostObject = {};
       const CompletionProgress = Math.round(((this.ChallengeIndex + 1) / this.Challenges1.length)* 100) / 100;
-      newPropertyID = this.Challenges1[0].TheLevelID;
-      PostString += `"'` + newPropertyID + `'"  : "LevelID",`;
+
+      PostObject.LevelID = this.Challenges1[0].TheLevelID;
       const d = new Date();
-      newPropertyID = this.formatDate(d);
-      PostString += `"'` + newPropertyID + `'"  : "CompletionDate",`;
-      newPropertyID = CompletionProgress + 'P';
-      PostString += `"'` + newPropertyID + `'"  : "OverallProgress",`;
-      newPropertyID = this.CurrentLesson.studentlessonid + `L`;
-      PostString += `"'` + newPropertyID + `'"  : "LessonID",`;
+      PostObject.CompletionDate = this.formatDate(d);
+      PostObject.OverallProgress = CompletionProgress;
+      PostObject.LessonID = this.CurrentLesson.studentlessonid;
       if(CompletionProgress < 1)  {
-        newPropertyID = 'Yes'
+        PostObject.IsCurrent = 'Yes';
+      } else  {
+        PostObject.IsCurrent = 'No';
       }
-      else  {
-        newPropertyID = 'No'
-      }
-      PostString += `"'` + newPropertyID + `'"  : "IsCurrent" }`;
+      PostString = JSON.stringify(PostObject);
+      console.log(PostString);
+
       this.$axios.post('/UpdateStudentLevels', PostString, {headers: {
         'content-type': 'application/json',},})
       .then((response) => {
@@ -223,13 +229,20 @@ export default {
       const y = this.currentLevelPointer;
 
       this.$store.state.Lessons[x].Levels[y].Challenges[this.ChallengeIndex].IsCompleted = 'Yes';
-      this.challengeCompleted = true;
-      this.isModalVisible = true;
-      this.totalCorrect = totalCorrect;
-      this.totalQuestions = totalQuestions;
-      this.HeaderKey += 1;
+      this.$store.state.Lessons[x].Levels[y].Challenges[this.ChallengeIndex].IsCurrent = 'No';
+
       if(CompletionProgress===1)  {
+        this.isModalVisible = true;
+        this.totalCorrect = totalCorrect;
+        this.totalQuestions = totalQuestions;
         this.$emit('LevelComplete()');
+
+      }
+      else{
+        this.$store.state.Lessons[x].Levels[y].Challenges[this.ChallengeIndex+1].IsCurrent = 'Yes';
+        this.isModalVisible = true;
+        this.totalCorrect = totalCorrect;
+        this.totalQuestions = totalQuestions;
       }
 
     },
@@ -262,7 +275,7 @@ export default {
   }
   .footerbox  {
     position: absolute;
-    top: 540px;
+    top: 640px;
     width:100%;
   }
   .ChallengeResult  {

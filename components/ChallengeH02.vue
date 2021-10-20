@@ -81,9 +81,9 @@
                 <td>
                   &nbsp;
                 </td>
-                <td class="questionswords align-right">
+                <td class="questionswords">
                   <br>
-                  <textarea v-model="lAnswerExplanation" placeholder="leg je antwoord uit" style="explainbox" rows="4" cols="60"> </textarea>
+                  <textarea v-model="lAnswerExplanation" placeholder="leg je antwoord uit" class="explainbox" rows="4" cols="60"> </textarea>
                 </td>
                 <td>
                   &nbsp;
@@ -93,13 +93,14 @@
             <tr>
               <td>
                   &nbsp;
-                </td>
-              <td>
-                &nbsp;
               </td>
               <td>
                 <KlaarButton @challengeCompleted="challengeCompleted()" />
               </td>
+              <td>
+                &nbsp;
+              </td>
+
             </tr>
         </tbody>
         </table>
@@ -142,7 +143,7 @@ export default {
     console.log(`Challenge ID for API:  ${ChallengeID}`);
 
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsH02?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=H02&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
   },
   methods:  {
@@ -157,7 +158,9 @@ export default {
     },
     splitWord(word)  {
       if (word) {
-        return word.split(';');
+        word = word.replace('[', '');
+        word = word.replace(']', '');
+        return word.split(' ');
       } else  {
         return '';
       }
@@ -166,8 +169,8 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].paragraphwords = QuestionObjectList[i].paragraph.split(' ');
-          QuestionObjectList[i].UserAnswerList = [];
+          QuestionObjectList[i].paragraphwords = this.splitWord(QuestionObjectList[i].paragraph);
+          QuestionObjectList[i].UserAnswerList = '';
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
       }
@@ -175,14 +178,10 @@ export default {
       return QuestionObjectList;
     },
     morphemeClick: function(word, char, event) {
-      if(this.IsClicked(word,char))  {
-          this.Challenge2[word].UserAnswerList = this.Challenge2[word].UserAnswerList.splice(char, 1);
-          this.forceRenderVariable[word].splice(char, 1, false);
-      }
-      else {
-        this.Challenge2[word].UserAnswerList.push(char);
-        this.forceRenderVariable[word].splice(char, 1, true);
-      }
+      console.log(word + '-' + char + '-' + event);
+      this.forceRenderVariable[word].splice(this.Challenge2[word].UserAnswerList, 1, false);
+      this.Challenge2[word].UserAnswerList = char;
+      this.forceRenderVariable[word].splice(this.Challenge2[word].UserAnswerList, 1, true);
     },
     IsClicked(word, char) {
       return(this.Challenge2[word].UserAnswerList.includes(char));
@@ -190,26 +189,25 @@ export default {
 
     challengeCompleted: function() {
       var PostString = '';
-      var newPropertyID = '';
+      var PostObject = {};
+
       for (var i = 0; i < this.Challenge2.length; i++) {
         this.EvaluateAnswer(i);
 
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].UserAnswerList.join(";");
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        newPropertyID = this.lAnswerExplanation;
-        PostString += `"'` + newPropertyID + `'": "AnswerExplanation" }`;
+        PostObject = {};
+
+        PostObject.id = this.Challenge2[i].id;
+        PostObject.studentID = 'S1';
+        PostObject.LessonID = this.LessonID;
+        PostObject.LevelID = this.Level;
+        PostObject.userAnswer = this.Challenge2[i].UserAnswerList;
+        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+        PostObject.feedbackType = this.Challenge2[i].feedbackType;
+        PostObject.Explanation = this.lAnswerExplanation;
+
+        PostString = JSON.stringify(PostObject);
+
+        console.log(PostString);
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -271,6 +269,9 @@ export default {
   .explainbox {
     border:solid 1px orange;
     resize: none;
-    float: right;
+    float: left;
+    font-family: lato;
+    font-size: 12px;
+    font-style: normal;
   }
 </style>

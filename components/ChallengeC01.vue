@@ -8,15 +8,15 @@
           <tbody>
             <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
               <tr>
-                <td class="w-1/3">
+                <td class="w-3/5">
                   <div class="questionwords">
                     <span>
                       {{ Object.Sentence }}
                     </span>
                   </div>
                 </td>
-                <td class="w-1/3"> &nbsp; </td>
-                <td class="w-1/3 questionwords ml-20">
+                <td class="w-1/5"> &nbsp; </td>
+                <td class="w-1/5 questionwords ml-20">
                   <div v-if="Object.answerConfirmed" class="cursor not-allowed">
                       <dropdown :data="AnswerOptions" />
                   </div>
@@ -25,16 +25,7 @@
                   </div>
                 </td>
                 <td> &nbsp;  &nbsp; </td>
-                <td v-show="ShowResult" :key="ResultKey">
-                  <div class="object-scale-down">
-                    <p v-show="Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/correct.png" width="40" height="40" />
-                    </p>
-                    <p v-show="!Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/incorrect.png" width="40" height="40" />
-                    </p>
-                  </div>
-                </td>
+
             </tr>
             <tr>
               <td> &nbsp; </td>
@@ -44,20 +35,20 @@
               <td> &nbsp; </td>
             </tr>
             <tr>
+
               <td> &nbsp; </td>
               <td> &nbsp; </td>
-              <td> &nbsp; </td>
+
               <td> &nbsp; </td>
               <td> &nbsp; </td>
             </tr>
           </div>
+            <tr>
+                          <td> <KlaarButton @challengeCompleted="challengeCompleted()" /></td>
+            </tr>
         </tbody>
         </table>
-        <div class=buttondefault-4ZAul6>
-            <button v-on:click="challengeCompleted()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded">
-               Klaar
-            </button>
-        </div>
+
       </div>
   </div>
 </template>
@@ -72,7 +63,12 @@ export default {
     'LessonID'
   ],
   computed: {
-    ...mapGetters(['isAuthenticated', 'loggedInUser'])
+    ...mapGetters(['isAuthenticated', 'loggedInUser']),
+
+    userEmail() {
+      return this.$store.state.userEmail;
+    },
+
   },
   data() {
     return {
@@ -85,6 +81,7 @@ export default {
       TotalCorrect: 0,
       TotalQuestions: 0,
       AnswerOptions: [],
+      isKlaar: false,
     }
   },
   watch: {
@@ -99,7 +96,7 @@ export default {
     this.AnswerOptions.push({id:1, name:'Deel waar'});
     this.AnswerOptions.push({id:2, name:'Niet waar'});
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsC01?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=C01&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
 
   },
@@ -111,7 +108,7 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].UserAnswer = 0;
+          QuestionObjectList[i].UserAnswer = -1;
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
       }
@@ -121,30 +118,35 @@ export default {
     },
     answerSelected(Index, answer) {
       this.Challenge2[Index].UserAnswer = answer;
+      for (var i = 0; i < this.Challenge2.length; i++) {
+        if(this.Challenge2.UserAnswer < 0)  {
+          this.isKlaar = false;
+        }
+        else  {
+          this.isKlaar = true;
+        }
+      }
     },
 
     challengeCompleted: function() {
-      var PostString = '';
-      var newPropertyID = '';
+      var PostString;
+      var PostObject;
+
       for (var i = 0; i < this.Challenge2.length; i++) {
+        PostObject = {};
         this.EvaluateAnswer(i);
 
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].UserAnswer;
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect",`;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        PostString += `"'No Explanation requested'": "Explanation" }`;
+        PostObject.id = this.Challenge2[i].id;
+        PostObject.studentID = 'S1';
+        PostObject.LessonID = this.LessonID;
+        PostObject.LevelID = this.Level;
+        PostObject.userAnswer = this.Challenge2[i].UserAnswer;
+        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+        PostObject.feedbackType = this.Challenge2[i].feedbackType;
+        PostObject.Explanation = 'No explanation required';
+        PostString = JSON.stringify(PostObject);
 
+        console.log(PostString);
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
         .then((response) => {
@@ -183,8 +185,8 @@ export default {
 <style scoped>
   .questionwords {
     color: var(--grey);
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    font-family: lato;
+    font-size: 16px;
     font-style: normal;
     font-weight: 700;
   }

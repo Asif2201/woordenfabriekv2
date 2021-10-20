@@ -3,76 +3,38 @@
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
       <div class="relative ml-20 mt-10">
-        <table class="table-auto w-full align-center">
+        <table class="K01_Table" key="OkKey">
           <thead/>
           <tbody>
-            <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
+            <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
-                <td class="w-2/3">
+                <td>
                   <div class="questionwords">
-                    <span v-for="(char, index) in Object.word" v-on:click="morphemeClick(ObjIndex, index, $event);">
-                      {{ char }}
+                    <span v-for="(char, index) in Object.word" v-on:click="morphemeClick(ObjIndex, index+1, $event);">
+                      {{ char }} &nbsp;
                     </span>
                   </div>
                 </td>
-                <td>
-                  <div v-if="Object.answerConfirmed">
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed">
-                      OK
-                    </button>
-                  </div>
-                  <div v-else class="">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" v-on:click="morphemeClickOk(ObjIndex)">
-                      OK
-                    </button>
-                  </div>
-                </td>
-                <td> &nbsp;  &nbsp; </td>
-                <td>
-                  <div v-if="!Object.answerConfirmed" class="">
-                    <button class="bg-blue-500 text-white font-bold py-2 px-4 rounded opacity-50 cursor-not-allowed">
-                        Wis
-                    </button>
-                  </div>
-                  <div v-else class="">
-                    <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded" v-on:click="morphemeClickWis(ObjIndex)">
+                <td> &nbsp; &nbsp; &nbsp; &nbsp; </td>
+               <td>
+                  <div>
+                    <button class="WisButton" v-on:click="morphemeClickWis(ObjIndex)">
                       Wis
                     </button>
                   </div>
                 </td>
-                <td> &nbsp;  &nbsp; </td>
-                <td v-show="ShowResult" :key="ResultKey">
-                  <div class="object-scale-down">
-                    <p v-show="Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/correct.png" width="40" height="40" />
-                    </p>
-                    <p v-show="!Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/incorrect.png" width="40" height="40" />
-                    </p>
-                  </div>
-                </td>
             </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
+          </template>
 
-          </div>
           <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-
               <td>
-                <KlaarButton @challengeCompleted="challengeCompleted()" />
+                <div>
+                <button v-on:click ="challengeCompleted()" class="klaarButton"> Klaar </button>
+                </div>
                </td>
+              <td> &nbsp;  &nbsp; </td>
+              <td> &nbsp;  &nbsp; </td>
+
             </tr>
         </tbody>
         </table>
@@ -96,6 +58,7 @@ export default {
       AllquestionsAnswered: false,
       ShowResult: false,
       ResultKey: 0,
+      OkKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
     }
@@ -109,7 +72,7 @@ export default {
     const ChallengeID = this._props.Challenge;
 
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestions?ChallengeID=${ChallengeID}`
+      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K1&challengelevelid=\'${ChallengeID}\'`
     ).then(res => res.json())
   },
   methods:  {
@@ -135,50 +98,44 @@ export default {
       return QuestionObjectList;
     },
     morphemeClick: function(word, char, event) {
-      if(this.Challenge2[word].word[char] !== '|')  {
-        this.Challenge2[word].word.splice(char, 0, '|');
-      }
-    },
-    morphemeClickOk: function(word, event) {
-      this.Challenge2[word].answerConfirmed = true;
-      this.AllquestionsAnswered = true;
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        if(!this.Challenge2[i].answerConfirmed)  {
-          this.AllquestionsAnswered = false;
+      if(char > 0 && char < this.Challenge2[word].word.length)  {
+        if(this.Challenge2[word].word[char] !== '|')  {
+          this.Challenge2[word].word.splice(char, 0, '|');
         }
       }
     },
+
     morphemeClickWis: function(word, event) {
-      this.Challenge2[word].answerConfirmed = false;
       let index = this.Challenge2[word].word.indexOf('|');
       while(index>0)  {
         this.Challenge2[word].word.splice(index,1);
         index = this.Challenge2[word].word.indexOf('|');
       }
       this.AllquestionsAnswered = false;
+      this.Challenge2[word].answerConfirmed = false;
+      this.OkKey++;
+
     },
     challengeCompleted: function() {
       var PostString = '';
-      var newPropertyID = '';
+      var PostObject = {};
+
       for (var i = 0; i < this.Challenge2.length; i++) {
         this.EvaluateAnswer(i);
+        PostObject = {};
 
-        PostString = '{ '
-        newPropertyID = this.Challenge2[i].id;
-        PostString += `"'` + newPropertyID + `'"  : "id",`;
-        PostString += `"'S1'" : "studentID",`;
-        newPropertyID = this.LessonID + `L`;
-        PostString += `"'` + newPropertyID + `'": "LessonID",`;
-        newPropertyID = this.Level;
-        PostString += `"'` + newPropertyID + `'": "LevelID",`;
-        newPropertyID = this.Challenge2[i].word.join("");
-        PostString += `"'` + newPropertyID + `'": "userAnswer",`;
-        newPropertyID = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostString += `"'` + newPropertyID + `'": "answerCorrect", `;
-        newPropertyID = this.Challenge2[i].feedbackType + `F`;
-        PostString += `"'` + newPropertyID + `'": "feedbackType", `;
-        PostString += `"'No Explanation requested'": "Explanation" }`;
+        PostObject.id = this.Challenge2[i].id;
+        PostObject.studentID = 'S1';
+        PostObject.LessonID = this.LessonID;
+        PostObject.LevelID = this.Level;
+        PostObject.userAnswer = this.Challenge2[i].word.join("");
+        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+        PostObject.feedbackType = this.Challenge2[i].feedbackType;
+        PostObject.Explanation = 'No Explanation requested';
 
+        PostString = JSON.stringify(PostObject);
+
+        console.log(PostString);
 
         this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
           'content-type': 'application/json',},})
@@ -187,7 +144,6 @@ export default {
         }, (error) => {
           console.log(error);
         });
-        console.log(PostString);
         PostString = '';
       }
 
@@ -217,9 +173,9 @@ export default {
 </script>
 <style scoped>
   .questionwords {
-    color: var(--grey);
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    color: grey;
+    font-family: lato;
+    font-size: 22px;
     font-style: normal;
     font-weight: 700;
   }
@@ -227,4 +183,44 @@ export default {
     margin-right: 20px;
     float: right;
   }
+  .WisButton  {
+    background-color: blue;
+    border-radius: 4px;
+    color: white;
+    padding-right: 12px;
+    padding-left: 12px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    float: right;
+    margin-right: 20px;
+    font-family: lato;
+    font-weight: bold;
+  }
+  .WisButton:hover  {
+    background-color: darkblue; /* Green */
+    color: yellow;
+  }
+  .K01_Table {
+    width:50%;
+    table-layout: fixed;
+  }
+  .K01_Table tr {
+    height:  50px;
+  }
+  .K01_Table td:first-child {
+    width: 900px;
+  }
+  .klaarButton {
+    font: normal normal bold 20px/25px Lato;
+    letter-spacing: 0px;
+    color: #FFFFFF;
+    opacity: 1;
+    background: #2185D0 0% 0% no-repeat padding-box;
+    border-radius: 4px;
+    width: 100px;
+    height: 32px;
+    clear: left;
+    margin-left: 500px;
+    cursor:pointer;
+}
 </style>

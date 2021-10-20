@@ -6,30 +6,54 @@
     </nav>
     <Sidebar>
       <table class="sidebar-table">
-        <tr class="sidebar-table-row">
-          <td class="sidebar-table-column">
-            <nuxt-link v-on:click.native="closeSidebarPanel()" to="/" >
-                Home
-            </nuxt-link>
-          </td>
-        </tr>
         <template v-if="userEmail !== ''">
-          <template v-for="lesson in UserLessons">
+          <tr class="sidebar-table-row">
+            <td class="sidebar-table-column">
+              <nuxt-link v-on:click.native="closeSidebarPanel()" to="/" >
+                  Home (  {{ userEmail }} )
+              </nuxt-link>
+            </td>
+          </tr>
+          <template v-for="(lesson, index) in UserLessons">
             <tr class="sidebar-table-row">
-              <td class="sidebar-table-column">
-                <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.studentlessonid }" >
-                  Les {{ lesson.studentlessonid}}
-                </nuxt-link>
-              </td>
+              <template v-if="lesson.overallprogress == 1">
+                <td class="sidebar-table-column-completed">
+                  <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.lessonid  + `&index=${index}`}" >
+                    Les {{ index + 1 }}
+                  </nuxt-link>
+                </td>
+              </template>
+              <template v-else>
+                <td class="sidebar-table-column">
+                  <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.lessonid  + `&index=${index}`}" >
+                    Les {{ index + 1 }}
+                  </nuxt-link>
+                </td>
+              </template>
             </tr>
           </template>
+          <tr v-show="!IsStudent" class="sidebar-table-row">
+            <td class="sidebar-table-column">
+              <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `classmanagement`}" >
+                Klas management
+              </nuxt-link>
+            </td>
+          </tr>
         </template>
         <template v-else>
           <tr class="sidebar-table-row">
-            <td class="sidebar-table-column">
-              <nuxt-link v-on:click.native="closeSidebarPanel()" to="login" >
-                  Login
-              </nuxt-link>
+            <td class="sidebar-table-column-Login">
+              Gebruiker
+              <br>
+              <input v-model="username" placeholder=" vul gebruikersnaam in" class="userid">
+              <br>
+              <br>
+              wachtwoord
+              <br>
+              <input v-model="password" type="password" placeholder="vul wachtwoord in" class="password">
+              <br>
+              <br>
+              <button @click="Login"  class="loginbutton"> log in </button>
             </td>
           </tr>
         </template>
@@ -45,10 +69,11 @@ import Sidebar from "./Sidebar.vue";
 export default {
   data() {
     return {
-      lessons: []
+      lessons: [],
+      username: '',
+      password:'',
     }
   },
-
   components: {
     Burger,
     Sidebar
@@ -61,14 +86,39 @@ export default {
       return this.$store.state.Lessons;
     },
     userEmail() {
-      console.log(this.$store.state.userEmail);
       return this.$store.state.userEmail;
+    },
+    IsStudent()  {
+      if(this.$store.state.userRole === 'Student')  {
+        return true
+      }
+      else  {
+        return false;
+      }
     }
   },
   methods: {
       closeSidebarPanel()  {
         this.$store.commit('Menu/toggleNav');
       },
+      async Login() {
+        var urlAPI = `${this.$config.baseURL}/users?UserID=\'${this.username}\'`;
+        var response = await fetch(urlAPI);
+        this.tempLessons = await response.json();
+        console.log(this.tempLessons);
+        if(this.tempLessons.vwUsers.length > 0) {
+          this.$store.commit('setUserEmail', this.username);
+          this.$store.commit('setUserRole', this.tempLessons.vwUsers[0].UserRole);
+          urlAPI = `${this.$config.baseURL}/userLessons?UserID=\'${this.userEmail}\'`;
+          response = await fetch(urlAPI);
+          this.tempLessons = await response.json();
+          this.$store.commit('initialiseLessons', this.tempLessons);
+          this.$router.push("/");
+        }
+        else{
+          alert('Invalid User');
+        }
+      }
   },
 
 }
@@ -97,7 +147,54 @@ export default {
   font-weight: bold;
   font-size: 14px;
 }
-
+.sidebar-table-column-completed {
+  color: green;
+  background-color: #4D4C4C;
+  width: 300px;
+  vertical-align: middle;
+  padding-left: 20px;
+  font: lato;
+  font-weight: bold;
+  font-size: 14px;
+}
+.sidebar-table-column-Login {
+  color: white;
+  background-color: black;
+  width: 300px;
+  vertical-align: middle;
+  padding-left: 20px;
+  font: lato;
+  font-weight: bold;
+  font-size: 14px;
+}
+.userid {
+  background-color: white;
+  color:grey;
+  padding: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+.password {
+  background-color: white;
+  color:grey;
+  padding: 5px;
+  border-radius: 3px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 5px;
+}
+.loginbutton  {
+  background-color: blue;
+  color:white;
+  font-size: 12px;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  border-radius: 4px;
+}
 .sidebar-table-row {
   height: 36px;
 }

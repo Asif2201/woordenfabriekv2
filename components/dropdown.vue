@@ -1,7 +1,7 @@
 <template>
   <div class="relative">
     <select class="dropdowntext" v-model="selectedAnswer" >
-      <option  value=""  selected disabled>Kies</option>
+      <option  value="-1"  selected disabled>Kies</option>
       <option v-for="answer in data" :value="answer.id" :Key="answer.id">{{  answer.name.substring(0,30) }}</option>
     </select>
     <br><br>
@@ -15,7 +15,7 @@ export default ({
   },
   data() {
     return  {
-      selectedAnswer: 0,
+      selectedAnswer: -1,
     }
   },
   watch:  {

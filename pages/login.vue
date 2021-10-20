@@ -63,8 +63,7 @@ export default {
   },
   async fetch() {
     if(this.userEmail !== '') {
-      const urlAPI = `${this.$config.baseURL}/userLessons?studentEmail=${this.userEmail}`;
-      console.log(urlAPI);
+      const urlAPI = `${this.$config.baseURL}/userLessons?studentemail=\'${this.userEmail}\'`;
       this.tempLessons = await fetch(
         urlAPI
       ).then(res => res.json())
@@ -77,7 +76,6 @@ export default {
       if(this.$store.getters.isValidEmail(this.username)) {
         this.$store.commit('setUserEmail', this.username);
         this.$fetch();
-        console.log(this.tempLessons);
         this.$router.push("/");
       }
       else{

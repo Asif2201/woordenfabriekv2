@@ -30,21 +30,33 @@
                       </span>
                   </td>
                   <td>
-                    <input type="radio" :name="'wordtype_' + ObjIndex" value="Cat1" v-model="Object.UserAnswer">
+                    <input class="questionwordsClicked" type="radio" :name="'wordtype_' + ObjIndex" value="Cat1" v-model="Object.studentAnswer">
                     <label for="one" class="questionwordsClicked"> Selecteer categorie </label>
                   </td>
                   <td>
-                    <input type="radio" :name="'wordtype_' + ObjIndex" value="Cat2" v-model="Object.UserAnswer">
+                    <input class="questionwordsClicked" type="radio" :name="'wordtype_' + ObjIndex" value="Cat2" v-model="Object.studentAnswer">
                     <label for="one" class="questionwordsClicked"> Selecteer categorie </label>
+                  </td>
+                  <td>
+                    <div>
+                        <p v-show="Object.answerCorrect" class="text-blue">
+                          <img src="~/assets/correct.png" width="40" height="40" />
+                        </p>
+                        <p v-show="!Object.answerCorrect" class="text-blue">
+                          <img src="~/assets/incorrect.png" width="40" height="40" />
+                        </p>
+                      </div>
                   </td>
               </tr>
             </template>
+            <tr>
 
-              <tr>
-              <td><KlaarButton @challengeCompleted="challengeCompleted()" /></td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
+              <td>&nbsp;</td>
+
               </tr>
+
         </tbody>
         </table>
 
@@ -104,61 +116,15 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].UserAnswer = '';
           QuestionObjectList[i].answerCorrect = false;
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
       return QuestionObjectList;
     },
 
-    challengeCompleted: function() {
-      var PostString = '';
-      var PostObject = {};
-      for (var i = 0; i < this.Challenge2.length; i++) {
 
-        PostObject= {};
-        this.EvaluateAnswer(i);
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentID = 'S1';
-        PostObject.LessonID = this.LessonID;
-        PostObject.LevelID = this.Level;
-        PostObject.userAnswer = this.Challenge2[i].UserAnswer;
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = 'No explanation required';
 
-        PostString = JSON.stringify(PostObject);
 
-        console.log(PostString);
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        PostString = '';
-      }
-      if(this.Challenge2[0].feedbackType === 2) {
-        this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
-    },
-    EvaluateAnswer: function(index)  {
-      var UserChoice =-1;
-      var correctAnswer = -1;
-      correctAnswer = this.Challenge2[index].cat1label.includes("*") ? 0 : 1;
-      console.log(index + '-' + correctAnswer)
-      UserChoice = this.Challenge2[index].UserAnswer == 'Cat1' ? 0 : 1;
-      console.log(index + '-' + UserChoice);
-      if(UserChoice === correctAnswer) {
-        this.Challenge2[index].answerCorrect = true;
-        this.TotalCorrect += 1;
-      }
-    }
   },
 
 }
@@ -177,6 +143,7 @@ export default {
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
+    pointer-events: none;
   }
   th, td {
     padding: 15px;

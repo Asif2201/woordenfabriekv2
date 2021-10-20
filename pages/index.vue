@@ -92,7 +92,6 @@ export default {
       var newPropertyID = this.userEmail;
       PostString += `"'` + newPropertyID + `'"  : "StudentEmail",`;
       PostString += `"1" : "LessonID" }`;
-      console.log(PostString);
       this.$axios.post('/ResetData', PostString, {headers: {
         'content-type': 'application/json',},})
       .then((response) => {
@@ -100,7 +99,21 @@ export default {
       }, (error) => {
         console.log(error);
       });
-      alert('Reset complete')
+      for(var i= 2;i <=6;i++) {
+        PostString = '{ '
+        newPropertyID = this.userEmail;
+        PostString += `"'` + newPropertyID + `'"  : "StudentEmail",`;
+        PostString += `"` + i + `" : "LessonID" }`;
+        this.$axios.post('/ResetData', PostString, {headers: {
+          'content-type': 'application/json',},})
+        .then((response) => {
+          console.log('Ok');
+        }, (error) => {
+          console.log(error);
+        });
+      }
+      alert('Reset complete 1');
+
     },
   }
 }
