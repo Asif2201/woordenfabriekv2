@@ -18,14 +18,14 @@
             <tr class="sidebar-table-row">
               <template v-if="lesson.overallprogress == 1">
                 <td class="sidebar-table-column-completed">
-                  <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.lessonid  + `&index=${index}`}" >
+                  <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.studentlessonid  + `&index=${index}`}" >
                     Les {{ index + 1 }}
                   </nuxt-link>
                 </td>
               </template>
               <template v-else>
                 <td class="sidebar-table-column">
-                  <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.lessonid  + `&index=${index}`}" >
+                  <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.studentlessonid  + `&index=${index}`}" >
                     Les {{ index + 1 }}
                   </nuxt-link>
                 </td>

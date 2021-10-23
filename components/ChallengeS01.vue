@@ -35,18 +35,14 @@
                   </td>
                   <td> &nbsp;  &nbsp; </td>
             </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
           </template>
           <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
               <td>
                 <KlaarButton @challengeCompleted="challengeCompleted()" />
              </td>
+              <td> &nbsp; </td>
+              <td> &nbsp; </td>
+
             </tr>
         </tbody>
         </table>
@@ -84,9 +80,12 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-    console.log(`Challenge ID for API:  ${ChallengeID}`);
+    const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
+    const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=S01&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
+
+    console.log(URLAPI);
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=S01&challengelevelid=\'${ChallengeID}\'`
+      URLAPI
     ).then(res => res.json())
   },
   methods:  {
@@ -101,6 +100,8 @@ export default {
     },
     splitWord(word)  {
       if (word) {
+        word = word.replace('[', '');
+        word = word.replace(']', '');
         return word.split(';');
       } else  {
         return '';

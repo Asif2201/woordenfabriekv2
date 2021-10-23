@@ -60,11 +60,25 @@ export default {
       this.Challenge2 = this.JSONtoObj();
     }
   },
+  errorCaptured: function(err) {
+    console.log('Error caught: ', err.message);
+    this.fetch();
+    return false;
+  },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-      this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K1&challengelevelid=\'${ChallengeID}\'`
-    ).then(res => res.json())
+    const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
+    const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K1&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
+    const  URLAPI1 =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K1&challengelevelid=\'${ChallengeID}\'&Student_ID=\''`
+    const headers = { "cache-control": "no-store, max-age=0" }
+
+
+    console.log(URLAPI);
+    const resp1 = await this.$axios.get(URLAPI1, { headers });
+
+    const resp = await this.$axios.get(URLAPI, { headers });
+    this.Challenge1 = await resp.data;
+
   },
   methods:  {
     splitWord(word)  {

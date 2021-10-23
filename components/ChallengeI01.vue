@@ -91,10 +91,14 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-    console.log('ChallengeID: I01' + ChallengeID)
+    const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
+    const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=I01&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
+
+    console.log(URLAPI);
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=I01&challengelevelid=\'${ChallengeID}\'`
+      URLAPI
     ).then(res => res.json())
+
   },
   methods:  {
     splitWord(word)  {

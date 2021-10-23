@@ -19,8 +19,7 @@
                   </span>
                 </td>
                 <td>
-                      <LEButtons :Disabled="false" :data="AnswerOptions" :SelectedButton="Object.UserAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
-
+                      <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
             </tr>
             <tr>
@@ -41,9 +40,7 @@
               <td> &nbsp; </td>
             </tr>
             <tr>
-              <td>
-                <KlaarButton @challengeCompleted="challengeCompleted()" />
-              </td>
+              <td> &nbsp; </td>
               <td> &nbsp; </td>
 
             </tr>
@@ -88,9 +85,10 @@ export default {
     this.AnswerOptions.push({id:2, name:'Niet waar'});
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=LE1&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
-
+    const  URLAPI1 =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=C01&challengelevelid=\'${ChallengeID}\'&Student_ID=\''`;
+    const headers = { "cache-control": "no-store, max-age=0" };
     console.log(URLAPI);
-    const headers = { "cache-control": "no-store, max-age=0" }
+    const resp1 = await this.$axios.get(URLAPI1, { headers });
     const resp = await this.$axios.get(URLAPI, { headers });
     this.Challenge1 = await resp.data;
 
@@ -115,62 +113,7 @@ export default {
       this.tablechanged++;
     },
 
-    challengeCompleted: function() {
-      var PostString = '';
-      var newPropertyID = '';
-      var PostObject = {};
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        this.EvaluateAnswer(i);
-        PostObject = {};
-
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
-
-        newPropertyID = this.Challenge2[i].UserAnswer;
-        PostObject.userAnswer = newPropertyID;
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = 'No Explanation requested';
-
-        PostString = JSON.stringify(PostObject);
-
-        console.log(PostString);
-
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        PostString = '';
-      }
-      if(this.Challenge2[0].feedbackType === 2) {
-              this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.forceRerender();
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
-    },
-    EvaluateAnswer: function(index)  {
-      let useranswer2 = '';
-      let correctAnswer = '';
-
-      this.Challenge2[index].answerCorrect = false;
-      correctAnswer = this.Challenge2[index].answer;
-      useranswer2 = this.Challenge2[index].UserAnswer;
-      if(correctAnswer === useranswer2) {
-        this.Challenge2[index].answerCorrect = true;
-        this.TotalCorrect += 1;
-      }
-
-    }
-  },
-
+  }
 }
 </script>
 <style scoped>

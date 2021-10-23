@@ -1,8 +1,8 @@
 <template>
   <div class="relative">
-    <button @click ="selectedAnswer(0)" :class="{ selectedB:isSelected(0) }" class="buttonWaar"> {{ data[0].name  }}</button>
-    <button @click ="selectedAnswer(1)" :class="{ selectedB:isSelected(1) }" class="buttondeelWaar"> {{ data[1].name }}</button>
-    <button @click ="selectedAnswer(2)" :class="{ selectedB:isSelected(2) }" class="buttonOnWaar"> {{ data[2].name }}</button>
+    <button :disabled="isDisabled" @click ="selectedAnswer(0)" :class="{ selectedB:isSelected(0) }" class="buttonWaar"> {{ data[0].name  }}</button>
+    <button :disabled="isDisabled" @click ="selectedAnswer(1)" :class="{ selectedB:isSelected(1) }" class="buttondeelWaar"> {{ data[1].name }}</button>
+    <button :disabled="isDisabled" @click ="selectedAnswer(2)" :class="{ selectedB:isSelected(2) }" class="buttonOnWaar"> {{ data[2].name }}</button>
 </div>
 </template>
 
@@ -11,15 +11,20 @@
 export default ({
   props:  {
     data: [],
-    SelectedButton:0,
+    SelectedButton: Number,
+    Disabled: Boolean
   },
-
+  computed: {
+    isDisabled() {
+      return this.$props['Disabled'];
+    }
+  },
   methods:  {
     selectedAnswer: function (whichButton, event)  {
       this.$emit("AnswerSelected", whichButton);
     },
     isSelected(index) {
-      if(this.$props['SelectedButton'] === index)  {
+      if(this.$props['SelectedButton'] == index)  {
         return true;
       } else{
         return false;

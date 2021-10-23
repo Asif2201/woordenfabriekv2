@@ -24,13 +24,30 @@
               Onderwijs
             </span>
             <br>
-            <input class="fieldInput" v-model="lOnderwijs">
+            <select class="fieldInput" v-model="lOnderwijs">
+              <option value='VWO'> VWO </option>
+              <option value='HAVO/VWO'> HAVO/VWO </option>
+              <option value='HAVO'> HAVO </option>
+              <option value='VMBO-t/HAVO'> VMBO-t/HAVO </option>
+              <option value='VMBO-t'> VMBO-t/HAVO </option>
+              <option value='VMBO gemengd'> VMBO gemengd </option>
+              <option value='VMBO kader'> VMBO kader </option>
+              <option value='VMBO basis'> VMBO basis </option>
+              <option value='Basisonderwijs'> Basisonderwijs </option>
+            </select>
             <br>
             <span class="fieldlabel">
               Jaar
             </span>
             <br>
-            <input class="fieldInput" v-model="lJaar">
+            <select class="fieldInput" v-model="lJaar">
+              <option value='4e klas'> 4e klas </option>
+              <option value='3e klas'> 3e klas </option>
+              <option value='2e klas'> 2e klas </option>
+              <option value='brugklas'> brugklas </option>
+              <option value='groep 8'> groep 8 </option>
+              <option value='groep 7'> groep 7 </option>
+            </select>
             <br>
             <span class="fieldlabel">
               Naam

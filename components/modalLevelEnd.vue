@@ -57,6 +57,7 @@
     left: var(--modal-left);
     width: var(--modal-width);
     height: var(--modal-height);
+    border: solid gray 1px;
   }
   .modal-backdrop {
     position: fixed;

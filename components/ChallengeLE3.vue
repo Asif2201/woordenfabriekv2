@@ -197,12 +197,20 @@ export default {
     this.AnswerOptions.push({id:0, name:'Waar'});
     this.AnswerOptions.push({id:1, name:'Deel waar'});
     this.AnswerOptions.push({id:2, name:'Niet waar'});
+
+    const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
+
     this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/StudentLEAnswers?StudentID=S1`
+      `${this.$config.baseURL}/StudentLEAnswers?StudentID=\'${StudentID}\'`
     ).then(res => res.json())
-    this.Challenge4 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=LE3&challengelevelid=\'${ChallengeID}\'`
+
+    const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=LE3&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
+
+    console.log(URLAPI);
+    this.Challenge4= await fetch(
+      URLAPI
     ).then(res => res.json())
+
 
   },
   methods:  {

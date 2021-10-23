@@ -48,7 +48,7 @@ export const mutations = {
     var i;
     const studentlessonID = payload.slid.trim();
     for(i = 0; i < state.Lessons.length;i++)  {
-      if(state.Lessons[i].lessonid == studentlessonID)  {
+      if(state.Lessons[i].studentlessonid == studentlessonID)  {
         lessonIndex = i;
         break;
       }

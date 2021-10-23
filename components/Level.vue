@@ -1,7 +1,5 @@
 <template>
-  <div class="bg-white">
-    <div class="challengeBox" :key="ChallengeIndex">
-    <div>
+  <div :key="renderKey" id="ChallengeContents" class="challengeBox">
       <ChallengeHeader :key="HeaderKey" :Type="Challenges1[ChallengeIndex].ChallengeTypeID" :Title="Challenges1[ChallengeIndex].ChallengeTitle" :Subtitle="Challenges1[ChallengeIndex].ChallengeSubtitle" />
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'K01'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
@@ -92,7 +90,12 @@
         </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'LE1'">
-        <ChallengeLE1 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
+          <ChallengeLE1Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
+        <template v-else>
+          <ChallengeLE1 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'LE2'">
         <ChallengeLE2 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
@@ -108,23 +111,19 @@
           <ChallengeI01 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
-      <br>
-      <div class="footerbox">
-      <button class="ml-10 hover:bg-gray-500 bg-gray-300 px-4 py-4 font-bold text-black" v-on:click="ToggleshowHelpText">  ?  </button>
-      <modalChallenge :Top="'800px'" :Left="'200px'" :width="'500px'" :key=helptextvisible v-show="helptextvisible" @close="closeModal">
-        <template v-slot:header>
-        </template>
-        <template v-slot:body>
-          {{ Challenges1[ChallengeIndex].HelpText }}
-        </template>
-        <template v-slot:footer>
-        </template>
-      </modalChallenge>
 
+        <button class="btnHelp" v-on:click="ToggleshowHelpText">  ?  </button>
+        <modalChallenge :Top="'700px'" :Left="'200px'" :width="'500px'" :height="'100px'" :key=helptextvisible v-show="helptextvisible" @close="closeModal">
+          <template v-slot:header>
+          </template>
+          <template v-slot:body>
+            {{ Challenges1[ChallengeIndex].HelpText }}
+          </template>
+          <template v-slot:footer>
+          </template>
+        </modalChallenge>
+        <button v-show="Challenges1[ChallengeIndex].IsCompleted === 'Yes'" class="btnNext" v-on:click="GotoNextChallenge">  Next Challenge </button>
       </div>
-    </div>
-  </div>
-</div>
 </template>
 <script>
 import modalChallenge from '../components/modalChallenge.vue';
@@ -144,6 +143,7 @@ export default {
       totalQuestions: 0,
       helptextvisible: false,
       HeaderKey: 0,
+      renderKey: 0,
     }
   },
 
@@ -176,6 +176,10 @@ export default {
 
     ToggleshowHelpText()  {
       this.helptextvisible = !this.helptextvisible;
+    },
+    GotoNextChallenge() {
+      this.$emit("ScrollClick", "next");
+
     },
     completeChallenge(totalCorrect, totalQuestions) {
       var PostString = '';
@@ -236,15 +240,14 @@ export default {
         this.totalCorrect = totalCorrect;
         this.totalQuestions = totalQuestions;
         this.$emit('LevelComplete()');
-
       }
       else{
         this.$store.state.Lessons[x].Levels[y].Challenges[this.ChallengeIndex+1].IsCurrent = 'Yes';
         this.isModalVisible = true;
         this.totalCorrect = totalCorrect;
         this.totalQuestions = totalQuestions;
+        this.renderKey++;
       }
-
     },
 
     formatDate(date) {
@@ -269,18 +272,43 @@ export default {
     float: right;
   }
   .challengeBox {
-    display: flex;
-    width:70%;
-    height: 575px;
+    width:98%;
+    height: 600px;
+    background-color: white;
+    position: relative;
   }
-  .footerbox  {
+
+  .btnHelp  {
     position: absolute;
-    top: 640px;
-    width:100%;
+    left:    0;
+    bottom:   0;
+    background-color: lightgray;
+    font-weight: bold;
+    color: black;
+    font-family: lato;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-bottom: 4px;
+    padding-top:4px;
+    font-size:18px;
   }
-  .ChallengeResult  {
-    position:absolute;
-    left: 1300px;
-    top: 5px;
+  .btnNext  {
+    position: absolute;
+    right:    0;
+    bottom:   0;
+    background-color: rgb(187, 115, 127);
+    font-weight: bold;
+    color: white;
+    font-family: lato;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 8px;
+    padding-top:8px;
+    font-size:24px;
+
+
+  }
+  .btnHelp:hover  {
+    background-color: darkgray;
   }
 </style>

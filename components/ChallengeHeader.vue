@@ -4,7 +4,7 @@
           <span class="text-pink-300 text-xl font-lato font-bold"> {{ Type }}</span>
           <span class="text-white-300 text-xl font-lato font-bold"> {{ `| ` + Title }}</span>
           <p></p>
-          <span class="text-gray-500 text-sm font-lato"> {{ Subtitle }}</span>
+          <span class="text-gray-500 text-lg font-lato"> {{ Subtitle }}</span>
         </div>
         <div class="absolute top-0 right-0 h-125 w-332 ...">
           <img :src="require(`../assets/radb_icon_${this.Type.substring(0,1)}.png`)" alt="ChallengeK01" width="332" height="125">
@@ -26,7 +26,7 @@ export default ({
 </script>
 <style scoped>
   .ChallengeHeaderPanel {
-    width: 1470px;
+    width: 100%;
     position: relative;
     height: 160px;
     background-color: black;

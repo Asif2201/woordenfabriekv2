@@ -70,10 +70,14 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
+    const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
+    const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K1&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
 
-    this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K1&challengelevelid=\'${ChallengeID}\'`
-    ).then(res => res.json())
+    console.log(URLAPI);
+    const headers = { "cache-control": "no-store, max-age=0" }
+    const resp = await this.$axios.get(URLAPI, { headers });
+    this.Challenge1 = await resp.data;
+
   },
   methods:  {
     splitWord(word)  {
@@ -99,7 +103,7 @@ export default {
     },
     morphemeClick: function(word, char, event) {
       if(char > 0 && char < this.Challenge2[word].word.length)  {
-        if(this.Challenge2[word].word[char] !== '|')  {
+        if(this.Challenge2[word].word[char] !== '|' && this.Challenge2[word].word[char-1] !== '|')  {
           this.Challenge2[word].word.splice(char, 0, '|');
         }
       }
@@ -125,8 +129,8 @@ export default {
         PostObject = {};
 
         PostObject.id = this.Challenge2[i].id;
-        PostObject.studentID = 'S1';
-        PostObject.LessonID = this.LessonID;
+        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
         PostObject.LevelID = this.Level;
         PostObject.userAnswer = this.Challenge2[i].word.join("");
         PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';

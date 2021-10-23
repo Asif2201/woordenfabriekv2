@@ -84,21 +84,32 @@ export default {
       isKlaar: false,
     }
   },
+  errorCaptured: function(err) {
+    console.log('Error caught: ', err.message);
+    this.fetch();
+    return false;
+  },
   watch: {
     Challenge1()  {
-      this.Challenge2 = this.JSONtoObj();
+      if(this.Challenge1.LearningQuestions != undefined)  {
+        this.Challenge2 = this.JSONtoObj();
+      }
     }
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
+    const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
 
+    this.Challenge1 = [];
     this.AnswerOptions.push({id:0, name:'Waar'});
-    this.AnswerOptions.push({id:1, name:'Deel waar'});
+    this.AnswerOptions.push({id:1, name:'Deels waar'});
     this.AnswerOptions.push({id:2, name:'Niet waar'});
-    this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=C01&challengelevelid=\'${ChallengeID}\'`
-    ).then(res => res.json())
 
+    const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=C01&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
+    console.log(URLAPI);
+    const headers = { "cache-control": "no-store, max-age=0" }
+    const resp = await this.$axios.get(URLAPI, { headers });
+    this.Challenge1 = await resp.data;
   },
   methods:  {
     forceRerender() {
@@ -137,8 +148,8 @@ export default {
         this.EvaluateAnswer(i);
 
         PostObject.id = this.Challenge2[i].id;
-        PostObject.studentID = 'S1';
-        PostObject.LessonID = this.LessonID;
+        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
         PostObject.LevelID = this.Level;
         PostObject.userAnswer = this.Challenge2[i].UserAnswer;
         PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';

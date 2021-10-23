@@ -1,11 +1,9 @@
 <template>
     <div id="HeadingPanel" class="LevelHeadingPanel">
       <span class="LevelTitle">
-        {{ 'Level ' + LevelID + ' |'  }}
+        {{ 'Level ' + LevelID  }}
       </span>
-      <span class="LevelSubtitle">
-        {{ LevelTitle }}
-      </span>
+
     </div>
 </template>
 <script>

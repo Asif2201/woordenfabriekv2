@@ -82,10 +82,13 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-    this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=V02&challengelevelid=\'${ChallengeID}\'`
-    ).then(res => res.json())
+    const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
+    const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=V02&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
 
+    console.log(URLAPI);
+    this.Challenge1 = await fetch(
+      URLAPI
+    ).then(res => res.json())
   },
   methods:  {
     forceRerender() {

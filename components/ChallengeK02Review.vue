@@ -31,16 +31,6 @@
                     <br>
                     <input value="2" :class="answerClass(ObjIndex, 1, 2)" name="M1" type="radio" id="M13" v-model="Object.UserAnswer1">
                     <label :class="answerClass(ObjIndex, 1, 2)" for="M13"> {{ Object.answer1.split(";")[2].replace("*", "")}} </label>
-                    <span>
-                      <div>
-                        <p v-show="Object.answerCorrect" class="text-blue">
-                          <img src="~/assets/correct.png" width="40" height="40" />
-                        </p>
-                        <p v-show="!Object.answerCorrect" class="text-blue">
-                          <img src="~/assets/incorrect.png" width="40" height="40" />
-                        </p>
-                      </div>
-                    </span>
                 </td>
                 <td v-show="Object.Morfeem2.length > 0">
                     <span v-if="Object.Morfeem2 != Object.word" class="questionwords">
@@ -64,16 +54,7 @@
                     <br>
                     <input value="2" :class="answerClass(ObjIndex, 2, 2)" name="M2" type="radio" id="M23" v-model="Object.UserAnswer2">
                     <label :class="answerClass(ObjIndex, 2, 2)" for="M23"> {{ Object.answer2.split(";")[2].replace("*", "")}} </label>
-                    <span>
-                      <div>
-                        <p v-show="Object.answerCorrect" class="text-blue">
-                          <img src="~/assets/correct.png" width="40" height="40" />
-                        </p>
-                        <p v-show="!Object.answerCorrect" class="text-blue">
-                          <img src="~/assets/incorrect.png" width="40" height="40" />
-                        </p>
-                      </div>
-                    </span>
+
                 </td>
               </tr>
               <tr>
@@ -96,16 +77,7 @@
                     <br>
                     <input value="2" :class="answerClass(ObjIndex, 3, 2)"  name="M3" type="radio" id="M33" v-model="Object.UserAnswer3">
                     <label :class="answerClass(ObjIndex, 3, 2)"  for="M33"> {{ Object.answer3.split(";")[2].replace("*", "")}} </label>
-                    <span>
-                      <div>
-                        <p v-show="Object.answerCorrect" class="text-blue">
-                          <img src="~/assets/correct.png" width="40" height="40" />
-                        </p>
-                        <p v-show="!Object.answerCorrect" class="text-blue">
-                          <img src="~/assets/incorrect.png" width="40" height="40" />
-                        </p>
-                      </div>
-                    </span>
+
                 </td>
                 <td v-show="Object.Morfeem4.length > 0">
                     <span v-if="Object.Morfeem4 != Object.word" class="questionwords">
@@ -123,16 +95,7 @@
                     <br>
                     <input value="2" :class="answerClass(ObjIndex, 4, 2)" name="M4" type="radio" id="M43" v-model="Object.UserAnswer4">
                     <label :class="answerClass(ObjIndex, 4, 2)" for="M43"> {{ Object.answer4.split(";")[2].replace("*", "")}} </label>
-                    <span>
-                      <div>
-                        <p v-show="Object.answerCorrect" class="text-blue">
-                          <img src="~/assets/correct.png" width="40" height="40" />
-                        </p>
-                        <p v-show="!Object.answerCorrect" class="text-blue">
-                          <img src="~/assets/incorrect.png" width="40" height="40" />
-                        </p>
-                      </div>
-                    </span>
+
                 </td>
 
               </tr>
@@ -168,21 +131,34 @@ export default {
       this.Challenge2 = this.JSONtoObj();
     }
   },
+  errorCaptured: function(err) {
+    console.log('Error caught: ', err.message);
+    this.fetch();
+    return false;
+  },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-    const URLforAPI = `${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K02&challengelevelid=\'${ChallengeID}\'`
-    this.Challenge1 = await fetch(
-      URLforAPI
-    ).then(res => res.json())
+    const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
+    const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K02&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
+    const  URLAPI1 =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K02&challengelevelid=\'${ChallengeID}\'&Student_ID=\''`
+    const headers = { "cache-control": "no-store, max-age=0" }
+    console.log(URLAPI);
+    const resp1 = await this.$axios.get(URLAPI1, { headers });
+
+    const resp = await this.$axios.get(URLAPI, { headers });
+    this.Challenge1 = await resp.data;
 
   },
   methods:  {
     answerClass(QuestionIndex, index, optionindex)  {
       const propertyToCheck = "correctAnswer" + index;
+      const propertyToCheck2 = "UserAnswer" + index;
       if(this.Challenge2[QuestionIndex][propertyToCheck] === optionindex)  {
         return 'answeroptionsCorrect';
       }
-      else{
+      else if(this.Challenge2[QuestionIndex][propertyToCheck2] == optionindex) {
+        return 'answeroptionsWrong';
+      } else  {
         return 'answeroptions';
       }
     },
@@ -278,11 +254,12 @@ export default {
     text-align: justify;
   }
   .T2_Table {
-    width: 100%;
+    width: 80%;
     padding: 20px;
     margin-top:20px;
     margin-left:200px;
     height: 300px;
+    table-layout: fixed;
   }
   .T2_Table tr  {
     height: 150px;
@@ -308,6 +285,16 @@ export default {
   }
   .answeroptionsCorrect {
     color: green;
+    font-family: Lato;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: bold;
+    height: 10px;
+    width: 10px;
+    pointer-events: none;
+  }
+  .answeroptionsWrong {
+    color: red;
     font-family: Lato;
     font-size: 12px;
     font-style: normal;

@@ -1,22 +1,22 @@
 <template>
-  <div class="modal-backdrop">
-    <div id="a" :style="cssProps">
-      <header class="modal-header">
-        <slot name="header">
+  <div class="modal-backdrop2">
+    <div id="a2" :style="cssProps">
+      <header class="modal-header2">
+        <slot name="header2">
         </slot>
         <button
           type="button"
-          class="btn-close"
+          class="btn-close2"
           @click="close"
         >
           x
         </button>
       </header>
-      <section class="modal-body">
+      <section class="modal-body2">
         <slot name="body">
         </slot>
        </section>
-      <footer class="modal-footer">
+      <footer class="modal-footer2">
         <slot name="footer">
         </slot>
       </footer>
@@ -38,7 +38,7 @@
           '--modal-top': this._props.Top,
           '--modal-left': this._props.Left,
           '--modal-width': this._props.width,
-          '--modal-height': this._props.height
+          '--modal-height': this._props.height,
         }
       }
     },
@@ -51,7 +51,7 @@
   };
 </script>
 <style>
-  #a  {
+  #a2  {
     background: #FCFFF5;
     position: absolute;
     top: var(--modal-top);
@@ -59,7 +59,7 @@
     width: var(--modal-width);
     height: var(--modal-height);
   }
-  .modal-backdrop {
+  .modal-backdrop2 {
     position: fixed;
     top: 0;
     bottom: 0;
@@ -72,27 +72,26 @@
   }
 
 
-  .modal-header,
-  .modal-footer {
-    padding: 15px;
+  .modal-header2,
+  .modal-footer2 {
     display: flex;
   }
 
-  .modal-header {
+  .modal-header2 {
     position: relative;
     font-family: lato;
     font-size: 12px;
     color: black;
-    align-self: center;
+    align-self: right;
     vertical-align: text-top;
   }
 
-  .modal-footer {
+  .modal-footer2 {
     flex-direction: column;
     justify-content: flex-end;
   }
 
-  .modal-body {
+  .modal-body2 {
     position: relative;
     font-family: lato;
     font-size: 14px;
@@ -101,16 +100,19 @@
     vertical-align: text-top;
   }
 
-  .btn-close {
+  .btn-close2 {
     position: relative;
     top: 0;
-    right:0;
+    right:0px;
     border: none;
+    padding-left: 2px;
+    padding-bottom: 3px;
+    padding-right: 3px;
     font-size: 20px;
     cursor: pointer;
     font-weight: bold;
-    color: darkgray;
-    background: transparent;
+    color: grey;
+    background: lightgray;
   }
 
 

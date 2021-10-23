@@ -6,7 +6,7 @@
     <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
     <div v-else class="ChallengePanel">
     <LevelHeader :key="RenderLevel" :LevelID="UserLevels[$store.state.Lessons[$store.state.currentDisplayLesson].currentDisplayLevel].Levelid" :LevelTitle="UserLevels[$store.state.Lessons[$store.state.currentDisplayLesson].currentDisplayLevel].leveltitle" />
-    <Level  :key="RenderLevel" @LevelComplete()="showModal()" />
+    <Level  :key="RenderLevel" @LevelComplete()="showModal()" @ScrollClick="PrevNextChallenge($event)" />
      <modalLevelEnd :Top="'300px'" :Left="'600px'" :width="'400px'" :height="'300px'" :key=isModalVisible v-show="isModalVisible" @close="closeModal">
     <template v-slot:header>
       Image comes here
