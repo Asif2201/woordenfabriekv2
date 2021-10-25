@@ -91,12 +91,11 @@ export default {
     const ChallengeID = this._props.Challenge;
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=H05&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
-
     console.log(URLAPI);
-    this.Challenge1 = await fetch(
-      URLAPI
-    ).then(res => res.json())
 
+    const headers = { "cache-control": "no-store, max-age=0" }
+    const resp = await this.$axios.get(URLAPI, { headers });
+    this.Challenge1 = await resp.data;
   },
   methods:  {
     initWordGrid()  {
@@ -148,8 +147,8 @@ export default {
         PostObject = {};
 
         PostObject.id = this.Challenge2[i].id;
-        PostObject.studentID = 'S1';
-        PostObject.LessonID = this.LessonID;
+        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
         PostObject.LevelID = this.Level;
         PostObject.userAnswer = this.Challenge2[i].UserAnswerList;
         PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';

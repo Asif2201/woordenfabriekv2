@@ -1,6 +1,8 @@
 <template>
   <div :key="renderKey" id="ChallengeContents" class="challengeBox">
-      <ChallengeHeader :key="HeaderKey" :Type="Challenges1[ChallengeIndex].ChallengeTypeID" :Title="Challenges1[ChallengeIndex].ChallengeTitle" :Subtitle="Challenges1[ChallengeIndex].ChallengeSubtitle" />
+      <template v-if="Challenges1[ChallengeIndex].ChallengeTypeID !== 'LE3'">
+        <ChallengeHeader :key="HeaderKey" :Type="Challenges1[ChallengeIndex].ChallengeTypeID" :Title="Challenges1[ChallengeIndex].ChallengeTitle" :Subtitle="Challenges1[ChallengeIndex].ChallengeSubtitle" />
+      </template>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'K01'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
           <ChallengeK01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />

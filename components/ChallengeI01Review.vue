@@ -35,6 +35,11 @@
                       {{ Object.UserAnswerList[index] }}
                     </span>
                   </template>
+                  <br>
+                  <br>
+                  <span class="referenceanswer">
+                      Referentie antwoord: {{ Object.answerlist }}
+                    </span>
                 </td>
                 <td>
                   &nbsp;
@@ -99,12 +104,13 @@ export default {
     const ChallengeID = this._props.Challenge;
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=I01&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
-
+    const  URLAPI1 =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=I01&challengelevelid=\'${ChallengeID}\'&Student_ID=\''`
+    const headers = { "cache-control": "no-store, max-age=0" }
     console.log(URLAPI);
-    this.Challenge1 = await fetch(
-      URLAPI
-    ).then(res => res.json())
+    const resp1 = await this.$axios.get(URLAPI1, { headers });
 
+    const resp = await this.$axios.get(URLAPI, { headers });
+    this.Challenge1 = await resp.data;
   },
   methods:  {
     splitWord(word)  {
@@ -159,8 +165,14 @@ export default {
     font-style: normal;
     font-weight: 700;
     line-height: 200%;
-
-
+  }
+  .referenceanswer {
+    color: green;
+    font-family: lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 200%;
   }
   .paragraphheading {
     color: black;

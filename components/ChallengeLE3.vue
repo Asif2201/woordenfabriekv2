@@ -2,11 +2,10 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20 mt-5">
+      <div class="ml-20">
         <span class="LE3Heading">
           Eerdere evaluaties
         </span>
-        <br><br><br><br>
         <table class="table-fixed w-full align-center ">
           <thead>
             <tr>
@@ -20,7 +19,7 @@
                 <td>
                   <span class="questionwords">
                     {{ Object.Question }}
-                  </span>`
+                  </span>
                 </td>
                 <td>
                     <LEAnswers :data="AnswerOptions" :SelectedButton="Object.studentAnswer" />
@@ -113,43 +112,17 @@
               </tr>
               <tr>
                 <td>
-                 <br>
-                  <textarea v-model="Object.UserAnswer" placeholder="geed je antwoord hier" style="explainbox" rows="6" cols="60"> </textarea>
-                </td>
-                <td>
-                  &nbsp;
-                </td>`
-                <td>
-                  &nbsp;
+                  <textarea v-model="Object.UserAnswer" placeholder="geef je antwoord hier" class="explainbox" rows="6" cols="60"> </textarea>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  &nbsp;
-                </td>
-                <td>
-                  &nbsp;
-                </td>
-                <td>
-                  &nbsp;
-                </td>
-              </tr>
-
           </template>
             <tr>
-              <td>
-                  &nbsp;
-                </td>
-              <td>
-                &nbsp;
-              </td>
               <td>
                 <KlaarButton @challengeCompleted="challengeCompleted()" />
               </td>
             </tr>
         </tbody>
         </table>
-
       </div>
   </div>
 </template>
@@ -200,18 +173,14 @@ export default {
 
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
 
-    this.Challenge1 = await fetch(
-      `${this.$config.baseURL}/StudentLEAnswers?StudentID=\'${StudentID}\'`
-    ).then(res => res.json())
-
-    const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=LE3&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
-
-    console.log(URLAPI);
-    this.Challenge4= await fetch(
-      URLAPI
-    ).then(res => res.json())
-
-
+    const  URLAPI =`${this.$config.baseURL}/StudentLEAnswers?StudentID=\'${StudentID}\'`
+    const headers = { "cache-control": "no-store, max-age=0" }
+    const resp = await this.$axios.get(URLAPI, { headers });
+    this.Challenge1 = await resp.data;
+    const  URLAPI2 =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=LE3&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
+    console.log(URLAPI2);
+    const resp2 = await this.$axios.get(URLAPI2, { headers });
+    this.Challenge4 = await resp2.data;
   },
   methods:  {
     initWordGrid()  {
@@ -250,15 +219,15 @@ export default {
 
         PostObject = {};
 
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentID = 'S1';
-        PostObject.LessonID = this.LessonID;
+        PostObject.id = this.Challenge5[i].id;
+        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
         PostObject.LevelID = this.Level;
 
-        newPropertyID = this.Challenge2[i].UserAnswer;
+        newPropertyID = this.Challenge5[i].UserAnswer;
         PostObject.userAnswer = newPropertyID;
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
+        PostObject.answerCorrect = this.Challenge5[i].answerCorrect ? 'Yes' : 'No';
+        PostObject.feedbackType = this.Challenge5[i].feedbackType;
         PostObject.Explanation = 'No Explanation requested';
 
         PostString = JSON.stringify(PostObject);
@@ -297,11 +266,11 @@ export default {
 </script>
 <style scoped>
   .questionwords {
-    color: black;
-    font-family: var(--font-family-lato);
-    font-size: 14px;
+    color: grey;
+    font-family: lato;
+    font-size: 12px;
     font-style: normal;
-    font-weight: 700;
+    font-weight: 500;
     white-space: wrap;
     line-height: 100%;
   }
@@ -310,22 +279,24 @@ export default {
     font-family: lato;
     font-size: 18px;
     font-weight: bold;
+    text-decoration: underline;
+
   }
   .paragraphheading {
-    color: black;
-    font-family: var(--font-family-lato);
+    color: rgb(92, 87, 87);
+    font-family: lato;
     font-size: 18px;
     font-style: normal;
-    font-weight: bold;
+    font-weight: bolder;
+    line-height: 1.6;
 
-  }
-  .explainbox {
-    border:solid 1px orange;
+}
+.explainbox {
+    border: solid 1px orange;
     resize: none;
     float: right;
-    font-family: var(--font-family-lato);
+    margin-bottom: 4px;
+    font-family: lato;
     font-size: 14px;
-    font-style: normal;
-
   }
 </style>

@@ -16,7 +16,7 @@
                 <template v-if="Object.BeforeWord==='Yes'">
                   <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                     <div class="questionwords">
-                      <input class="text-base font-lato" v-model="Object.UserAnswer" />
+                      <input class="questionwordsClicked" v-model="Object.UserAnswer" />
                     </div>
                   </td>
                 </template>
@@ -30,11 +30,11 @@
                 <template v-if="Object.BeforeWord==='No'">
                   <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
                     <div class="questionwords">
-                      <input class="text-base font-lato" v-model="Object.UserAnswer" />
+                      <input class="questionwordsClicked" v-model="Object.UserAnswer" />
                     </div>
                   </td>
                 </template>
-                <td v-show="ShowResult" :key="ResultKey">
+                <td>
 
                 </td>
             </tr>
@@ -84,12 +84,13 @@ export default {
     const ChallengeID = this._props.Challenge;
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=V02&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
-
     console.log(URLAPI);
-    this.Challenge1 = await fetch(
-      URLAPI
-    ).then(res => res.json())
+
+    const headers = { "cache-control": "no-store, max-age=0" }
+    const resp = await this.$axios.get(URLAPI, { headers });
+    this.Challenge1 = await resp.data;
   },
+
   methods:  {
     forceRerender() {
       this.ResultKey += 1;
@@ -116,8 +117,8 @@ export default {
         PostObject = {};
 
         PostObject.id = this.Challenge2[i].id;
-        PostObject.studentID = 'S1';
-        PostObject.LessonID = this.LessonID;
+        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
         PostObject.LevelID = this.Level;
 
         newPropertyID = this.Challenge2[i].UserAnswer;
@@ -170,5 +171,14 @@ export default {
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
+  }
+    .questionwordsClicked {
+    color: blue;
+    font-family: lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 200%;
+    border:solid 1px orange;
   }
 </style>

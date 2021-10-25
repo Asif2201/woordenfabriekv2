@@ -39,13 +39,13 @@
                 </td>
                 <td>
                   <div class="resultimage">
-                      <p v-show="Object.answerCorrect" class="text-blue">
+                      <p v-show="Object.studentCorrect==='Yes'" class="text-blue">
                         <img src="~/assets/correct.png" width="40" height="40" />
                       </p>
-                      <p v-show="!Object.answerCorrect" class="text-blue">
+                      <p v-show="Object.studentCorrect==='No'" class="text-blue">
                         <img src="~/assets/incorrect.png" width="40" height="40" />
                       </p>
-                    </div>
+                  </div>
                 </td>
             </tr>
           </div>
@@ -90,12 +90,12 @@ export default {
     const ChallengeID = this._props.Challenge;
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=V02&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
-
+    const  URLAPI1 =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=V02&challengelevelid=\'${ChallengeID}\'&Student_ID=\''`
+    const headers = { "cache-control": "no-store, max-age=0" }
     console.log(URLAPI);
-    this.Challenge1 = await fetch(
-      URLAPI
-    ).then(res => res.json())
-
+    const resp1 = await this.$axios.get(URLAPI1, { headers });
+    const resp = await this.$axios.get(URLAPI, { headers });
+    this.Challenge1 = await resp.data;
   },
   methods:  {
     forceRerender() {

@@ -43,7 +43,7 @@
                 </td>
                 <td>
                   <template v-for="(char, index) in Object.paragraphwords">
-                    <span :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }" >
+                    <span :class="{ correctAnswer: isCorrect(ObjIndex, index), questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }" >
                         <span>
                           {{ char }}
                         </span>
@@ -70,7 +70,7 @@
                   &nbsp;
                 </td>
                 <td class = "questionwords">
-                  Your explanation
+
                 </td>
                 <td>
                   &nbsp;
@@ -142,17 +142,19 @@ export default {
     const ChallengeID = this._props.Challenge;
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=H02&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
-
+    const  URLAPI1 =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=H02&challengelevelid=\'${ChallengeID}\'&Student_ID=\''`
+    const headers = { "cache-control": "no-store, max-age=0" }
     console.log(URLAPI);
-    this.Challenge1 = await fetch(
-      URLAPI
-    ).then(res => res.json())
-
+    const resp1 = await this.$axios.get(URLAPI1, { headers });
+    const resp = await this.$axios.get(URLAPI, { headers });
+    this.Challenge1 = await resp.data;
   },
   methods:  {
     splitWord(word)  {
       if (word) {
-        return word.split(';');
+        word = word.replaceAll('[', '');
+        word = word.replaceAll(']', '');
+        return word.split(' ');
       } else  {
         return '';
       }
@@ -161,7 +163,7 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
         QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-        QuestionObjectList[i].paragraphwords = QuestionObjectList[i].paragraph.split(' ');
+        QuestionObjectList[i].paragraphwords = this.splitWord(QuestionObjectList[i].paragraph);
         QuestionObjectList[i].UserAnswerList = QuestionObjectList[i].studentAnswer;
         this.forceRenderVariable.push([]);
         for(var j=0;j < QuestionObjectList[i].paragraphwords.length;j++)  {
@@ -172,12 +174,24 @@ export default {
             this.forceRenderVariable[i].push(false);
           }
         }
+        const checkCorrect = QuestionObjectList[i].paragraph.split(' ');
+        for(j=0;j < checkCorrect.length;j++)  {
+          if(checkCorrect[j].includes("[")) {
+            QuestionObjectList[i].correctAnswer = j;
+          }
+        }
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
       return QuestionObjectList;
     },
 
-
+    isCorrect(QuestionIndex, WordIndex) {
+      if(this.Challenge2[QuestionIndex].correctAnswer == WordIndex)  {
+        return true;
+      } else  {
+        return false;
+      }
+    }
 
   },
 
@@ -200,7 +214,9 @@ export default {
     font-style: normal;
     font-weight: 700;
     line-height: 200%;
-
+  }
+  .correctAnswer  {
+    color:green;
   }
   .paragraphheading {
     color: black;

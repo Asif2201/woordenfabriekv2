@@ -54,7 +54,7 @@ export default ({
 <style scoped>
 .buttonAnswer {
   text-align: center;
-  font: normal normal bold 14px/17px Lato;
+  font: normal normal bold 12px Lato;
   letter-spacing: 0px;
   color: gray;
   opacity: 1;
@@ -63,14 +63,14 @@ export default ({
   padding: 4px 4px;
   transition-duration: 0.4s;
   border-radius: 4px;
-  width: 91px;
-  height: 36px;
+  width: 80px;
+  height: 26px;
   cursor: not-allowed;
 }
 
 .buttonOther {
   text-align: center;
-  font: normal normal bold 14px/17px Lato;
+  font: normal normal bold 12px Lato;
   letter-spacing: 0px;
   color: grey;
   opacity: 1;
@@ -79,9 +79,10 @@ export default ({
   padding: 4px 4px;
   transition-duration: 0.4s;
   border-radius: 4px;
-  width: 91px;
-  height: 36px;
+  width: 80px;
+  height: 26px;
   cursor: not-allowed;
+  margin: 2px;
 
 }
 

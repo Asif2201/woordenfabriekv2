@@ -70,7 +70,6 @@
                   &nbsp;
                 </td>
                 <td class="questionwords">
-                  Explain the answer
                 </td>
                 <td>
                   &nbsp;
@@ -83,7 +82,7 @@
                 </td>
                 <td class="questionswords">
                   <br>
-                  <textarea v-model="lAnswerExplanation" placeholder="leg je antwoord uit" class="explainbox" rows="4" cols="60"> </textarea>
+                  <textarea v-model="lAnswerExplanation" placeholder="leg jouw antwoord uit" class="explainbox" rows="4" cols="60"> </textarea>
                 </td>
                 <td>
                   &nbsp;
@@ -142,11 +141,11 @@ export default {
     const ChallengeID = this._props.Challenge;
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=H02&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
-
     console.log(URLAPI);
-    this.Challenge1 = await fetch(
-      URLAPI
-    ).then(res => res.json())
+
+    const headers = { "cache-control": "no-store, max-age=0" }
+    const resp = await this.$axios.get(URLAPI, { headers });
+    this.Challenge1 = await resp.data;
 
   },
   methods:  {
@@ -161,8 +160,8 @@ export default {
     },
     splitWord(word)  {
       if (word) {
-        word = word.replace('[', '');
-        word = word.replace(']', '');
+        word = word.replaceAll('[', '');
+        word = word.replaceAll(']', '');
         return word.split(' ');
       } else  {
         return '';
@@ -176,6 +175,16 @@ export default {
           QuestionObjectList[i].UserAnswerList = '';
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
+          this.forceRenderVariable.push([]);
+          for(var j=0;j < QuestionObjectList[i].paragraphwords.length;j++)  {
+            if(QuestionObjectList[i].UserAnswerList.includes(j))  {
+              this.forceRenderVariable[i].push(true);
+            }
+            else  {
+              this.forceRenderVariable[i].push(false);
+            }
+        }
+
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
       return QuestionObjectList;
@@ -200,8 +209,8 @@ export default {
         PostObject = {};
 
         PostObject.id = this.Challenge2[i].id;
-        PostObject.studentID = 'S1';
-        PostObject.LessonID = this.LessonID;
+        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
         PostObject.LevelID = this.Level;
         PostObject.userAnswer = this.Challenge2[i].UserAnswerList;
         PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
