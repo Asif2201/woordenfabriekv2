@@ -2,45 +2,43 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20 mt-10 overflow-x-auto">
-        <table class="border-collapse w-full">
+      <div class="tablecontainer">
+        <table class="TV02_Table">
           <thead/>
           <tbody>
-            <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
-              <tr class="bg-white w-full lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0">
-                <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                    <div class="questionwords">
+            <template v-for="(Object, ObjIndex) in Challenge2">
+              <tr>
+                <td>
+                    <span class="questionwords">
                       {{ Object.context }}
-                    </div>
+                    </span>
                 </td>
-                <template v-if="Object.BeforeWord==='Yes'">
-                  <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                    <div class="questionwords">
+                <td>
+                  <template v-if="Object.BeforeWord==='Yes'">
                       <input class="questionwordsClicked" v-model="Object.UserAnswer" />
-                    </div>
-                  </td>
-                </template>
-                <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                  <div class="questionwords">
-                    <span>
+                  </template>
+                </td>
+                <td>
+                    <span class="questionwords">
                       {{ Object.word }}
                     </span>
-                  </div>
                 </td>
-                <template v-if="Object.BeforeWord==='No'">
-                  <td class="w-1/3 lg:w-auto p-3 text-gray-800 text-center border border-b block lg:table-cell relative lg:static">
-                    <div class="questionwords">
-                      <input class="questionwordsClicked" v-model="Object.UserAnswer" />
-                    </div>
-                  </td>
-                </template>
                 <td>
-
+                  <template v-if="Object.BeforeWord==='No'">
+                    <input class="questionwordsClicked" v-model="Object.UserAnswer" />
+                  </template>
                 </td>
-            </tr>
-          </div>
+              </tr>
+              <tr>
+              <td> &nbsp; </td>
+              <td>
+                <br>
+                <textarea v-model="lAnswerExplanation[ObjIndex]" placeholder="leg jouw antwoord uit" class="explainbox" rows="3" cols="30"> </textarea>
+              </td>
+              </tr>
+              <br>
+            </template>
           <tr>
-
               <td>
                 <KlaarButton @challengeCompleted="challengeCompleted()" />
               </td>
@@ -73,6 +71,7 @@ export default {
       ResultKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
+      lAnswerExplanation: [],
     }
   },
   watch: {
@@ -125,7 +124,7 @@ export default {
         PostObject.userAnswer = newPropertyID;
         PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = 'No Explanation requested';
+        PostObject.Explanation = this.lAnswerExplanation[i];
 
         PostString = JSON.stringify(PostObject);
 
@@ -166,19 +165,41 @@ export default {
 </script>
 <style scoped>
   .questionwords {
-    color: black;
-    font-family: var(--font-family-lato);
+    color: darkgray;
+    font-family: lato;
     font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
+    font-weight: bolder;
   }
-    .questionwordsClicked {
+  .questionwordsClicked {
     color: blue;
     font-family: lato;
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
     line-height: 200%;
+    border:solid 1px grey;
+  }
+   .explainbox {
     border:solid 1px orange;
+    resize: none;
+    float: left;
+    font-family: lato;
+    font-size: 12px;
+    font-style: normal;
+  }
+  .TV02_Table {
+    width: 100%;
+    padding: 10px;
+    margin-top:20px;
+    margin-left:100px;
+    table-layout: fixed;
+  }
+
+  .TV02_Table th, td  {
+    text-align: left;
+    color: black;
+  }
+  .tablecontainerV02 {
+    text-align: center;
   }
 </style>

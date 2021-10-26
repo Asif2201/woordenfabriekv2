@@ -45,7 +45,7 @@
               <tr>
                 <td>
                   <span class="questionwords">
-                        Previous conclusion
+                        Jouw eerdere conclusies
                   </span>
                 </td>
                 <td>
@@ -57,7 +57,7 @@
               </tr>
               <tr>
                 <td>
-                  <p style="explainbox"> {{ Object.studentAnswer }} </p>
+                  <p class="questionwords"> {{ Object.studentAnswer }} </p>
                 </td>
                 <td>
                   &nbsp;
@@ -91,17 +91,6 @@
                   <span class="paragraphheading">
                       {{ Object.Question }}
                   </span>
-                </td>
-                <td>
-                  &nbsp;
-                </td>
-                <td>
-                  &nbsp;
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  &nbsp;
                 </td>
                 <td>
                   &nbsp;
@@ -171,9 +160,10 @@ export default {
     this.AnswerOptions.push({id:1, name:'Deel waar'});
     this.AnswerOptions.push({id:2, name:'Niet waar'});
 
-    const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
+    const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+    const lessonid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
 
-    const  URLAPI =`${this.$config.baseURL}/StudentLEAnswers?StudentID=\'${StudentID}\'`
+    const  URLAPI =`${this.$config.baseURL}/StudentLEAnswers?StudentID=\'${StudentID}\'&LessonID=\'${lessonid}\'`
     const headers = { "cache-control": "no-store, max-age=0" }
     const resp = await this.$axios.get(URLAPI, { headers });
     this.Challenge1 = await resp.data;
@@ -285,11 +275,11 @@ export default {
   .paragraphheading {
     color: rgb(92, 87, 87);
     font-family: lato;
-    font-size: 18px;
+    font-size: 14px;
     font-style: normal;
     font-weight: bolder;
     line-height: 1.6;
-
+    margin-left:160px;
 }
 .explainbox {
     border: solid 1px orange;

@@ -183,9 +183,9 @@ export default {
     line-height: 200%;
   }
   .voorbeeldzin {
-    color: lightgray;
+    color: green;
     font-family: lato;
-    font-size: 12px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
     white-space: wrap;

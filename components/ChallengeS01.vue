@@ -2,7 +2,7 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20 mt-10">
+      <div class="relative ml-10 mt-10">
         <table class="table-fixed w-full align-center">
             <thead>
             <tr>
@@ -14,21 +14,25 @@
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
+                <td>
+                  <span class="explanation">
+                    {{ Object.Explanation }}
+                  </span>
+                </td>
+                <td>
+                  <template v-for="(char, index) in Object.word">
+                    <span :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }"  v-on:click="morphemeClick(ObjIndex, index, $event);">
+                      &nbsp; {{  char }} &nbsp;
+                    </span>
+                  </template>
+                </td>
                 <td> &nbsp;  &nbsp; </td>
-                  <td>
-                    <template v-for="(char, index) in Object.word">
-                      <span :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }"  v-on:click="morphemeClick(ObjIndex, index, $event);">
-                        {{  '      ' + char + '      '}}
-                      </span>
-                    </template>
-                  </td>
-                  <td> &nbsp;  &nbsp; </td>
               </tr>
               <tr>
                 <td> &nbsp;  &nbsp; </td>
                   <td>
                     <template v-for="(char, index) in Object.UserAnswerList">
-                      <span>
+                      <span class ="questionwords">
                         {{ char + '  |  ' }}
                       </span>
                     </template>
@@ -111,7 +115,7 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-          QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].MorfemeList);
+          QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].MorfemeList.replaceAll(' ', ''));
           QuestionObjectList[i].UserAnswerList = [];
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
@@ -167,17 +171,15 @@ export default {
         });
         PostString = '';
       }
-      if(this.Challenge2[0].feedbackType === 2) {
-              this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
+
+      this.ShowResult = true;
       this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
-      let answerIsCorrect = true;
-
+      let answerIsCorrect = false;
+      if(this.Challenge2[index].UserAnswerList.join("").trim() == this.Challenge2[index].feedback.trim()) {
+        answerIsCorrect = true;
+      }
       if(answerIsCorrect) {
         this.Challenge2[index].answerCorrect = true;
         this.TotalCorrect += 1;
@@ -188,17 +190,24 @@ export default {
 }
 </script>
 <style scoped>
+  .explanation {
+    color: teal;
+    font-family: lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+  }
   .questionwords {
     color: grey;
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    font-family: lato;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }
   .questionwordsClicked {
-    color: green;
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    color: blue;
+    font-family: lato;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }

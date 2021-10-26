@@ -24,20 +24,14 @@
                     </div>
                   </td>
                 </template>
-                <td v-show="ShowResult" :key="ResultKey">
-                  <div class="object-scale-down">
-                    <p v-show="Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/correct.png" width="40" height="40" />
-                    </p>
-                    <p v-show="!Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/incorrect.png" width="40" height="40" />
-                    </p>
-                  </div>
-                </td>
             </tr>
           </template>
             <tr>
-              <td>&nbsp;</td>
+              <td class="questionswords">
+                  <br>
+                  <textarea v-model="lAnswerExplanation" placeholder="leg jouw antwoord uit" class="explainbox" rows="6" cols="200"> </textarea>
+                </td>
+                <td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
@@ -224,7 +218,14 @@ export default {
     height: 32px;
     top: 740px;
     left: 880px;
-    z-index: 100;
     cursor: pointer;
+  }
+   .explainbox {
+    border:solid 1px orange;
+    resize: none;
+    float: left;
+    font-family: lato;
+    font-size: 12px;
+    font-style: normal;
   }
 </style>

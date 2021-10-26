@@ -2,7 +2,7 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20 mt-10">
+      <div class="relative ml-10 mt-10">
         <table class="table-fixed w-full align-center">
             <thead>
             <tr>
@@ -14,26 +14,32 @@
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
-                <td> &nbsp;  &nbsp; </td>
-                  <td>
-                    <template v-for="(char, index) in Object.word">
-                      <span :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }" >
-                        {{  '      ' + char + '      '}}
-                      </span>
-                    </template>
-                  </td>
-                  <td> &nbsp;  &nbsp; </td>
+                <td>
+                  <span class="explanation">
+                    {{ Object.Explanation }}
+                  </span>
+                </td>
+                <td>
+                  <template v-for="(char, index) in Object.word">
+                    <span :class="{ word1: getClass(ObjIndex, index, 1), word2: getClass(ObjIndex, index,2), word3: getClass(ObjIndex, index,3) }" >
+                      &nbsp; {{   char }} &nbsp;
+                    </span>
+                  </template>
+                </td>
+                <td>
+
+                </td>
               </tr>
               <tr>
                 <td> &nbsp;  &nbsp; </td>
                   <td>
-                    <template v-for="(char, index) in Object.UserAnswerList">
-                      <span>
-                        {{ char + '  |  ' }}
-                      </span>
-                    </template>
+                    <span class="feedback">
+                    {{ Object.feedback }}
+                  </span>
                   </td>
-                  <td> &nbsp;  &nbsp; </td>
+                  <td>
+
+                  </td>
             </tr>
 
           </template>
@@ -85,7 +91,31 @@ export default {
     this.Challenge1 = await resp.data;
   },
   methods:  {
-
+    getClass(QuestionIndex, WordIndex, classindex)  {
+      switch (classindex)  {
+        case 1:
+          if(!this.forceRenderVariable[QuestionIndex][WordIndex])  {
+            return true;
+          }
+          else  {
+            return false;
+          }
+        case 2:
+          if(this.forceRenderVariable[QuestionIndex][WordIndex] && this.Challenge2[QuestionIndex].studentCorrect=='Yes')  {
+            return true;
+          }
+          else  {
+            return false;
+          }
+        case 3:
+          if(this.forceRenderVariable[QuestionIndex][WordIndex] && this.Challenge2[QuestionIndex].studentCorrect=='No')  {
+            return true;
+          }
+          else  {
+            return false;
+          }
+      }
+    },
     splitWord(word)  {
       if (word) {
         word = word.replaceAll('[', '');
@@ -99,7 +129,7 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
         QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
-        QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].MorfemeList);
+        QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].MorfemeList.replaceAll(' ', ''));
         QuestionObjectList[i].UserAnswerList = this.splitWord(QuestionObjectList[i].studentAnswer);
         this.forceRenderVariable.push([]);
         for(var j=0;j < QuestionObjectList[i].word.length;j++)  {
@@ -119,19 +149,41 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: grey;
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+  .explanation {
+    color: teal;
+    font-family: lato;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }
-  .questionwordsClicked {
+  .feedback {
     color: green;
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
+    font-family: lato;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
+  }
+  .word1 {
+    color: grey;
+    font-family: lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .word2 {
+    color: green;
+    font-family: lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .word3 {
+    color: red;
+    font-family: lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    text-decoration: line-through;
   }
   th, td {
     padding: 10px;

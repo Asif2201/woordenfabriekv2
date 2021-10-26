@@ -17,7 +17,7 @@
               <tr>
                 <template v-for="(char, index) in Object.word">
                   <td :key="forceRenderVariable[ObjIndex][index]">
-                    <div :class="{ questionwords : !forceRenderVariable[ObjIndex][index], questionwordsClicked : forceRenderVariable[ObjIndex][index] }" >
+                    <div :class="{ word1: getClass(ObjIndex, index, 1), word2: getClass(ObjIndex, index,2), word3: getClass(ObjIndex, index,3) }" >
                         <span>
                           {{ char }}
                         </span>
@@ -33,13 +33,18 @@
                     </p>
                   </div>
             </tr>
-          </template>
             <tr>
-              <td>&nbsp;</td>
+              <td class="word1">
+                  <br>
+                  <p> {{ Object.AnswerExplanation }} </p>
+                </td>
+              <td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
             </tr>
+          </template>
+
             <tr>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
@@ -75,6 +80,7 @@ export default {
 
     }
   },
+
   watch: {
     Challenge1()  {
       this.Challenge2 = this.JSONtoObj();
@@ -97,10 +103,34 @@ export default {
     this.Challenge1 = await resp.data;
   },
   methods:  {
+    getClass(QuestionIndex, WordIndex, classindex)  {
+      switch (classindex)  {
+        case 1:
+          if(!this.forceRenderVariable[QuestionIndex][WordIndex] && this.Challenge2[QuestionIndex].correctAnswer != WordIndex)  {
+            return true;
+          }
+          else  {
+            return false;
+          }
+        case 2:
+          if(this.forceRenderVariable[QuestionIndex][WordIndex] && this.Challenge2[QuestionIndex].studentCorrect=='Yes')  {
+            return true;
+          }
+          else  {
+            return false;
+          }
+        case 3:
+          if(this.forceRenderVariable[QuestionIndex][WordIndex] && this.Challenge2[QuestionIndex].studentCorrect=='No')  {
+            return true;
+          }
+          else  {
+            return false;
+          }
+      }
+    },
 
     splitWord(word)  {
       if (word) {
-        word = word.replace('*', '');
         return word.split(';');
       } else  {
         return '';
@@ -111,7 +141,7 @@ export default {
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
         QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
         QuestionObjectList[i].word = this.splitWord(QuestionObjectList[i].wordlist);
-        QuestionObjectList[i].UserAnswerList = QuestionObjectList[i].studentAnswer.replace('*', '');
+        QuestionObjectList[i].UserAnswerList = QuestionObjectList[i].studentAnswer;
         this.forceRenderVariable.push([]);
         for(var j=0;j < QuestionObjectList[i].word.length;j++)  {
           if(QuestionObjectList[i].word[j] === QuestionObjectList[i].UserAnswerList)  {
@@ -119,6 +149,10 @@ export default {
           }
           else  {
             this.forceRenderVariable[i].push(false);
+          }
+          if(QuestionObjectList[i].word[j].includes('*')) {
+            QuestionObjectList[i].correctAnswer = j;
+            QuestionObjectList[i].word[j] = QuestionObjectList[i].word[j].replaceAll('*', '');
           }
         }
       }
@@ -131,19 +165,27 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
+  .word1 {
     color: grey;
     font-family: lato;
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }
-  .questionwordsClicked {
-    color: blue;
+  .word2 {
+    color: green;
     font-family: lato;
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
+  }
+  .word3 {
+    color: red;
+    font-family: lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    text-decoration: line-through;
   }
   th, td {
     padding: 25px;

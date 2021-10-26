@@ -124,7 +124,7 @@
           <template v-slot:footer>
           </template>
         </modalChallenge>
-        <button v-show="Challenges1[ChallengeIndex].IsCompleted === 'Yes'" class="btnNext" v-on:click="GotoNextChallenge">  Next Challenge </button>
+        <button v-show="Challenges1[ChallengeIndex].IsCompleted === 'Yes'" class="btnNext" v-on:click="GotoNextChallenge">  Volgende </button>
       </div>
 </template>
 <script>
@@ -180,8 +180,12 @@ export default {
       this.helptextvisible = !this.helptextvisible;
     },
     GotoNextChallenge() {
-      this.$emit("ScrollClick", "next");
-
+      if(this.Challenges1[this.ChallengeIndex].IsLastChallenge == -1) {
+        this.$emit('LevelComplete()');
+      }
+      else  {
+        this.$emit("ScrollClick", "next");
+      }
     },
     completeChallenge(totalCorrect, totalQuestions) {
       var PostString = '';
@@ -241,11 +245,10 @@ export default {
         this.isModalVisible = true;
         this.totalCorrect = totalCorrect;
         this.totalQuestions = totalQuestions;
-        this.$emit('LevelComplete()');
+        this.renderKey++;
       }
       else{
         this.$store.state.Lessons[x].Levels[y].Challenges[this.ChallengeIndex+1].IsCurrent = 'Yes';
-        this.isModalVisible = true;
         this.totalCorrect = totalCorrect;
         this.totalQuestions = totalQuestions;
         this.renderKey++;
