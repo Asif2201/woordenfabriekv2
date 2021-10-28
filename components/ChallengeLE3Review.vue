@@ -101,7 +101,7 @@
               </tr>
               <tr>
                 <td>
-                  <textarea v-model="Object.UserAnswer" placeholder="geef je antwoord hier" class="explainbox" rows="6" cols="60"> </textarea>
+                  <p class="questionwords"> {{ Object.studentAnswer }} </p>
                 </td>
               </tr>
           </template>

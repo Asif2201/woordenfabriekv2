@@ -18,28 +18,26 @@
                       <span class="questionwordsClicked">
                       {{ Object.studentAnswer }}
                     </span>
-                  </template>
-                </td>
-                <td>
                     <span class="questionwords">
                       {{ Object.word }}
                     </span>
+                  </template>
                 </td>
-                <td>
+                 <td>
                   <template v-if="Object.BeforeWord==='No'">
+                     <span class="questionwords">
+                      {{ Object.word }}
+                    </span>
                     <span class="questionwordsClicked">
                       {{ Object.studentAnswer }}
                     </span>
-                  </template>
+                   </template>
                 </td>
               </tr>
               <tr>
               <td> &nbsp; </td>
               <td>
-                <br>
-                <span class="explainbox">
-                  {{ Object.AnswerExplanation }}
-                </span>
+                &nbsp;
               </td>
               </tr>
               <br>

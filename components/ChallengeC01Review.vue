@@ -2,8 +2,11 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
   <div v-else>
-      <div class="relative ml-20 mt-10">
-        <table class="table-fixed w-full align-center">
+      <div class="C01Container">
+        <span class="C01Heading">
+          {{ Heading }}
+        </span>
+        <table class="C01Table">
           <thead/>
           <tbody>
             <div v-for="Object in Challenge2.LearningQuestions" :key="Object.id">
@@ -58,6 +61,7 @@ export default {
     return {
       Challenge2: [],
       AnswerOptions: [],
+      Heading: 'Dit zijn je antwoorden. Er volgen nu opdrachten waarin je ontdekt of je antwoorden kloppen',
     }
   },
   errorCaptured: function(err) {
@@ -98,5 +102,23 @@ export default {
     font-size: 16px;
     font-style: normal;
     font-weight: 700;
+  }
+  .C01Heading {
+    color: black;
+    font-family: lato;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 700;
+    padding-left: 250px;
+  }
+  .C01Container {
+    position: relative;
+    margin-left: 20px;
+    margin-top:20px;
+  }
+  .C01Table {
+    table-layout: fixed;
+    width: 100%;
+    margin-top: 40px;
   }
 </style>

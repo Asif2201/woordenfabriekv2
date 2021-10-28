@@ -2,14 +2,8 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
   <div v-else>
-      <div class="relative ml-20 mt-10">
-        <table :key="tablechanged" class="table-fixed w-full align-center ">
-          <thead>
-            <tr>
-              <th class="w-3/5 ..."></th>
-              <th class="w-2/5 ..."></th>
-            </tr>
-          </thead>
+      <div class="LE1Container">
+        <table :key="tablechanged" class="LE1Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
@@ -21,29 +15,29 @@
                 <td>
                       <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
+                <td>
+                  <div>
+                    <p v-show="Object.answerCorrect" class="text-blue">
+                      <img src="~/assets/correct.png" width="40" height="40" />
+                    </p>
+                    <p v-show="!Object.answerCorrect" class="text-blue">
+                      <img src="~/assets/incorrect.png" width="40" height="40" />
+                    </p>
+                </div>
+                </td>
             </tr>
             <tr>
               <td> &nbsp; </td>
               <td> &nbsp; </td>
+              <td> &nbsp; </td>
             </tr>
             <tr>
+              <td> &nbsp;</td>
               <td> &nbsp; </td>
               <td> &nbsp; </td>
             </tr>
           </template>
-             <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
-             <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
 
-            </tr>
         </tbody>
       </table>
 
@@ -129,4 +123,19 @@ export default {
     width: 60%;
     padding: 10px;
   }
+  .LE1Container {
+    position: relative;
+    margin-left: 100px;
+    margin-top:20px;
+  }
+  .LE1Table {
+    table-layout: fixed;
+    width: 100%;
+    margin-top: 40px;
+  }
+  .LE1Table td:nth-of-type(1) {
+    width: 700px;
+  }
+
+
 </style>

@@ -103,7 +103,12 @@
         <ChallengeLE2 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'LE3'">
-        <ChallengeLE3 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
+          <ChallengeLE3Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
+        <template v-else>
+          <ChallengeLE3 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'I01'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">

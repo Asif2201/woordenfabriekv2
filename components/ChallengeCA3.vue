@@ -172,7 +172,7 @@ export default {
   .questionwords {
     color: green;
     font-family: lato;
-    font-size: 14px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 800;
   }

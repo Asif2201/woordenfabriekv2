@@ -16,15 +16,16 @@
                 <td>
                   <template v-if="Object.BeforeWord==='Yes'">
                       <input class="questionwordsClicked" v-model="Object.UserAnswer" />
+                      <span class="questionwords">
+                        {{ Object.word }}
+                      </span>
                   </template>
                 </td>
                 <td>
-                    <span class="questionwords">
-                      {{ Object.word }}
-                    </span>
-                </td>
-                <td>
                   <template v-if="Object.BeforeWord==='No'">
+                     <span class="questionwords">
+                        {{ Object.word }}
+                    </span>
                     <input class="questionwordsClicked" v-model="Object.UserAnswer" />
                   </template>
                 </td>
@@ -32,8 +33,7 @@
               <tr>
               <td> &nbsp; </td>
               <td>
-                <br>
-                <textarea v-model="lAnswerExplanation[ObjIndex]" placeholder="leg jouw antwoord uit" class="explainbox" rows="3" cols="30"> </textarea>
+                &nbsp;
               </td>
               </tr>
               <br>
@@ -124,7 +124,7 @@ export default {
         PostObject.userAnswer = newPropertyID;
         PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = this.lAnswerExplanation[i];
+        PostObject.Explanation = 'No explanation requested';
 
         PostString = JSON.stringify(PostObject);
 

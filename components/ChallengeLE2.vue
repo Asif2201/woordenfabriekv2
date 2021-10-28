@@ -43,7 +43,7 @@
                 </td>
                 <td class="align-right">
                   <br>
-                  <textarea v-model="Object.UserAnswer" placeholder="geed je antwoord hier" style="explainbox" rows="6" cols="60"> </textarea>
+                  <textarea v-model="Object.UserAnswer" placeholder="geed je antwoord hier" class="explainbox" rows="6" cols="60"> </textarea>
                 </td>`
                 <td>
                   &nbsp;

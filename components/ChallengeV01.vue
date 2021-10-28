@@ -9,6 +9,10 @@
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
+                  <span class="V01Context">
+                    {{ Object.context}}
+                  </span>
+                <td>
                   <div v-if="Object.MorfeemList !== null" class="questionwords">
                       <dropdown :data="convertToDropDownData(Object.MorfeemList,1, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,1)" />
                     </div>
@@ -30,6 +34,16 @@
                       <dropdown :data="convertToDropDownData(Object.MorfeemList3,3, ObjIndex)" @AnswerSelected="answerSelected(ObjIndex, $event,3)" />
                     </div>
                 </td>
+            </tr>
+            <tr>
+
+              <td>
+                 &nbsp;
+              </td>
+              <td>
+                <br>
+                  <textarea v-model="Object.explanation" placeholder="leg jouw antwoord uit" class="explainbox" rows="6" cols="100"> </textarea>
+              </td>
             </tr>
           </template>
           <tr>
@@ -116,6 +130,7 @@ export default {
 
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
+          QuestionObjectList[i].explanation = '';
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
 
@@ -182,7 +197,7 @@ export default {
         PostObject.userAnswer = newPropertyID;
         PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
         PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = 'No Explanation requested';
+        PostObject.Explanation = this.Challenge2[i].explanation;
 
         PostString = JSON.stringify(PostObject);
 
@@ -225,7 +240,14 @@ export default {
   .questionwords {
     color: grey;
     font-family: lato;
-    font-size: 22px;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .V01Context {
+    color: grey;
+    font-family: lato;
+    font-size: 16px;
     font-style: normal;
     font-weight: 700;
   }
@@ -233,23 +255,7 @@ export default {
     margin-right: 20px;
     float: right;
   }
-  .WisButton  {
-    background-color: blue;
-    border-radius: 4px;
-    color: white;
-    padding-right: 12px;
-    padding-left: 12px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    float: right;
-    margin-right: 20px;
-    font-family: lato;
-    font-weight: bold;
-  }
-  .WisButton:hover  {
-    background-color: darkblue; /* Green */
-    color: yellow;
-  }
+
   .V01_Table {
     width:50%;
     table-layout: fixed;
@@ -259,6 +265,9 @@ export default {
   }
   .V01_Table td {
     width: 200px;
+  }
+  .V01_Table td:nth-child(1) {
+    width: 300px;
   }
   .klaarButton {
     font: normal normal bold 20px/25px Lato;
@@ -274,4 +283,12 @@ export default {
     clear: left;
     cursor:pointer;
 }
+ .explainbox {
+    border:solid 1px orange;
+    resize: none;
+    float: left;
+    font-family: lato;
+    font-size: 12px;
+    font-style: normal;
+  }
 </style>

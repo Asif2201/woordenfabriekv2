@@ -9,6 +9,11 @@
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
+                  <span class="V01Context">
+                    {{ Object.context}}
+                  </span>
+                <td>
+                <td>
                   <div v-if="Object.MorfeemList !== null" class="questionwords">
                       {{ Object.MorfeemList.split(';')[Object.studentAnswerList[0]] }}
                     </div>
@@ -40,6 +45,21 @@
                       </p>
                   </div>
                 </td>
+            </tr>
+             <tr>
+
+              <td>
+                 &nbsp;
+              </td>
+              <td>
+                 &nbsp;
+              </td>
+              <td>
+                <br>
+                  <span class="V01explanation">
+                    {{ Object.AnswerExplanation }}
+                  </span>
+              </td>
             </tr>
           </template>
           <tr>
@@ -136,32 +156,18 @@ export default {
   .questionwords {
     color: grey;
     font-family: lato;
-    font-size: 22px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 700;
   }
-  .right {
-    margin-right: 20px;
-    float: right;
-  }
-  .WisButton  {
-    background-color: blue;
-    border-radius: 4px;
-    color: white;
-    padding-right: 12px;
-    padding-left: 12px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    float: right;
-    margin-right: 20px;
+  .V01explanation {
+    color: blue;
     font-family: lato;
-    font-weight: bold;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
   }
-  .WisButton:hover  {
-    background-color: darkblue; /* Green */
-    color: yellow;
-  }
-  .V01_Table {
+   .V01_Table {
     width:50%;
     table-layout: fixed;
   }
@@ -169,7 +175,10 @@ export default {
     height:  50px;
   }
   .V01_Table td {
-    width: 200px;
+    width: 150px;
+  }
+  .V01_Table td:nth-child(1) {
+    width: 300px;
   }
   .klaarButton {
     font: normal normal bold 20px/25px Lato;
@@ -185,7 +194,13 @@ export default {
     clear: left;
     cursor:pointer;
 }
-
+ .V01Context {
+    color: grey;
+    font-family: lato;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+  }
 .resultimage  {
     padding-left: 80px;
   }

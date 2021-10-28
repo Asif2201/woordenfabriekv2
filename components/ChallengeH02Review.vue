@@ -70,7 +70,6 @@
                   &nbsp;
                 </td>
                 <td class = "questionwords">
-
                 </td>
                 <td>
                   &nbsp;
@@ -86,16 +85,30 @@
                   <p> {{ Object.AnswerExplanation }} </p>
                 </td>
                 <td>
+                 &nbsp;
+                </td>
+              </tr>
+              <tr>
+                <td>
                   &nbsp;
-              </td>
+                </td>
+                <td>
+                   <span class="H02Feedback">
+                    Antwoord model:
+                  </span>
+                  <br>
+                  <span class="H02Feedback">
+                  {{ Object.feedback }}
+                  </span>
+                </td>
               </tr>
           </template>
             <tr>
               <td>
                   &nbsp;
-                </td>
+              </td>
               <td>
-                &nbsp;
+
               </td>
               <td>
               </td>
@@ -222,6 +235,12 @@ export default {
     color: black;
     font-family: lato;
     font-size: 16px;
+    font-style: bold;
+  }
+   .H02Feedback {
+    color: black;
+    font-family: lato;
+    font-size: 14px;
     font-style: bold;
 
   }

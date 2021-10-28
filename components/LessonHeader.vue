@@ -3,7 +3,7 @@
     <table class="LessonHeaderTable" >
       <tbody>
         <tr>
-          <td class="w-2/6 align-top pt-4">
+          <td>
             <span class="LessonTitle">
               {{ 'Les ' + CurrentLesson.lessonid + ' |'  }}
             </span>
@@ -11,11 +11,11 @@
               {{ CurrentLesson.lessontitle }}
             </span>
           </td>
-          <td class="w-2/6 align-top">
+          <td>
             <div class="LevelsBar">
               <template v-for="(level, index) in UserLevels">
-                  <div id="notevaluation" v-if="level.isevaluationchallenge==='No'" class=" w-full " v-bind:key="level.studentlevelID">
-                    <div  id="completedstars" v-if="level.completionprogress===1" class="w-full px-1">
+                  <div id="notevaluation" v-if="level.isevaluationchallenge==='No'"  v-bind:key="level.studentlevelID">
+                    <div  id="completedstars" v-if="level.completionprogress===1">
                       <StarRating :value="`${level.earnedstars}`"></StarRating>
                       <button v-if="CurrentLesson.currentDisplayLevel === index" class="CurrentButtonText" @click="GotoLevel(level.Levelid)">
                         {{ ` Level ` + (index+1)  }}
@@ -44,7 +44,7 @@
                           Bonus
                       </button>
                     </div>
-                    <div v-else id="yesevaluationnotcompleted" class="w-full px-1">
+                    <div v-else id="yesevaluationnotcompleted">
                       <StarRating value="0"></StarRating>
                       <button v-if="CurrentLesson.currentDisplayLevel === index" class="CurrentButtonText" @click="GotoLevel(level.Levelid)">
                         Bonus
@@ -57,7 +57,7 @@
               </template>
             </div>
            </td>
-          <td class=" border border-green-600 w=1/6 float-right mr-20">
+          <td>
           </td>
          </tr>
       </tbody>
@@ -84,8 +84,7 @@ export default {
 </script>
 <style scoped>
   .LessonHeaderPanel  {
-    display: flex;
-    vertical-align: top;
+    padding-top: 20px;
     justify-content: center;
     width: 100%;
     height: 124px;
@@ -108,8 +107,6 @@ export default {
     color: #E03997;
   }
   .LevelsBar  {
-    flex-direction: row;
-    flex-wrap: nowrap;
     justify-content: center;
     display: flex;
     width: 675px;
@@ -127,6 +124,7 @@ export default {
     padding-top: 8px;
     margin-top: 4px;
     border-radius: 4px;
+    margin-right: 4px;;
   }
   .CurrentButtonText  {
     font-family: lato;
@@ -140,6 +138,8 @@ export default {
     padding-top: 8px;
     margin-top: 4px;
     border-radius: 4px;
+     margin-right: 4px;;
+
   }
   .DisplayLevelButton {
     box-shadow:0 0 0 0px white, 0 0 0 2px #F26700;
