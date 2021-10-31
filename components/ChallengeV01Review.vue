@@ -14,8 +14,8 @@
                   </span>
                 <td>
                 <td>
-                  <div v-if="Object.MorfeemList !== null" class="questionwords">
-                      {{ Object.MorfeemList.split(';')[Object.studentAnswerList[0]] }}
+                  <div v-if="Object.MorfeemList !== null" :class="{ word2: getClass(0, Object.studentAnswerList[0],2), word3: getClass(0, Object.studentAnswerList[0],3) }">
+                      {{ Object.MorfeemList.split(';')[Object.studentAnswerList[0]].replaceAll('*', '') }}
                     </div>
                 </td>
                <td>
@@ -26,35 +26,21 @@
                   </div>
                 </td>
                 <td>
-                  <div v-if="Object.MorfeemList2 !== null" class="questionwords">
-                      {{ Object.MorfeemList2.split(';')[Object.studentAnswerList[1]] }}
+                  <div v-if="Object.MorfeemList2 !== null" :class="{ word2: getClass(1, Object.studentAnswerList[1],2), word3: getClass(1, Object.studentAnswerList[1],3) }">
+                      {{ Object.MorfeemList2.split(';')[Object.studentAnswerList[1]].replaceAll('*', '') }}
                     </div>
                 </td>
                 <td>
-                  <div v-if="Object.MorfeemList3 !== null" class="questionwords">
-                      {{ Object.MorfeemList3.split(';')[Object.studentAnswerList[2]] }}
+                  <div v-if="Object.MorfeemList3 !== null" :class="{ word2: getClass(2, Object.studentAnswerList[2],2), word3: getClass(2, Object.studentAnswerList[2],3) }">
+                      {{ Object.MorfeemList3.split(';')[Object.studentAnswerList[2]].replaceAll('*', '') }}
                     </div>
-                </td>
-                <td>
-                  <div class="resultimage">
-                      <p v-show="Object.studentCorrect==='Yes'" class="text-blue">
-                        <img src="~/assets/correct.png" width="40" height="40" />
-                      </p>
-                      <p v-show="Object.studentCorrect==='No'" class="text-blue">
-                        <img src="~/assets/incorrect.png" width="40" height="40" />
-                      </p>
-                  </div>
                 </td>
             </tr>
-             <tr>
-
-              <td>
-                 &nbsp;
-              </td>
-              <td>
-                 &nbsp;
-              </td>
-              <td>
+            <tr>
+              <td> &nbsp;  &nbsp; </td>
+              <td> &nbsp;  &nbsp; </td>
+              <td> &nbsp;  &nbsp; </td>
+              <td colspan="2">
                 <br>
                   <span class="V01explanation">
                     {{ Object.AnswerExplanation }}
@@ -62,35 +48,14 @@
               </td>
             </tr>
           </template>
-          <tr>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-
-          </tr>
-          <tr>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-          </tr>
-          <tr>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-            </tr>
         </tbody>
         </table>
       </div>
   </div>
 </template>
 <script>
-import dropdown from './dropdown.vue';
 
 export default {
-  components: { dropdown },
   props:  [
     'Challenge',
     'Level',
@@ -102,11 +67,10 @@ export default {
       Challenge1: [],
       Challenge2: [],
       knipWords: [],
-      AllquestionsAnswered: false,
-      ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
+      forceRenderVariable: [],
     }
   },
   watch: {
@@ -125,7 +89,6 @@ export default {
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=V01&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
     const  URLAPI1 =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=V01&challengelevelid=\'${ChallengeID}\'&Student_ID=\''`
     const headers = { "cache-control": "no-store, max-age=0" }
-    console.log(URLAPI);
     const resp1 = await this.$axios.get(URLAPI1, { headers });
     const resp = await this.$axios.get(URLAPI, { headers });
     this.Challenge1 = await resp.data;
@@ -134,13 +97,68 @@ export default {
     forceRerender() {
       this.ResultKey += 1;
     },
+    getClass(QuestionIndex, WordIndex, classindex)  {
+      switch (classindex)  {
+        case 2:
+          if(this.forceRenderVariable[QuestionIndex][WordIndex])  {
+            return true;
+          }
+          else  {
+            return false;
+          }
+        case 3:
+          if(!this.forceRenderVariable[QuestionIndex][WordIndex])  {
+            return true;
+          }
+          else  {
+            return false;
+          }
+      }
+    },
     JSONtoObj()  {
       var QuestionObjectList = [];
+      var x = [];
+      var j =0;
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
           QuestionObjectList[i].studentAnswerList = QuestionObjectList[i].studentAnswer.split(';');
-          console.log(QuestionObjectList[i].studentAnswerList);
-      }
+          this.forceRenderVariable.push([]);
+          this.forceRenderVariable.push([]);
+          this.forceRenderVariable.push([]);
+          if(QuestionObjectList[i].MorfeemList != null) {
+            x = QuestionObjectList[i].MorfeemList.split(';');
+            for(j=0;j < x.length;j++)  {
+              if(x[j].includes('*') && QuestionObjectList[i].studentAnswerList[0] == j)  {
+                this.forceRenderVariable[0].push(true);
+              }
+              else  {
+                this.forceRenderVariable[0].push(false);
+              }
+            }
+          }
+          if(QuestionObjectList[i].MorfeemList2 != null) {
+            x = QuestionObjectList[i].MorfeemList2.split(';');
+            for( j=0;j < x.length;j++)  {
+              if(x[j].includes('*') && QuestionObjectList[i].studentAnswerList[1] == j)  {
+                this.forceRenderVariable[1].push(true);
+              }
+              else  {
+                this.forceRenderVariable[1].push(false);
+              }
+            }
+          }
+          if(QuestionObjectList[i].MorfeemList3 != null) {
+            x = QuestionObjectList[i].MorfeemList3.split(';');
+            for(j=0;j < x.length;j++)  {
+              if(x[j].includes('*') && QuestionObjectList[i].studentAnswerList[2] == j)  {
+                this.forceRenderVariable[2].push(true);
+              }
+              else  {
+                this.forceRenderVariable[2].push(false);
+              }
+            }
+          }
+        }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
 
       return QuestionObjectList;
@@ -156,7 +174,7 @@ export default {
   .questionwords {
     color: grey;
     font-family: lato;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }
@@ -168,40 +186,47 @@ export default {
     font-weight: 700;
   }
    .V01_Table {
-    width:50%;
+    width:70%;
     table-layout: fixed;
   }
   .V01_Table tr {
     height:  50px;
   }
   .V01_Table td {
-    width: 150px;
+    width: 200px;
   }
   .V01_Table td:nth-child(1) {
-    width: 300px;
+    width: 400px;
   }
-  .klaarButton {
-    font: normal normal bold 20px/25px Lato;
-    letter-spacing: 0px;
-    color: #FFFFFF;
-    opacity: 1;
-    background: #2185D0 0% 0% no-repeat padding-box;
-    border-radius: 4px;
-    width: 100px;
-    height: 32px;
-    top: 740px;
-    left: 880px;
-    clear: left;
-    cursor:pointer;
-}
- .V01Context {
-    color: grey;
+
+.V01Context {
+    color: black;
     font-family: lato;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }
-.resultimage  {
-    padding-left: 80px;
+
+  .word1 {
+    color: grey;
+    font-family: lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .word2 {
+    color: green;
+    font-family: lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .word3 {
+    color: red;
+    font-family: lato;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    text-decoration: line-through;
   }
 </style>

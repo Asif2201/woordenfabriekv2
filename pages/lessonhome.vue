@@ -9,7 +9,7 @@
     <img :src="require(`../assets/radb_img_Lev1.${WhichImage()}.png`)"  width="557" height="349" >
     <div v-if="levels.vwUsers[IndexOfCurrent].completionprogress !== 100" class=" justify-items-center relative h-8 m-8 w-1/2 overflow-hidden rounded text-black text-center font-bold align-middle">
       <nuxt-link :to="{ path: `/levelhome?studentlessonID=` + this.$route.query.studentlessonID }" >
-                Start de les
+                {{ MessageToShow }}
       </nuxt-link>
     </div>
   </div>
@@ -26,15 +26,20 @@ export default {
       levels: [],
       IndexOfCurrent: 0,
       levelProgressKey: 0,
-      ImageIndex: 1
+      ImageIndex: 1,
+      MessageToShow: ''
     }
   },
   watch: {
     levels() {
       this.IndexOfCurrent = 0;
+      this.MessageToShow = 'Start de les';
       for(var i = 0; i < this.levels.vwUsers.length; i++) {
         if(this.levels.vwUsers[i].iscurrent === 'Yes') {
           this.IndexOfCurrent = i;
+        }
+        if(this.levels.vwUsers[i].completionprogress != 0)  {
+          this.MessageToShow = 'Doorgaan'
         }
       }
     }

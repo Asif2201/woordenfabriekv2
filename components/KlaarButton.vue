@@ -1,14 +1,20 @@
 <template>
   <div>
-    <button @click ="$emit('challengeCompleted')" class="klaarButton"> Klaar </button>
+    <div  class="showOnHover">
+      <button @click ="$emit('challengeCompleted')" class="klaarButton"> Klaar </button>
+    </div>
+    <span v-show="!isKlaar" class="hide">
+        Je moet een antwoord kiezen voordat je verder kunt gaan
+    </span>
   </div>
+
 </template>
 
 <script>
 
 export default ({
   props:  {
-    data: [],
+    isKlaar: false,
 
   },
   data() {
@@ -16,7 +22,6 @@ export default ({
       selectedAnswer: 0,
     }
   },
-
 
 })
 
@@ -33,10 +38,20 @@ export default ({
   width: 100px;
   height: 32px;
   top: 740px;
-  left: 880px;
   clear: left;
-  margin-left: 500px;
-}
 
+}
+.showOnHover:hover + .hide {
+    display:block;
+    color: red;
+    font-family: lato;
+    font-size: 14px;
+    font-style: normal;
+    padding-top:10px;
+    margin-left:-100px;
+  }
+  .hide {
+    display:none;
+  }
 </style>
 

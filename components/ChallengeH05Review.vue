@@ -34,24 +34,27 @@
                   </div>
             </tr>
             <tr>
-              <td class="word1">
-                  <br>
-                  <p> {{ Object.AnswerExplanation }} </p>
-                </td>
               <td>
-              <td>&nbsp;</td>
+                &nbsp;
+              </td>
+              <td>
+                  <br>
+                  <p class="word1">
+                    {{ Object.AnswerExplanation }}
+                  </p>
+              </td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
             </tr>
-          </template>
-
             <tr>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>
+              <td colspan="4">
+                  <br>
+                  <p class="word2">
+                    {{ Object.answerlist }}
+                  </p>
               </td>
             </tr>
+          </template>
           </tbody>
         </table>
       </div>

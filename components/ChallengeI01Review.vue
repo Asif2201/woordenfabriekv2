@@ -38,7 +38,7 @@
                   <br>
                   <br>
                   <span class="referenceanswer">
-                      Referentie antwoord: {{ Object.answerlist }}
+                      Aantwoordmodel: {{ Object.answerlist }}
                     </span>
                 </td>
                 <td>
@@ -150,7 +150,7 @@ export default {
     line-height: 200%;
   }
   .voorbeeldzin {
-    color: green;
+    color: black;
     font-family: lato;
     font-size: 14px;
     font-style: normal;

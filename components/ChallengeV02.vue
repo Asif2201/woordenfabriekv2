@@ -15,7 +15,7 @@
                 </td>
                 <td>
                   <template v-if="Object.BeforeWord==='Yes'">
-                      <input class="questionwordsClicked" v-model="Object.UserAnswer" />
+                      <input class="questionwordsClicked" v-model="Object.UserAnswer" @input="isKlaar1[ObjIndex] = true" />
                       <span class="questionwords">
                         {{ Object.word }}
                       </span>
@@ -26,7 +26,7 @@
                      <span class="questionwords">
                         {{ Object.word }}
                     </span>
-                    <input class="questionwordsClicked" v-model="Object.UserAnswer" />
+                    <input class="questionwordsClicked" v-model="Object.UserAnswer" @input="isKlaar1[ObjIndex] = true" />
                   </template>
                 </td>
               </tr>
@@ -38,17 +38,11 @@
               </tr>
               <br>
             </template>
-          <tr>
-              <td>
-                <KlaarButton @challengeCompleted="challengeCompleted()" />
-              </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-          </tr>
         </tbody>
         </table>
-
+        <div class="V02Klaar">
+          <KlaarButton :isKlaar="!isKlaar1.includes(false)" @challengeCompleted="challengeCompleted()" />
+        </div>
       </div>
   </div>
 </template>
@@ -66,7 +60,7 @@ export default {
       Challenge1: [],
       Challenge2: [],
       knipWords: [],
-      AllquestionsAnswered: false,
+      isKlaar1: [],
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
@@ -101,6 +95,8 @@ export default {
           QuestionObjectList[i].UserAnswer = '';
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
+          this.isKlaar1[i] = false;
+
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
 
@@ -111,43 +107,45 @@ export default {
       var PostString = '';
       var newPropertyID = '';
       var PostObject = {};
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        this.EvaluateAnswer(i);
-        PostObject = {};
+      if(!this.isKlaar1.includes(false))  {
+        for (var i = 0; i < this.Challenge2.length; i++) {
+          this.EvaluateAnswer(i);
+          PostObject = {};
 
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
+          PostObject.id = this.Challenge2[i].id;
+          PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+          PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
+          PostObject.LevelID = this.Level;
 
-        newPropertyID = this.Challenge2[i].UserAnswer;
-        PostObject.userAnswer = newPropertyID;
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = 'No explanation requested';
+          newPropertyID = this.Challenge2[i].UserAnswer;
+          PostObject.userAnswer = newPropertyID;
+          PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+          PostObject.feedbackType = this.Challenge2[i].feedbackType;
+          PostObject.Explanation = 'No explanation requested';
 
-        PostString = JSON.stringify(PostObject);
+          PostString = JSON.stringify(PostObject);
 
-        console.log(PostString);
+          console.log(PostString);
 
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        PostString = '';
+          this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
+            'content-type': 'application/json',},})
+          .then((response) => {
+            console.log('Ok');
+          }, (error) => {
+            console.log(error);
+          });
+          PostString = '';
+        }
+
+        if(this.Challenge2[0].feedbackType === 2) {
+          this.ShowResult = true;
+        }
+        else {
+          this.ShowResult = true;
+        }
+        this.forceRerender();
+        this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
       }
-
-      if(this.Challenge2[0].feedbackType === 2) {
-        this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.forceRerender();
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
       this.Challenge2[index].answerCorrect = true;
@@ -201,5 +199,9 @@ export default {
   }
   .tablecontainerV02 {
     text-align: center;
+  }
+   .V02Klaar  {
+    margin-top: 40px;
+    margin-left: 600px;
   }
 </style>

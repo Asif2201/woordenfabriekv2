@@ -27,26 +27,19 @@
             </tr>
           </template>
             <tr>
-              <td class="questionswords">
-                  <br>
-                  <textarea v-model="lAnswerExplanation" placeholder="leg jouw antwoord uit" class="explainbox" rows="6" cols="200"> </textarea>
-                </td>
-                <td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-            </tr>
-            <tr>
-              <td>&nbsp;</td>
               <td>&nbsp;</td>
               <td>
-                <button  @click="challengeCompleted()" class="klaarButton" > Klaar </button>
+                 <br>
+                  <textarea v-model="lAnswerExplanation" placeholder="leg jouw antwoord uit" class="explainbox" rows="6" cols="100"> </textarea>
               </td>
               <td>&nbsp;</td>
-
+              <td>&nbsp;</td>
             </tr>
           </tbody>
         </table>
+        <div class="H05Klaar">
+          <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
+        </div>
       </div>
   </div>
 </template>
@@ -67,7 +60,7 @@ export default {
       Challenge1: [],
       Challenge2: [],
       forceRenderVariable: [],
-      AllquestionsAnswered: false,
+      isKlaar: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
@@ -125,6 +118,7 @@ export default {
       this.forceRenderVariable[word].splice(this.Challenge2[word].UserAnswerList, 1, false);
       this.Challenge2[word].UserAnswerList = char;
       this.forceRenderVariable[word].splice(this.Challenge2[word].UserAnswerList, 1, true);
+      this.isKlaar = true;
 
     },
     IsClicked(word, char) {
@@ -134,43 +128,41 @@ export default {
     challengeCompleted: function() {
       var PostString = '';
       var PostObject = {};
+      if(this.isKlaar)  {
+        for (var i = 0; i < this.Challenge2.length; i++) {
+          this.EvaluateAnswer(i);
 
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        this.EvaluateAnswer(i);
+          PostObject = {};
 
-        PostObject = {};
+          PostObject.id = this.Challenge2[i].id;
+          PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+          PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
+          PostObject.LevelID = this.Level;
+          PostObject.userAnswer = this.Challenge2[i].UserAnswerList;
+          PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+          PostObject.feedbackType = this.Challenge2[i].feedbackType;
+          PostObject.Explanation = this.lAnswerExplanation;
 
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
-        PostObject.userAnswer = this.Challenge2[i].UserAnswerList;
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = this.lAnswerExplanation;
+          PostString = JSON.stringify(PostObject);
 
-        PostString = JSON.stringify(PostObject);
-
-        console.log(PostString);
-
-
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        console.log(PostString);
-        PostString = '';
+          this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
+            'content-type': 'application/json',},})
+          .then((response) => {
+            console.log('Ok');
+          }, (error) => {
+            console.log(error);
+          });
+          console.log(PostString);
+          PostString = '';
+        }
+        if(this.Challenge2[0].feedbackType === 2) {
+          this.ShowResult = true;
+        }
+        else {
+          this.ShowResult = true;
+        }
+        this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
       }
-      if(this.Challenge2[0].feedbackType === 2) {
-              this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
       var correctanswer = '';
@@ -223,9 +215,14 @@ export default {
    .explainbox {
     border:solid 1px orange;
     resize: none;
-    float: left;
+    align-content: center;
     font-family: lato;
     font-size: 12px;
     font-style: normal;
+    padding:5px;
+  }
+  .H05Klaar  {
+    margin-top: 40px;
+    margin-left: 600px;
   }
 </style>

@@ -3,58 +3,55 @@
   <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
   <div v-else>
       <div class="relative ml-20 mt-10">
-        <table class="table-fixed w-full align-center">
-          <thead/>
+        <table :key="tablechanged" class="table-fixed w-full align-center ">
+          <thead>
+            <tr>
+              <th class="w-3/5 ..."></th>
+              <th class="w-2/5 ..."></th>
+            </tr>
+          </thead>
           <tbody>
-            <div v-for="(Object, ObjIndex) in Challenge2" :key="Object.id">
+            <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
-                <td class="w-3/5">
-                  <div class="questionwords">
-                    <span>
+                <td>
+                    <span class="questionwords">
                       {{ Object.Sentence }}
                     </span>
-                  </div>
                 </td>
-                <td class="w-1/5"> &nbsp; </td>
-                <td class="w-1/5 questionwords ml-20">
-                  <div v-if="Object.answerConfirmed" class="cursor not-allowed">
-                      <dropdown :data="AnswerOptions" />
-                  </div>
-                  <div v-else>
-                        <dropdown :data="AnswerOptions" @AnswerSelected="answerSelected(ObjIndex, $event)" />
-                  </div>
+                <td>
+                    <LEButtons :Disabled="false" :data="AnswerOptions" :SelectedButton="Object.UserAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
-                <td> &nbsp;  &nbsp; </td>
-
             </tr>
             <tr>
               <td> &nbsp; </td>
               <td> &nbsp; </td>
-              <td> &nbsp; </td>
+            </tr>
+            <tr>
               <td> &nbsp; </td>
               <td> &nbsp; </td>
             </tr>
+          </template>
             <tr>
+              <td>
 
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-
-              <td> &nbsp; </td>
+              </td>
               <td> &nbsp; </td>
             </tr>
-          </div>
             <tr>
-                          <td> <KlaarButton @challengeCompleted="challengeCompleted()" /></td>
+              <td>
+
+              </td>
+              <td> &nbsp; </td>
             </tr>
         </tbody>
-        </table>
-
+      </table>
+      <div class="C01Klaar">
+        <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
       </div>
+    </div>
   </div>
 </template>
 <script>
-import { mapGetters } from 'vuex'
-import Dropdown from './dropdown.vue';
 
 export default {
   props:  [
@@ -63,8 +60,6 @@ export default {
     'LessonID'
   ],
   computed: {
-    ...mapGetters(['isAuthenticated', 'loggedInUser']),
-
     userEmail() {
       return this.$store.state.userEmail;
     },
@@ -72,6 +67,7 @@ export default {
   },
   data() {
     return {
+      tablechanged:0,
       Challenge1: [],
       Challenge2: [],
       knipWords: [],
@@ -106,7 +102,6 @@ export default {
     this.AnswerOptions.push({id:2, name:'Niet waar'});
 
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=C01&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
-    console.log(URLAPI);
     const headers = { "cache-control": "no-store, max-age=0" }
     const resp = await this.$axios.get(URLAPI, { headers });
     this.Challenge1 = await resp.data;
@@ -129,8 +124,9 @@ export default {
     },
     answerSelected(Index, answer) {
       this.Challenge2[Index].UserAnswer = answer;
+      this.tablechanged++;
       for (var i = 0; i < this.Challenge2.length; i++) {
-        if(this.Challenge2.UserAnswer < 0)  {
+        if(this.Challenge2[i].UserAnswer < 0)  {
           this.isKlaar = false;
         }
         else  {
@@ -142,39 +138,40 @@ export default {
     challengeCompleted: function() {
       var PostString;
       var PostObject;
+      if(this.isKlaar) {
+        for (var i = 0; i < this.Challenge2.length; i++) {
+          PostObject = {};
+          this.EvaluateAnswer(i);
 
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        PostObject = {};
-        this.EvaluateAnswer(i);
+          PostObject.id = this.Challenge2[i].id;
+          PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+          PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
+          PostObject.LevelID = this.Level;
+          PostObject.userAnswer = this.Challenge2[i].UserAnswer;
+          PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+          PostObject.feedbackType = this.Challenge2[i].feedbackType;
+          PostObject.Explanation = 'No explanation required';
+          PostString = JSON.stringify(PostObject);
 
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
-        PostObject.userAnswer = this.Challenge2[i].UserAnswer;
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = 'No explanation required';
-        PostString = JSON.stringify(PostObject);
-
-        console.log(PostString);
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        PostString = '';
+          console.log(PostString);
+          this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
+            'content-type': 'application/json',},})
+          .then((response) => {
+            console.log('Ok');
+          }, (error) => {
+            console.log(error);
+          });
+          PostString = '';
+        }
+        if(this.Challenge2[0].feedbackType === 2) {
+                this.ShowResult = true;
+        }
+        else {
+          this.ShowResult = true;
+        }
+        this.forceRerender();
+        this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
       }
-      if(this.Challenge2[0].feedbackType === 2) {
-              this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.forceRerender();
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
       let useranswer2 = '';
@@ -201,4 +198,14 @@ export default {
     font-style: normal;
     font-weight: 700;
   }
+  .center {
+    margin: auto;
+    width: 60%;
+    padding: 10px;
+  }
+
+  .C01Klaar  {
+    margin-left: 600px;
+  }
+
 </style>

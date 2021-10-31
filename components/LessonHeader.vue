@@ -1,21 +1,20 @@
 <template>
   <div id="Lessonheader" class="LessonHeaderPanel">
+    <div class="LessonTitleDiv">
+      <span class="LessonTitle">
+        {{ 'Les ' + CurrentLesson.lessonid + ' |'  }}
+      </span>
+      <span class="LessonSubtitle">
+        {{ CurrentLesson.lessontitle }}
+      </span>
+    </div>
     <table class="LessonHeaderTable" >
       <tbody>
         <tr>
-          <td>
-            <span class="LessonTitle">
-              {{ 'Les ' + CurrentLesson.lessonid + ' |'  }}
-            </span>
-            <span class="LessonSubtitle">
-              {{ CurrentLesson.lessontitle }}
-            </span>
-          </td>
-          <td>
-            <div class="LevelsBar">
-              <template v-for="(level, index) in UserLevels">
-                  <div id="notevaluation" v-if="level.isevaluationchallenge==='No'"  v-bind:key="level.studentlevelID">
-                    <div  id="completedstars" v-if="level.completionprogress===1">
+          <template v-for="(level, index) in UserLevels">
+            <td>
+                <template id="notevaluation" v-if="level.isevaluationchallenge==='No'">
+                    <template  id="completedstars" v-if="level.completionprogress===1">
                       <StarRating :value="`${level.earnedstars}`"></StarRating>
                       <button v-if="CurrentLesson.currentDisplayLevel === index" class="CurrentButtonText" @click="GotoLevel(level.Levelid)">
                         {{ ` Level ` + (index+1)  }}
@@ -23,19 +22,20 @@
                       <button v-else class="NotCurrentButtonText" @click="GotoLevel(level.Levelid)">
                         {{ ` Level ` + (index+1)  }}
                       </button>
-                    </div>
-                    <div v-else id="nostars" class="w-full px-1">
+                    </template>
+                    <template v-else id="nostars">
                       <StarRating value="0"></StarRating>
+                      <div class=button
                       <button v-if="CurrentLesson.currentDisplayLevel === index" class="CurrentButtonText" @click="GotoLevel(level.Levelid)">
                         {{ ` Level ` + (index+1)  }}
                       </button>
                       <button v-else class="NotCurrentButtonText" @click="GotoLevel(level.Levelid)">
                         {{ ` Level ` + (index+1) }}
                       </button>
-                    </div>
-                  </div>
-                  <div v-else id="yesevaluation" class="w-full" v-bind:key="level.studentlevelID">
-                   <div v-if="level.completionprogress===1" id="yesevaluationcompleted" class="w-full">
+                    </template>
+                  </template>
+                  <template v-else id="yesevaluation">
+                   <template v-if="level.completionprogress===1" id="yesevaluationcompleted">
                       <StarRating :value="`${level.earnedstars}`"></StarRating>
                       <button v-if="CurrentLesson.currentDisplayLevel === index" class="CurrentButtonText" @click="GotoLevel(level.Levelid)">
                         Bonus
@@ -43,8 +43,8 @@
                       <button v-else class="NotCurrentButtonText" @click="GotoLevel(level.Levelid)">
                           Bonus
                       </button>
-                    </div>
-                    <div v-else id="yesevaluationnotcompleted">
+                    </template>
+                    <template v-else id="yesevaluationnotcompleted">
                       <StarRating value="0"></StarRating>
                       <button v-if="CurrentLesson.currentDisplayLevel === index" class="CurrentButtonText" @click="GotoLevel(level.Levelid)">
                         Bonus
@@ -52,13 +52,11 @@
                     <button v-else class="NotCurrentButtonText" @click="GotoLevel(level.Levelid)">
                         Bonus
                     </button>
-                    </div>
-                  </div>
-              </template>
-            </div>
-           </td>
-          <td>
-          </td>
+                    </template>
+                  </template>
+            </td>
+          </template>
+
          </tr>
       </tbody>
     </table>
@@ -84,16 +82,22 @@ export default {
 </script>
 <style scoped>
   .LessonHeaderPanel  {
-    padding-top: 20px;
+    padding-left: 40px;
     justify-content: center;
     width: 100%;
     height: 124px;
     background-color: white;
   }
-  .LessonHeaderTable  {
-    width: 95%;
-    margin:auto;
+  .LessonTitleDiv  {
+    padding-top:40px;
+    width: 400px;
   }
+  .LessonHeaderTable  {
+    margin-left:500px;
+    padding:0px;
+    margin-top:-45px;
+  }
+
   .LessonTitle {
     font: lato;
     font-weight: bold;
@@ -107,9 +111,7 @@ export default {
     color: #E03997;
   }
   .LevelsBar  {
-    justify-content: center;
     display: flex;
-    width: 675px;
   }
 
   .NotCurrentButtonText  {
@@ -118,13 +120,15 @@ export default {
     font-size: 17px;
     color: white;
     background-color: #E6E6E6;
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-left: 24px;
+    padding-right: 24px;
     padding-bottom: 8px;
     padding-top: 8px;
     margin-top: 4px;
     border-radius: 4px;
-    margin-right: 4px;;
+    margin-right: 4px;
+
+
   }
   .CurrentButtonText  {
     font-family: lato;
@@ -132,14 +136,13 @@ export default {
     font-size: 17px;
     color: white;
     background-color: #E03997;
-    padding-left: 32px;
-    padding-right: 32px;
+    padding-left: 24px;
+    padding-right: 24px;
     padding-bottom: 8px;
     padding-top: 8px;
     margin-top: 4px;
     border-radius: 4px;
-     margin-right: 4px;;
-
+    margin-right: 4px;
   }
   .DisplayLevelButton {
     box-shadow:0 0 0 0px white, 0 0 0 2px #F26700;

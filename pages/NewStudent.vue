@@ -42,13 +42,6 @@
                 <input class="fieldInput" v-model="l_Naam[i]">
               </td>
               <td>
-                <span class="fieldlabel">
-                  E-mail
-                </span>
-                <br>
-                <input class="fieldInput" v-model="l_Email[i]">
-              </td>
-              <td>
                 <br>
                 <template v-if="l_Ok[i]">
                   <button class="Okbtn" @click="IndexWis(i)"> Wis </button>
@@ -80,7 +73,6 @@ export default {
     return {
       selectedClass: [],
       l_Naam: [],
-      l_Email: [],
       l_Ok: [],
       Challenge1: [],
       tablechanged:0,
@@ -118,12 +110,9 @@ export default {
           PostObject = {};
           PostObject.pID = '-1';
           PostObject.pname = this.l_Naam[i];
-          PostObject.pemail = this.l_Email[i];
           PostObject.pClassID = this.selectedClass[i];
           PostObject.pDelete = 0;
           PostString = JSON.stringify(PostObject);
-
-          console.log(PostString);
 
           this.$axios.post('/UpdateStudent', PostString, {headers: {
             'content-type': 'application/json',},})
@@ -146,7 +135,6 @@ export default {
       this.l_Ok[index] = false;
       this.selectedClass[index] = -1;
       this.l_Naam[index] = '';
-      this.l_Email[index] = '';
       this.tablechanged--;
     },
     CloseNewStudent() {

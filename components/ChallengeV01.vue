@@ -36,11 +36,9 @@
                 </td>
             </tr>
             <tr>
-
-              <td>
-                 &nbsp;
-              </td>
-              <td>
+              <td> &nbsp;  &nbsp; </td>
+              <td> &nbsp;  &nbsp; </td>
+              <td colspan="2">
                 <br>
                   <textarea v-model="Object.explanation" placeholder="leg jouw antwoord uit" class="explainbox" rows="6" cols="100"> </textarea>
               </td>
@@ -59,18 +57,11 @@
               <td> &nbsp;  &nbsp; </td>
               <td> &nbsp;  &nbsp; </td>
           </tr>
-          <tr>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td>
-                <div>
-                <button v-on:click ="challengeCompleted()" class="klaarButton"> Klaar </button>
-                </div>
-              </td>
-              <td> &nbsp;  &nbsp; </td>
-            </tr>
         </tbody>
         </table>
+        <div class="V01Klaar">
+          <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
+        </div>
       </div>
   </div>
 </template>
@@ -90,7 +81,7 @@ export default {
       Challenge1: [],
       Challenge2: [],
       knipWords: [],
-      AllquestionsAnswered: false,
+      isKlaar: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
@@ -148,6 +139,27 @@ export default {
           this.Challenge2[Index].UserAnswer3 = answer;
           break;
       }
+      this.isKlaar = true;
+      for (var i = 0; i < this.Challenge2.length; i++) {
+        if(this.Challenge2[i].UserAnswer1 < 0 && this.Challenge2[i].MorfeemList != null)  {
+          this.isKlaar = false;
+        }
+        else  {
+          this.isKlaar = true;
+        }
+        if(this.Challenge2[i].UserAnswer2 < 0 && this.Challenge2[i].MorfeemList2 != null)  {
+          this.isKlaar = false;
+        }
+        else  {
+          this.isKlaar = true;
+        }
+        if(this.Challenge2[i].UserAnswer3 < 0 && this.Challenge2[i].MorfeemList3 != null)  {
+          this.isKlaar = false;
+        }
+        else  {
+          this.isKlaar = true;
+        }
+      }
     },
     convertToDropDownData(strData, whichOne, Index) {
       var DropDownOptions = [];
@@ -155,7 +167,6 @@ export default {
       const dataarray = strData.split(";");
       for(var i=0; i < dataarray.length;i++)  {
         if(dataarray[i].indexOf('*') >= 0) {
-          console.log(Index+ 'correctAnswer-' + i);
           if(whichOne === 1)  {
             this.Challenge2[Index].correctAnswer1 = i;
           }
@@ -184,41 +195,43 @@ export default {
       var PostString = '';
       var newPropertyID = '';
       var PostObject = {};
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        this.EvaluateAnswer(i);
-        PostObject = {};
+      if(this.isKlaar)  {
+        for (var i = 0; i < this.Challenge2.length; i++) {
+          this.EvaluateAnswer(i);
+          PostObject = {};
 
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
+          PostObject.id = this.Challenge2[i].id;
+          PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+          PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
+          PostObject.LevelID = this.Level;
 
-        newPropertyID = this.Challenge2[i].UserAnswer1 + ';' + this.Challenge2[i].UserAnswer2 + ';' + this.Challenge2[i].UserAnswer3;
-        PostObject.userAnswer = newPropertyID;
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = this.Challenge2[i].explanation;
+          newPropertyID = this.Challenge2[i].UserAnswer1 + ';' + this.Challenge2[i].UserAnswer2 + ';' + this.Challenge2[i].UserAnswer3;
+          PostObject.userAnswer = newPropertyID;
+          PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+          PostObject.feedbackType = this.Challenge2[i].feedbackType;
+          PostObject.Explanation = this.Challenge2[i].explanation;
 
-        PostString = JSON.stringify(PostObject);
+          PostString = JSON.stringify(PostObject);
 
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        PostString = '';
+          this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
+            'content-type': 'application/json',},})
+          .then((response) => {
+            console.log('Ok');
+          }, (error) => {
+            console.log(error);
+          });
+          PostString = '';
+        }
+
+        if(this.Challenge2[0].feedbackType === 2) {
+          this.ShowResult = true;
+        }
+        else {
+          this.ShowResult = true;
+        }
+        this.forceRerender();
+        this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
       }
-
-      if(this.Challenge2[0].feedbackType === 2) {
-        this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.forceRerender();
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
       this.Challenge2[index].answerCorrect = true;
@@ -240,14 +253,14 @@ export default {
   .questionwords {
     color: grey;
     font-family: lato;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }
   .V01Context {
-    color: grey;
+    color: black;
     font-family: lato;
-    font-size: 16px;
+    font-size: 14px;
     font-style: normal;
     font-weight: 700;
   }
@@ -257,7 +270,7 @@ export default {
   }
 
   .V01_Table {
-    width:50%;
+    width:70%;
     table-layout: fixed;
   }
   .V01_Table tr {
@@ -267,7 +280,7 @@ export default {
     width: 200px;
   }
   .V01_Table td:nth-child(1) {
-    width: 300px;
+    width: 400px;
   }
   .klaarButton {
     font: normal normal bold 20px/25px Lato;
@@ -290,5 +303,10 @@ export default {
     font-family: lato;
     font-size: 12px;
     font-style: normal;
+    padding: 4px;
+  }
+  .V01Klaar {
+    margin-left: 500px;
+    margin-top: 40px;
   }
 </style>

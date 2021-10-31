@@ -2,11 +2,11 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-10 mt-5">
+      <div class="relative mt-5">
         <table class="table-fixed w-full align-center">
           <thead>
             <tr>
-              <th class="w=2/5">
+              <th class="w=1/5">
                 &nbsp;
               </th>
               <th class="w=1/5">
@@ -30,24 +30,20 @@
                       </span>
                   </td>
                   <td>
-                    <input type="radio" :name="'wordtype_' + ObjIndex" value="Cat1" v-model="Object.UserAnswer">
+                    <input type="radio" :name="'wordtype_' + ObjIndex" value="Cat1" v-model="Object.UserAnswer" @click="AnswerClicked()">
                     <label for="one" class="questionwordsClicked"> Selecteer categorie </label>
                   </td>
                   <td>
-                    <input type="radio" :name="'wordtype_' + ObjIndex" value="Cat2" v-model="Object.UserAnswer">
+                    <input type="radio" :name="'wordtype_' + ObjIndex" value="Cat2" v-model="Object.UserAnswer" @click="AnswerClicked()">
                     <label for="one" class="questionwordsClicked"> Selecteer categorie </label>
                   </td>
               </tr>
             </template>
-
-              <tr>
-              <td><KlaarButton @challengeCompleted="challengeCompleted()" /></td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              </tr>
         </tbody>
         </table>
-
+        <div class="CA3Klaar">
+          <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
+        </div>
       </div>
   </div>
 </template>
@@ -66,23 +62,23 @@ export default {
       Challenge1: [],
       Challenge2: [],
       forceRenderVariable: [],
-      AllquestionsAnswered: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
+      isKlaar: false,
     }
   },
   watch: {
     Challenge1()  {
       this.Challenge2 = this.JSONtoObj();
     }
+
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=CA3&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
-    console.log(URLAPI);
 
     const headers = { "cache-control": "no-store, max-age=0" }
     const resp = await this.$axios.get(URLAPI, { headers });
@@ -95,6 +91,14 @@ export default {
         this.forceRenderVariable.push([]);
         for (var j = 0; j <= 7; j++) {
           this.forceRenderVariable[i].push(false);
+        }
+      }
+    },
+    AnswerClicked() {
+      this.isKlaar = true;
+      for (var i = 0; i < this.Challenge2.length; i++) {
+        if(this.Challenge2.UserAnswer == '')  {
+          this.isKlaar = false;
         }
       }
     },
@@ -119,38 +123,39 @@ export default {
     challengeCompleted: function() {
       var PostString = '';
       var PostObject = {};
-      for (var i = 0; i < this.Challenge2.length; i++) {
+      if(this.isKlaar) {
+        for (var i = 0; i < this.Challenge2.length; i++) {
+          PostObject= {};
+          this.EvaluateAnswer(i);
+          PostObject.id = this.Challenge2[i].id;
+          PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+          PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
+          PostObject.LevelID = this.Level;
+          PostObject.userAnswer = this.Challenge2[i].UserAnswer;
+          PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+          PostObject.feedbackType = this.Challenge2[i].feedbackType;
+          PostObject.Explanation = 'No explanation required';
 
-        PostObject= {};
-        this.EvaluateAnswer(i);
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
-        PostObject.userAnswer = this.Challenge2[i].UserAnswer;
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = 'No explanation required';
+          PostString = JSON.stringify(PostObject);
 
-        PostString = JSON.stringify(PostObject);
-
-        console.log(PostString);
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        PostString = '';
+          console.log(PostString);
+          this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
+            'content-type': 'application/json',},})
+          .then((response) => {
+            console.log('Ok');
+          }, (error) => {
+            console.log(error);
+          });
+          PostString = '';
+        }
+        if(this.Challenge2[0].feedbackType === 2) {
+          this.ShowResult = true;
+        }
+        else {
+          this.ShowResult = true;
+        }
+        this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
       }
-      if(this.Challenge2[0].feedbackType === 2) {
-        this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
       var UserChoice =-1;
@@ -184,7 +189,12 @@ export default {
     font-weight: 700;
   }
   th, td {
-    padding: 15px;
+    padding-bottom: 15px;
+    padding-top: 15px;
     text-align: center;
+  }
+  .CA3Klaar {
+    margin-top: 40px;
+    margin-left: 700px;
   }
 </style>

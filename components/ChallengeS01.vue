@@ -40,16 +40,12 @@
                   <td> &nbsp;  &nbsp; </td>
             </tr>
           </template>
-          <tr>
-              <td>
-                <KlaarButton @challengeCompleted="challengeCompleted()" />
-             </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-
-            </tr>
         </tbody>
         </table>
+        <div class="S01Klaar">
+          <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
+        </div>
+
       </div>
   </div>
 </template>
@@ -70,7 +66,7 @@ export default {
       Challenge1: [],
       Challenge2: [],
       forceRenderVariable: [],
-      AllquestionsAnswered: false,
+      isKlaar: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
@@ -133,6 +129,12 @@ export default {
         this.Challenge2[word].UserAnswerList.push(this.Challenge2[word].word[char]);
         this.forceRenderVariable[word].splice(char, 1, true);
       }
+      this.isKlaar = true;
+      for(var i = 0; i < this.Challenge2.length; i++) {
+        if(this.Challenge2[i].UserAnswerList.length === 0)  {
+          this.isKlaar = false;
+        }
+      }
     },
     IsClicked(word, char) {
       return(this.Challenge2[word].UserAnswerList.includes(this.Challenge2[word].word[char]));
@@ -142,38 +144,40 @@ export default {
       var PostString = '';
       var newPropertyID = '';
       var PostObject = {};
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        this.EvaluateAnswer(i);
+      if(this.isKlaar)  {
+        for (var i = 0; i < this.Challenge2.length; i++) {
+          this.EvaluateAnswer(i);
 
-        PostObject = {};
+          PostObject = {};
 
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
+          PostObject.id = this.Challenge2[i].id;
+          PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+          PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
+          PostObject.LevelID = this.Level;
 
-        newPropertyID = this.Challenge2[i].UserAnswerList.join(";");
-        PostObject.userAnswer = newPropertyID;
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = 'No Explanation requested';
+          newPropertyID = this.Challenge2[i].UserAnswerList.join(";");
+          PostObject.userAnswer = newPropertyID;
+          PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+          PostObject.feedbackType = this.Challenge2[i].feedbackType;
+          PostObject.Explanation = 'No Explanation requested';
 
-        PostString = JSON.stringify(PostObject);
+          PostString = JSON.stringify(PostObject);
 
-        console.log(PostString);
+          console.log(PostString);
 
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        PostString = '';
+          this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
+            'content-type': 'application/json',},})
+          .then((response) => {
+            console.log('Ok');
+          }, (error) => {
+            console.log(error);
+          });
+          PostString = '';
+        }
+
+        this.ShowResult = true;
+        this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
       }
-
-      this.ShowResult = true;
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
       let answerIsCorrect = false;
@@ -213,5 +217,9 @@ export default {
   }
   th, td {
     padding: 10px;
+  }
+  .S01Klaar  {
+    margin-top: 40px;
+    margin-left: 600px;
   }
 </style>

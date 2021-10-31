@@ -66,9 +66,6 @@
   </div>
   <br><br>
 
-  <div v-if="userEmail !== ''" class="flex align-center justify-center w-full">
-    <button @click="ResetData" style="color:red"> || &#9888; X  &#9888; ||  </button>
-  </div>
 </div>
 </template>
 
@@ -86,36 +83,7 @@ export default {
       return this.$store.state.userEmail;
     }
   },
-  methods:  {
-    ResetData() {
-      var PostString = '{ '
-      var newPropertyID = this.userEmail;
-      PostString += `"'` + newPropertyID + `'"  : "StudentEmail",`;
-      PostString += `"1" : "LessonID" }`;
-      this.$axios.post('/ResetData', PostString, {headers: {
-        'content-type': 'application/json',},})
-      .then((response) => {
-        console.log('Ok');
-      }, (error) => {
-        console.log(error);
-      });
-      for(var i= 2;i <=6;i++) {
-        PostString = '{ '
-        newPropertyID = this.userEmail;
-        PostString += `"'` + newPropertyID + `'"  : "StudentEmail",`;
-        PostString += `"` + i + `" : "LessonID" }`;
-        this.$axios.post('/ResetData', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-      }
-      alert('Reset complete 1');
 
-    },
-  }
 }
 
 </script>

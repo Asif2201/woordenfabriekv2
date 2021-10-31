@@ -85,7 +85,6 @@ export default {
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=S01&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
     const  URLAPI1 =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=S01&challengelevelid=\'${ChallengeID}\'&Student_ID=\''`
     const headers = { "cache-control": "no-store, max-age=0" }
-    console.log(URLAPI);
     const resp1 = await this.$axios.get(URLAPI1, { headers });
     const resp = await this.$axios.get(URLAPI, { headers });
     this.Challenge1 = await resp.data;

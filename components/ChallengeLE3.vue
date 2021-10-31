@@ -101,17 +101,20 @@
               </tr>
               <tr>
                 <td>
-                  <textarea v-model="Object.UserAnswer" placeholder="geef je antwoord hier" class="explainbox" rows="6" cols="60"> </textarea>
+                  <textarea v-model="Object.UserAnswer" placeholder="geef je antwoord hier" class="explainbox" rows="6" cols="60" @input="isKlaar = true"> </textarea>
                 </td>
               </tr>
           </template>
             <tr>
               <td>
-                <KlaarButton @challengeCompleted="challengeCompleted()" />
+
               </td>
             </tr>
         </tbody>
         </table>
+        <div class="LE3Klaar">
+          <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
+        </div>
       </div>
   </div>
 </template>
@@ -135,7 +138,7 @@ export default {
       Challenge4: [],
       Challenge5: [],
       forceRenderVariable: [],
-      AllquestionsAnswered: false,
+      isKlaar: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
@@ -204,42 +207,44 @@ export default {
       var PostString = '';
       var newPropertyID = '';
       var PostObject = {};
-      for (var i = 0; i < this.Challenge5.length; i++) {
-        this.EvaluateAnswer(i);
+      if(this.isKlaar)  {
+        for (var i = 0; i < this.Challenge5.length; i++) {
+          this.EvaluateAnswer(i);
 
-        PostObject = {};
+          PostObject = {};
 
-        PostObject.id = this.Challenge5[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
+          PostObject.id = this.Challenge5[i].id;
+          PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+          PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
+          PostObject.LevelID = this.Level;
 
-        newPropertyID = this.Challenge5[i].UserAnswer;
-        PostObject.userAnswer = newPropertyID;
-        PostObject.answerCorrect = this.Challenge5[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge5[i].feedbackType;
-        PostObject.Explanation = 'No Explanation requested';
+          newPropertyID = this.Challenge5[i].UserAnswer;
+          PostObject.userAnswer = newPropertyID;
+          PostObject.answerCorrect = this.Challenge5[i].answerCorrect ? 'Yes' : 'No';
+          PostObject.feedbackType = this.Challenge5[i].feedbackType;
+          PostObject.Explanation = 'No Explanation requested';
 
-        PostString = JSON.stringify(PostObject);
+          PostString = JSON.stringify(PostObject);
 
-        console.log(PostString);
+          console.log(PostString);
 
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        PostString = '';
+          this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
+            'content-type': 'application/json',},})
+          .then((response) => {
+            console.log('Ok');
+          }, (error) => {
+            console.log(error);
+          });
+          PostString = '';
+        }
+        if(this.Challenge5[0].feedbackType === 2) {
+                this.ShowResult = true;
+        }
+        else {
+          this.ShowResult = true;
+        }
+        this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
       }
-      if(this.Challenge5[0].feedbackType === 2) {
-              this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
       let answerIsCorrect = true;
@@ -279,7 +284,6 @@ export default {
     font-style: normal;
     font-weight: bolder;
     line-height: 1.6;
-    margin-left:160px;
 }
 .explainbox {
     border: solid 1px orange;
@@ -288,5 +292,10 @@ export default {
     margin-bottom: 4px;
     font-family: lato;
     font-size: 14px;
+    padding: 4px;
+  }
+  .LE3Klaar {
+    margin-left: 500px;
+    margin-top: 40px;
   }
 </style>

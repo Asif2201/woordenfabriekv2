@@ -17,12 +17,15 @@
                 </td>
                 <td>
                   <div>
-                    <p v-show="Object.answerCorrect" class="text-blue">
+                    <p v-show="Object.studentCorrect == 'Yes'" class="text-blue">
                       <img src="~/assets/correct.png" width="40" height="40" />
                     </p>
-                    <p v-show="!Object.answerCorrect" class="text-blue">
+                    <p v-show="Object.studentCorrect != 'Yes'" class="text-blue">
                       <img src="~/assets/incorrect.png" width="40" height="40" />
                     </p>
+                    <span class="answerfeedback">
+                      {{ Object.AnswerFeedback }}
+                    </span>
                 </div>
                 </td>
             </tr>
@@ -115,6 +118,13 @@ export default {
     color: var(--grey);
     font-family: lato;
     font-size: 16px;
+    font-style: normal;
+    font-weight: 700;
+  }
+  .answerfeedback {
+    color: var(--grey);
+    font-family: lato;
+    font-size: 12px;
     font-style: normal;
     font-weight: 700;
   }

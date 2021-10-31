@@ -87,27 +87,24 @@
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge5">
               <tr>
-                <td>
+                <td colspan="2">
                   <span class="paragraphheading">
                       {{ Object.Question }}
                   </span>
                 </td>
-                <td>
-                  &nbsp;
-                </td>
+
                 <td>
                   &nbsp;
                 </td>
               </tr>
               <tr>
                 <td>
-                  <p class="questionwords"> {{ Object.studentAnswer }} </p>
+                  <p class="explainbox"> {{ Object.studentAnswer }} </p>
                 </td>
               </tr>
           </template>
             <tr>
               <td>
-                <KlaarButton @challengeCompleted="challengeCompleted()" />
               </td>
             </tr>
         </tbody>
@@ -279,14 +276,14 @@ export default {
     font-style: normal;
     font-weight: bolder;
     line-height: 1.6;
-    margin-left:160px;
+    margin-bottom: 4px;
 }
 .explainbox {
     border: solid 1px orange;
     resize: none;
-    float: right;
     margin-bottom: 4px;
     font-family: lato;
     font-size: 14px;
+    padding: 4px;
   }
 </style>

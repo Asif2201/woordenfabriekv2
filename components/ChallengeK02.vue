@@ -23,13 +23,13 @@
                       {{ Object.Morfeem4 }}
                     </span>
                     <br>
-                    <input value="0" class="answeroptions" name="M1" type="radio" id="M11" v-model="Object.UserAnswer1">
+                    <input value="0" class="answeroptions" name="M1" type="radio" id="M11" v-model="Object.UserAnswer1" @click="AnswerClicked()">
                     <label class="answeroptions" for="M11"> {{ Object.answer1.split(";")[0].replace("*", "")}} </label>
                     <br>
-                    <input value="1" class="answeroptions" name="M1" type="radio" id="M12" v-model="Object.UserAnswer1">
+                    <input value="1" class="answeroptions" name="M1" type="radio" id="M12" v-model="Object.UserAnswer1" @click="AnswerClicked()">
                     <label class="answeroptions" for="M12"> {{ Object.answer1.split(";")[1].replace("*", "")}} </label>
                     <br>
-                    <input value="2" class="answeroptions" name="M1" type="radio" id="M13" v-model="Object.UserAnswer1">
+                    <input value="2" class="answeroptions" name="M1" type="radio" id="M13" v-model="Object.UserAnswer1" @click="AnswerClicked()">
                     <label class="answeroptions" for="M13"> {{ Object.answer1.split(";")[2].replace("*", "")}} </label>
                 </td>
                 <td v-show="Object.Morfeem2.length > 0">
@@ -46,13 +46,13 @@
                       {{ Object.Morfeem4 }}
                     </span>
                     <br>
-                    <input value="0" class="answeroptions" name="M2" type="radio" id="M21" v-model="Object.UserAnswer2">
+                    <input value="0" class="answeroptions" name="M2" type="radio" id="M21" v-model="Object.UserAnswer2" @click="AnswerClicked()">
                     <label  class="answeroptions" for="M21"> {{ Object.answer2.split(";")[0].replace("*", "")}} </label>
                     <br>
-                    <input value="1" class="answeroptions" name="M2" type="radio" id="M22" v-model="Object.UserAnswer2">
+                    <input value="1" class="answeroptions" name="M2" type="radio" id="M22" v-model="Object.UserAnswer2" @click="AnswerClicked()">
                     <label class="answeroptions" for="M22"> {{ Object.answer2.split(";")[1].replace("*", "")}} </label>
                     <br>
-                    <input value="2" class="answeroptions" name="M2" type="radio" id="M23" v-model="Object.UserAnswer2">
+                    <input value="2" class="answeroptions" name="M2" type="radio" id="M23" v-model="Object.UserAnswer2" @click="AnswerClicked()">
                     <label class="answeroptions" for="M23"> {{ Object.answer2.split(";")[2].replace("*", "")}} </label>
                 </td>
               </tr>
@@ -68,13 +68,13 @@
                       {{ Object.Morfeem4}}
                     </span>
                     <br>
-                    <input value="0" class="answeroptions" name="M3" type="radio" id="M31" v-model="Object.UserAnswer3">
+                    <input value="0" class="answeroptions" name="M3" type="radio" id="M31" v-model="Object.UserAnswer3" @click="AnswerClicked()">
                     <label class="answeroptions" for="M31"> {{ Object.answer3.split(";")[0].replace("*", "")}} </label>
                     <br>
-                    <input value="1" class="answeroptions" name="M3" type="radio" id="M32" v-model="Object.UserAnswer3">
+                    <input value="1" class="answeroptions" name="M3" type="radio" id="M32" v-model="Object.UserAnswer3" @click="AnswerClicked()">
                     <label class="answeroptions" for="M32"> {{ Object.answer3.split(";")[1].replace("*", "")}} </label>
                     <br>
-                    <input value="2" class="answeroptions"  name="M3" type="radio" id="M33" v-model="Object.UserAnswer3">
+                    <input value="2" class="answeroptions"  name="M3" type="radio" id="M33" v-model="Object.UserAnswer3" @click="AnswerClicked()">
                     <label class="answeroptions"  for="M33"> {{ Object.answer3.split(";")[2].replace("*", "")}} </label>
                 </td>
                 <td v-show="Object.Morfeem4.length > 0">
@@ -85,13 +85,13 @@
                       {{  Object.Morfeem4}}
                     </span>
                     <br>
-                    <input value="0" class="answeroptions" name="M4" type="radio" id="M41" v-model="Object.UserAnswer4">
+                    <input value="0" class="answeroptions" name="M4" type="radio" id="M41" v-model="Object.UserAnswer4" @click="AnswerClicked()">
                     <label class="answeroptions" for="M41"> {{ Object.answer4.split(";")[0].replace("*", "")}} </label>
                     <br>
-                    <input value="1" class="answeroptions" name="M4" type="radio" id="M42" v-model="Object.UserAnswer4">
+                    <input value="1" class="answeroptions" name="M4" type="radio" id="M42" v-model="Object.UserAnswer4" @click="AnswerClicked()">
                     <label class="answeroptions" for="M42"> {{ Object.answer4.split(";")[1].replace("*", "")}} </label>
                     <br>
-                    <input value="2" class="answeroptions" name="M4" type="radio" id="M43" v-model="Object.UserAnswer4">
+                    <input value="2" class="answeroptions" name="M4" type="radio" id="M43" v-model="Object.UserAnswer4" @click="AnswerClicked()">
                     <label class="answeroptions" for="M43"> {{ Object.answer4.split(";")[2].replace("*", "")}} </label>
                 </td>
               </tr>
@@ -99,16 +99,14 @@
         </table>
 
     </template>
-        <div>
-          <button v-on:click ="challengeCompleted()" class="klaarButton"> Klaar </button>
-        </div>
+    <div>
+      <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
+    </div>
   </div>
 </template>
 <script>
-import dropdown from './dropdown.vue';
 
 export default {
-  components: { dropdown },
   props:  [
     'Challenge',
     'Level',
@@ -120,7 +118,7 @@ export default {
       Challenge1: [],
       Challenge2: [],
       knipWords: [],
-      AllquestionsAnswered: false,
+      isKlaar: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
@@ -143,6 +141,27 @@ export default {
   methods:  {
     forceRerender() {
       this.ResultKey += 1;
+    },
+    AnswerClicked() {
+      this.isKlaar = true;
+      for(var i = 0; i < this.Challenge2.length; i++)  {
+        if(this.Challenge2[i].UserAnswer1 < 0) {
+          this.isKlaar = false;
+          break;
+        }
+        if(this.Challenge2[i].answer2 != ';;;' && this.Challenge2[i].UserAnswer2 < 0)  {
+          this.isKlaar = false;
+          break;
+        }
+        if(this.Challenge2[i].answer3 != ';;;' && this.Challenge2[i].UserAnswer3 < 0)  {
+          this.isKlaar = false;
+          break;
+        }
+        if(this.Challenge2[i].answer4 != ';;;' && this.Challenge2[i].UserAnswer4 < 0)  {
+          this.isKlaar = false;
+          break;
+        }
+      }
     },
     FindCorrectAnswerIndex(SearchString)  {
       const X = SearchString;
@@ -193,52 +212,54 @@ export default {
       var PostString = '';
       var PostObject = {};
       var newPropertyID = '';
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        this.EvaluateAnswer(i);
-        PostObject = {};
+      if(this.isKlaar)  {
+        for (var i = 0; i < this.Challenge2.length; i++) {
+          this.EvaluateAnswer(i);
+          PostObject = {};
 
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
+          PostObject.id = this.Challenge2[i].id;
+          PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+          PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
+          PostObject.LevelID = this.Level;
 
-        newPropertyID = this.Challenge2[i].UserAnswer1;
-        if(this.Challenge2[i].answer2)  {
-          newPropertyID += '-' + this.Challenge2[i].UserAnswer2;
+          newPropertyID = this.Challenge2[i].UserAnswer1;
+          if(this.Challenge2[i].answer2)  {
+            newPropertyID += '-' + this.Challenge2[i].UserAnswer2;
+          }
+          if(this.Challenge2[i].answer3)  {
+            newPropertyID += '-' + this.Challenge2[i].UserAnswer3;
+          }
+          if(this.Challenge2[i].answer4)  {
+            newPropertyID += '-' + this.Challenge2[i].UserAnswer4;
+          }
+          PostObject.userAnswer = newPropertyID;
+          PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+          PostObject.feedbackType = this.Challenge2[i].feedbackType;
+          PostObject.Explanation = 'No Explanation requested';
+
+          PostString = JSON.stringify(PostObject);
+
+          console.log(PostString);
+
+          this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
+            'content-type': 'application/json',},})
+          .then((response) => {
+            console.log('Ok');
+          }, (error) => {
+            console.log(error);
+          });
+          PostString = '';
         }
-        if(this.Challenge2[i].answer3)  {
-          newPropertyID += '-' + this.Challenge2[i].UserAnswer3;
+
+        if(this.Challenge2[0].feedbackType === 2) {
+          this.ShowResult = true;
         }
-        if(this.Challenge2[i].answer4)  {
-          newPropertyID += '-' + this.Challenge2[i].UserAnswer4;
+        else {
+          this.ShowResult = true;
         }
-        PostObject.userAnswer = newPropertyID;
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = 'No Explanation requested';
-
-        PostString = JSON.stringify(PostObject);
-
-        console.log(PostString);
-
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        PostString = '';
+        this.forceRerender();
+        this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
       }
-
-      if(this.Challenge2[0].feedbackType === 2) {
-        this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.forceRerender();
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
       this.Challenge2[index].answerCorrect = true;

@@ -3,7 +3,7 @@
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
       <div class="relative ml-20 mt-10">
-        <table class="K01_Table" key="OkKey">
+        <table class="K01_Table" :key="OkKey">
           <thead/>
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
@@ -26,18 +26,11 @@
             </tr>
           </template>
 
-          <tr>
-              <td>
-                <div>
-                <button v-on:click ="challengeCompleted()" class="klaarButton"> Klaar </button>
-                </div>
-               </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-
-            </tr>
         </tbody>
         </table>
+        <div class="K01Klaar">
+          <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
+        </div>
       </div>
 
   </div>
@@ -55,7 +48,7 @@ export default {
       Challenge1: [],
       Challenge2: [],
       knipWords: [],
-      AllquestionsAnswered: false,
+      isKlaar: false,
       ShowResult: false,
       ResultKey: 0,
       OkKey: 0,
@@ -73,7 +66,6 @@ export default {
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid
     const  URLAPI =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=K1&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
 
-    console.log(URLAPI);
     const headers = { "cache-control": "no-store, max-age=0" }
     const resp = await this.$axios.get(URLAPI, { headers });
     this.Challenge1 = await resp.data;
@@ -107,6 +99,12 @@ export default {
           this.Challenge2[word].word.splice(char, 0, '|');
         }
       }
+      this.isKlaar=true;
+      for(var i=0; i < this.Challenge2.length;i++)  {
+        if(this.Challenge2[i].word.indexOf('|') < 0)  {
+          this.isKlaar = false;
+        }
+      }
     },
 
     morphemeClickWis: function(word, event) {
@@ -115,7 +113,7 @@ export default {
         this.Challenge2[word].word.splice(index,1);
         index = this.Challenge2[word].word.indexOf('|');
       }
-      this.AllquestionsAnswered = false;
+      this.isKlaar = false;
       this.Challenge2[word].answerConfirmed = false;
       this.OkKey++;
 
@@ -124,41 +122,42 @@ export default {
       var PostString = '';
       var PostObject = {};
 
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        this.EvaluateAnswer(i);
-        PostObject = {};
+      if(this.isKlaar) {
+        for (var i = 0; i < this.Challenge2.length; i++) {
+          this.EvaluateAnswer(i);
+          PostObject = {};
 
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
-        PostObject.userAnswer = this.Challenge2[i].word.join("");
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = 'No Explanation requested';
+          PostObject.id = this.Challenge2[i].id;
+          PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+          PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
+          PostObject.LevelID = this.Level;
+          PostObject.userAnswer = this.Challenge2[i].word.join("");
+          PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
+          PostObject.feedbackType = this.Challenge2[i].feedbackType;
+          PostObject.Explanation = 'No Explanation requested';
+          PostString = JSON.stringify(PostObject);
 
-        PostString = JSON.stringify(PostObject);
+          console.log(PostString);
 
-        console.log(PostString);
+          this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
+            'content-type': 'application/json',},})
+          .then((response) => {
+            console.log('Ok');
+          }, (error) => {
+            console.log(error);
+          });
+          PostString = '';
+        }
 
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.log(error);
-        });
-        PostString = '';
+        if(this.Challenge2[0].feedbackType === 2) {
+          this.ShowResult = true;
+        }
+        else {
+          this.ShowResult = false;
+        }
+        this.forceRerender();
+        this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
       }
-
-      if(this.Challenge2[0].feedbackType === 2) {
-        this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = false;
-      }
-      this.forceRerender();
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
       let useranswer = '';
@@ -227,4 +226,8 @@ export default {
     margin-left: 500px;
     cursor:pointer;
 }
+.K01Klaar  {
+    margin-top: 40px;
+    margin-left: 600px;
+  }
 </style>
