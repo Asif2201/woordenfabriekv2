@@ -10,15 +10,17 @@
               <th class="w-1/5 ..."></th>
             </tr>
           </thead>
-          <tbody class="border-black">
+          <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
-                <td>
+                <td colspan="2">
                    <span class="voorbeeldzin">
                     {{ Object.voorbeeldzin }}
                   </span>
                 </td>
-                <td>
+              </tr>
+              <tr>
+                <td colspan="2">
                   &nbsp;
                 </td>
               </tr>
@@ -39,29 +41,12 @@
                   &nbsp;
                 </td>
               </tr>
-              <tr>
-
-                <td>
-                  &nbsp;
-                </td>
-                <td>
-                  &nbsp;
-                </td>
-              </tr>
-
           </template>
-            <br>
-            <br>
-            <tr>
-              <td>
-                <div class="I01Klaar">
-                  <KlaarButton :isKlaar="!isKlaar1.includes(false)" @challengeCompleted="challengeCompleted()" />
-                </div>
-              </td>
-            </tr>
         </tbody>
         </table>
-
+        <div class="I01Klaar">
+          <KlaarButton :isKlaar="!isKlaar1.includes(false)" @challengeCompleted="challengeCompleted()" />
+        </div>
       </div>
   </div>
 </template>
@@ -184,7 +169,6 @@ export default {
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
-    white-space: wrap;
     line-height: 200%;
   }
   .voorbeeldzin {
@@ -204,6 +188,7 @@ export default {
     font-weight: 700;
     line-height: 200%;
     border:solid 1px orange;
+    padding-left: 4px;
   }
 
   .paragraphheading {
@@ -217,8 +202,10 @@ export default {
     border:solid 1px orange;
     resize: none;
     float: right;
+    padding:4px;
   }
   .I01Klaar {
     margin-left: 500px;
+    margin-top:100px
   }
 </style>

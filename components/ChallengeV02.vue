@@ -30,13 +30,6 @@
                   </template>
                 </td>
               </tr>
-              <tr>
-              <td> &nbsp; </td>
-              <td>
-                &nbsp;
-              </td>
-              </tr>
-              <br>
             </template>
         </tbody>
         </table>
@@ -96,7 +89,8 @@ export default {
           QuestionObjectList[i].answerConfirmed = false;
           QuestionObjectList[i].answerCorrect = false;
           this.isKlaar1[i] = false;
-
+          QuestionObjectList[i].answer = QuestionObjectList[i].answer.replaceAll('[', '');
+          QuestionObjectList[i].answer = QuestionObjectList[i].answer.replaceAll(']', '');
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
 
@@ -148,13 +142,14 @@ export default {
       }
     },
     EvaluateAnswer: function(index)  {
-      this.Challenge2[index].answerCorrect = true;
+
+      this.Challenge2[index].answerCorrect = false;
       this.Challenge2[index].answer = this.Challenge2[index].UserAnswer.trim();
       this.Challenge2[index].answer = this.Challenge2[index].UserAnswer.toLowerCase();
       this.Challenge2[index].UserAnswer = this.Challenge2[index].UserAnswer.trim();
       this.Challenge2[index].UserAnswer = this.Challenge2[index].UserAnswer.toLowerCase();
-      if(this.Challenge2[index].answer !== this.Challenge2[index].UserAnswer)  {
-        this.Challenge2[index].answerCorrect = false;
+      if(this.Challenge2[index].answer == this.Challenge2[index].UserAnswer)  {
+        this.Challenge2[index].answerCorrect = true;
       }
     },
   },
@@ -168,6 +163,7 @@ export default {
     font-size: 14px;
     font-weight: bolder;
   }
+
   .questionwordsClicked {
     color: blue;
     font-family: lato;
@@ -176,6 +172,7 @@ export default {
     font-weight: 700;
     line-height: 200%;
     border:solid 1px grey;
+    padding-left: 4px;
   }
    .explainbox {
     border:solid 1px orange;
@@ -184,6 +181,7 @@ export default {
     font-family: lato;
     font-size: 12px;
     font-style: normal;
+    padding: 4px;
   }
   .TV02_Table {
     width: 100%;

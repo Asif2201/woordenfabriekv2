@@ -94,7 +94,7 @@
                 </td>
                 <td>
                    <span class="H02Feedback">
-                    Antwoord model:
+                    Antwoordmodel:
                   </span>
                   <br>
                   <span class="H02Feedback">

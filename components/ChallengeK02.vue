@@ -23,13 +23,13 @@
                       {{ Object.Morfeem4 }}
                     </span>
                     <br>
-                    <input value="0" class="answeroptions" name="M1" type="radio" id="M11" v-model="Object.UserAnswer1" @click="AnswerClicked()">
+                    <input value="0" class="answeroptions" name="M1" type="radio" id="M11" v-model="Object.UserAnswer1" @change="AnswerClicked()">
                     <label class="answeroptions" for="M11"> {{ Object.answer1.split(";")[0].replace("*", "")}} </label>
                     <br>
-                    <input value="1" class="answeroptions" name="M1" type="radio" id="M12" v-model="Object.UserAnswer1" @click="AnswerClicked()">
+                    <input value="1" class="answeroptions" name="M1" type="radio" id="M12" v-model="Object.UserAnswer1" @change="AnswerClicked()">
                     <label class="answeroptions" for="M12"> {{ Object.answer1.split(";")[1].replace("*", "")}} </label>
                     <br>
-                    <input value="2" class="answeroptions" name="M1" type="radio" id="M13" v-model="Object.UserAnswer1" @click="AnswerClicked()">
+                    <input value="2" class="answeroptions" name="M1" type="radio" id="M13" v-model="Object.UserAnswer1" @change="AnswerClicked()">
                     <label class="answeroptions" for="M13"> {{ Object.answer1.split(";")[2].replace("*", "")}} </label>
                 </td>
                 <td v-show="Object.Morfeem2.length > 0">
@@ -46,13 +46,13 @@
                       {{ Object.Morfeem4 }}
                     </span>
                     <br>
-                    <input value="0" class="answeroptions" name="M2" type="radio" id="M21" v-model="Object.UserAnswer2" @click="AnswerClicked()">
+                    <input value="0" class="answeroptions" name="M2" type="radio" id="M21" v-model="Object.UserAnswer2" @change="AnswerClicked()">
                     <label  class="answeroptions" for="M21"> {{ Object.answer2.split(";")[0].replace("*", "")}} </label>
                     <br>
-                    <input value="1" class="answeroptions" name="M2" type="radio" id="M22" v-model="Object.UserAnswer2" @click="AnswerClicked()">
+                    <input value="1" class="answeroptions" name="M2" type="radio" id="M22" v-model="Object.UserAnswer2" @change="AnswerClicked()">
                     <label class="answeroptions" for="M22"> {{ Object.answer2.split(";")[1].replace("*", "")}} </label>
                     <br>
-                    <input value="2" class="answeroptions" name="M2" type="radio" id="M23" v-model="Object.UserAnswer2" @click="AnswerClicked()">
+                    <input value="2" class="answeroptions" name="M2" type="radio" id="M23" v-model="Object.UserAnswer2" @change="AnswerClicked()">
                     <label class="answeroptions" for="M23"> {{ Object.answer2.split(";")[2].replace("*", "")}} </label>
                 </td>
               </tr>
@@ -68,13 +68,13 @@
                       {{ Object.Morfeem4}}
                     </span>
                     <br>
-                    <input value="0" class="answeroptions" name="M3" type="radio" id="M31" v-model="Object.UserAnswer3" @click="AnswerClicked()">
+                    <input value="0" class="answeroptions" name="M3" type="radio" id="M31" v-model="Object.UserAnswer3" @change="AnswerClicked()">
                     <label class="answeroptions" for="M31"> {{ Object.answer3.split(";")[0].replace("*", "")}} </label>
                     <br>
-                    <input value="1" class="answeroptions" name="M3" type="radio" id="M32" v-model="Object.UserAnswer3" @click="AnswerClicked()">
+                    <input value="1" class="answeroptions" name="M3" type="radio" id="M32" v-model="Object.UserAnswer3" @change="AnswerClicked()">
                     <label class="answeroptions" for="M32"> {{ Object.answer3.split(";")[1].replace("*", "")}} </label>
                     <br>
-                    <input value="2" class="answeroptions"  name="M3" type="radio" id="M33" v-model="Object.UserAnswer3" @click="AnswerClicked()">
+                    <input value="2" class="answeroptions"  name="M3" type="radio" id="M33" v-model="Object.UserAnswer3" @change="AnswerClicked()">
                     <label class="answeroptions"  for="M33"> {{ Object.answer3.split(";")[2].replace("*", "")}} </label>
                 </td>
                 <td v-show="Object.Morfeem4.length > 0">
@@ -85,13 +85,13 @@
                       {{  Object.Morfeem4}}
                     </span>
                     <br>
-                    <input value="0" class="answeroptions" name="M4" type="radio" id="M41" v-model="Object.UserAnswer4" @click="AnswerClicked()">
+                    <input value="0" class="answeroptions" name="M4" type="radio" id="M41" v-model="Object.UserAnswer4" @change="AnswerClicked()">
                     <label class="answeroptions" for="M41"> {{ Object.answer4.split(";")[0].replace("*", "")}} </label>
                     <br>
-                    <input value="1" class="answeroptions" name="M4" type="radio" id="M42" v-model="Object.UserAnswer4" @click="AnswerClicked()">
+                    <input value="1" class="answeroptions" name="M4" type="radio" id="M42" v-model="Object.UserAnswer4" @change="AnswerClicked()">
                     <label class="answeroptions" for="M42"> {{ Object.answer4.split(";")[1].replace("*", "")}} </label>
                     <br>
-                    <input value="2" class="answeroptions" name="M4" type="radio" id="M43" v-model="Object.UserAnswer4" @click="AnswerClicked()">
+                    <input value="2" class="answeroptions" name="M4" type="radio" id="M43" v-model="Object.UserAnswer4" @change="AnswerClicked()">
                     <label class="answeroptions" for="M43"> {{ Object.answer4.split(";")[2].replace("*", "")}} </label>
                 </td>
               </tr>
@@ -149,15 +149,15 @@ export default {
           this.isKlaar = false;
           break;
         }
-        if(this.Challenge2[i].answer2 != ';;;' && this.Challenge2[i].UserAnswer2 < 0)  {
+        if(this.Challenge2[i].answer2 !== ';;;' && this.Challenge2[i].UserAnswer2 < 0)  {
           this.isKlaar = false;
           break;
         }
-        if(this.Challenge2[i].answer3 != ';;;' && this.Challenge2[i].UserAnswer3 < 0)  {
+        if(this.Challenge2[i].answer3 !== ';;;' && this.Challenge2[i].UserAnswer3 < 0)  {
           this.isKlaar = false;
           break;
         }
-        if(this.Challenge2[i].answer4 != ';;;' && this.Challenge2[i].UserAnswer4 < 0)  {
+        if(this.Challenge2[i].answer4 !== ';;;' && this.Challenge2[i].UserAnswer4 < 0)  {
           this.isKlaar = false;
           break;
         }

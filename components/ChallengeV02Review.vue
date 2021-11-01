@@ -23,24 +23,22 @@
                     </span>
                   </template>
                 </td>
-                 <td>
-                  <template v-if="Object.BeforeWord==='No'">
-                     <span class="questionwords">
-                      {{ Object.word }}
-                    </span>
-                    <span class="questionwordsClicked">
-                      {{ Object.studentAnswer }}
-                    </span>
-                   </template>
+                <td>
+                <template v-if="Object.BeforeWord==='No'">
+                    <span class="questionwords">
+                    {{ Object.word }}
+                  </span>
+                  <span class="questionwordsClicked">
+                    {{ Object.studentAnswer }}
+                  </span>
+                  </template>
+              </td>
+                <td>
+                   <span class="feedback">
+                        {{ Object.answer }}
+                  </span>
                 </td>
               </tr>
-              <tr>
-              <td> &nbsp; </td>
-              <td>
-                &nbsp;
-              </td>
-              </tr>
-              <br>
             </template>
         </tbody>
         </table>
@@ -144,7 +142,18 @@ export default {
     text-align: left;
     color: black;
   }
+.TV02_Table td:nth-child(1)  {
+    width: 400px;
+
+  }
+
   .tablecontainerV02 {
     text-align: center;
+  }
+  .feedback {
+    color: green;
+    font-family: lato;
+    font-size: 14px;
+    font-weight: bolder;
   }
 </style>

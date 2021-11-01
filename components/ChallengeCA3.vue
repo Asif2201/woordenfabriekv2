@@ -25,17 +25,17 @@
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
-                      <span class="questionwords">
-                        {{ Object.word }}
-                      </span>
+                    <span class="questionwords">
+                      {{ Object.word }}
+                    </span>
                   </td>
                   <td>
-                    <input type="radio" :name="'wordtype_' + ObjIndex" value="Cat1" v-model="Object.UserAnswer" @click="AnswerClicked()">
-                    <label for="one" class="questionwordsClicked"> Selecteer categorie </label>
+                    <input :id="'id0' + ObjIndex" type="radio" :name="'wordtype_' + ObjIndex" value="Cat1" v-model="Object.UserAnswer" @change="AnswerClicked()">
+                    <label :for="'id0' + ObjIndex" class="questionwordsClicked"> Selecteer categorie </label>
                   </td>
                   <td>
-                    <input type="radio" :name="'wordtype_' + ObjIndex" value="Cat2" v-model="Object.UserAnswer" @click="AnswerClicked()">
-                    <label for="one" class="questionwordsClicked"> Selecteer categorie </label>
+                    <input :id="'id1' + ObjIndex" type="radio" :name="'wordtype_' + ObjIndex" value="Cat2" v-model="Object.UserAnswer" @change="AnswerClicked()">
+                    <label :for="'id1' + ObjIndex" class="questionwordsClicked"> Selecteer categorie </label>
                   </td>
               </tr>
             </template>

@@ -15,8 +15,12 @@
                 <td>
                 <td>
                   <div v-if="Object.MorfeemList !== null" :class="{ word2: getClass(0, Object.studentAnswerList[0],2), word3: getClass(0, Object.studentAnswerList[0],3) }">
-                      {{ Object.MorfeemList.split(';')[Object.studentAnswerList[0]].replaceAll('*', '') }}
-                    </div>
+                      {{ Object.MorfeemList.split(';')[Object.studentAnswerList[0]].replaceAll('*', '') }} <br>
+                  </div>
+                  <span v-if="!getClass(0,Object.studentAnswerList[0],2)" class="word2">
+                        {{ Object.correctAnswer1 }}
+                  </span>
+
                 </td>
                <td>
                   <div class="questionwords">
@@ -27,13 +31,19 @@
                 </td>
                 <td>
                   <div v-if="Object.MorfeemList2 !== null" :class="{ word2: getClass(1, Object.studentAnswerList[1],2), word3: getClass(1, Object.studentAnswerList[1],3) }">
-                      {{ Object.MorfeemList2.split(';')[Object.studentAnswerList[1]].replaceAll('*', '') }}
-                    </div>
+                      {{ Object.MorfeemList2.split(';')[Object.studentAnswerList[1]].replaceAll('*', '') }} <br>
+                  </div>
+                  <span v-if="!getClass(1,Object.studentAnswerList[1],2)" class="word2">
+                        {{ Object.correctAnswer2 }}
+                      </span>
                 </td>
                 <td>
                   <div v-if="Object.MorfeemList3 !== null" :class="{ word2: getClass(2, Object.studentAnswerList[2],2), word3: getClass(2, Object.studentAnswerList[2],3) }">
-                      {{ Object.MorfeemList3.split(';')[Object.studentAnswerList[2]].replaceAll('*', '') }}
+                      {{ Object.MorfeemList3.split(';')[Object.studentAnswerList[2]].replaceAll('*', '') }} <br>
                     </div>
+                    <span v-if="!getClass(2,Object.studentAnswerList[2],2)" class="word2">
+                        {{ Object.correctAnswer3 }}
+                      </span>
                 </td>
             </tr>
             <tr>
@@ -128,6 +138,9 @@ export default {
           if(QuestionObjectList[i].MorfeemList != null) {
             x = QuestionObjectList[i].MorfeemList.split(';');
             for(j=0;j < x.length;j++)  {
+              if(x[j].includes('*'))  {
+                QuestionObjectList[i].correctAnswer1 = x[j];
+              }
               if(x[j].includes('*') && QuestionObjectList[i].studentAnswerList[0] == j)  {
                 this.forceRenderVariable[0].push(true);
               }
@@ -139,6 +152,9 @@ export default {
           if(QuestionObjectList[i].MorfeemList2 != null) {
             x = QuestionObjectList[i].MorfeemList2.split(';');
             for( j=0;j < x.length;j++)  {
+              if(x[j].includes('*'))  {
+                QuestionObjectList[i].correctAnswer2 = x[j];
+              }
               if(x[j].includes('*') && QuestionObjectList[i].studentAnswerList[1] == j)  {
                 this.forceRenderVariable[1].push(true);
               }
@@ -150,6 +166,9 @@ export default {
           if(QuestionObjectList[i].MorfeemList3 != null) {
             x = QuestionObjectList[i].MorfeemList3.split(';');
             for(j=0;j < x.length;j++)  {
+              if(x[j].includes('*'))  {
+                QuestionObjectList[i].correctAnswer3 = x[j];
+              }
               if(x[j].includes('*') && QuestionObjectList[i].studentAnswerList[2] == j)  {
                 this.forceRenderVariable[2].push(true);
               }
@@ -220,6 +239,7 @@ export default {
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
+    text-decoration:  none;
   }
   .word3 {
     color: red;
