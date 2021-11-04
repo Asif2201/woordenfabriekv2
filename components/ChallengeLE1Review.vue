@@ -124,7 +124,7 @@ export default {
   .answerfeedback {
     color: var(--grey);
     font-family: lato;
-    font-size: 12px;
+    font-size: 10px;
     font-style: normal;
     font-weight: 700;
   }
@@ -136,7 +136,7 @@ export default {
   .LE1Container {
     position: relative;
     margin-left: 100px;
-    margin-top:20px;
+    margin-top:10px;
   }
   .LE1Table {
     table-layout: fixed;

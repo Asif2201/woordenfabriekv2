@@ -90,7 +90,7 @@ export default {
   }
   .LessonTitleDiv  {
     padding-top:40px;
-    width: 400px;
+    width: 450px;
   }
   .LessonHeaderTable  {
     margin-left:500px;

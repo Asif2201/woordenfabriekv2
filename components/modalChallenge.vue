@@ -94,10 +94,11 @@
   .modal-body2 {
     position: relative;
     font-family: lato;
-    font-size: 14px;
-    color: black;
+    font-size: 12px;
+    color: dimgray;
     align-self: center;
     vertical-align: text-top;
+    padding: 4px;
   }
 
   .btn-close2 {

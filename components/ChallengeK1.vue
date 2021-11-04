@@ -94,7 +94,7 @@ export default {
       return QuestionObjectList;
     },
     morphemeClick: function(word, char, event) {
-      if(char > 0 && char < this.Challenge2[word].word.length)  {
+      if(char > 0 && char <= this.Challenge2[word].word.length)  {
         if(this.Challenge2[word].word[char] !== '|' && this.Challenge2[word].word[char-1] !== '|')  {
           this.Challenge2[word].word.splice(char, 0, '|');
         }

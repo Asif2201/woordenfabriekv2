@@ -33,7 +33,7 @@
                         </span>
                     </span>
                     <template v-if="index+1 < Object.paragraphwords.length">
-                      <input v-model="Object.UserAnswerList" class="questionwordsClicked" autofocus @input="isKlaar1[ObjIndex] = true">
+                      <input v-model="Object.UserAnswerList" class="questionwordsClicked"  @input="checkText(ObjIndex)">
                     </template>
                   </template>
                 </td>
@@ -44,8 +44,8 @@
           </template>
         </tbody>
         </table>
-        <div class="I01Klaar">
-          <KlaarButton :isKlaar="!isKlaar1.includes(false)" @challengeCompleted="challengeCompleted()" />
+        <div class="I01Klaar" :key="ResultKey">
+          <KlaarButton :isKlaar="enableKlaarButton()" @challengeCompleted="challengeCompleted()" />
         </div>
       </div>
   </div>
@@ -63,7 +63,6 @@ export default {
       Challenge1: [],
       Challenge2: [],
       forceRenderVariable: [],
-      isKlaar: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
@@ -88,6 +87,17 @@ export default {
 
   },
   methods:  {
+    enableKlaarButton() {
+      if(this.isKlaar1.includes(false))  {
+        return false;
+      } else  {
+        return true;
+      }
+    },
+    checkText(index)  {
+      this.isKlaar1[index] = true;
+      this.ResultKey++;
+    },
     splitWord(word)  {
       if (word) {
         return word.split('_');
@@ -186,11 +196,12 @@ export default {
     font-size: 14px;
     font-style: normal;
     font-weight: 700;
-    line-height: 200%;
-    border:solid 1px orange;
-    padding-left: 4px;
+    border:dotted 1px lightgray;
+    padding: 2px;
   }
-
+  .questionwordsClicked:focus {
+    outline:none;
+  }
   .paragraphheading {
     color: black;
     font-family: lato;

@@ -13,6 +13,8 @@
                       {{ Object.context }}
                     </span>
                 </td>
+              </tr>
+              <tr>
                 <td>
                   <template v-if="Object.BeforeWord==='Yes'">
                       <span class="questionwordsClicked">
@@ -23,6 +25,8 @@
                     </span>
                   </template>
                 </td>
+              </tr>
+              <tr>
                 <td>
                 <template v-if="Object.BeforeWord==='No'">
                     <span class="questionwords">

@@ -2,7 +2,7 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20 mt-10">
+      <div class="relative ml-20 mt-5">
         <table class="table-auto w-full align-center">
           <thead>
             <tr>
@@ -143,41 +143,39 @@ export default {
   .questionwords {
     color: grey;
     font-family: lato;
-    font-size: 14px;
+    font-size: 12px;
     font-style: normal;
     font-weight: 700;
     white-space: wrap;
-    line-height: 200%;
+
   }
   .voorbeeldzin {
     color: black;
     font-family: lato;
-    font-size: 14px;
+    font-size: 12px;
     font-style: normal;
     font-weight: 700;
     white-space: wrap;
-    line-height: 200%;
+
   }
   .questionwordsClicked {
     color: blue;
     font-family: lato;
-    font-size: 14px;
+    font-size: 12px;
     font-style: normal;
     font-weight: 700;
-    line-height: 200%;
   }
   .referenceanswer {
     color: green;
     font-family: lato;
-    font-size: 14px;
+    font-size: 12px;
     font-style: normal;
     font-weight: 700;
-    line-height: 200%;
   }
   .paragraphheading {
     color: black;
     font-family: lato;
-    font-size: 16px;
+    font-size: 14px;
     font-style: bold;
 
   }

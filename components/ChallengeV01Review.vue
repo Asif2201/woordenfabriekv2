@@ -4,7 +4,6 @@
   <div v-else>
     <div class="relative ml-20 mt-10">
         <table class="V01_Table" key="OkKey">
-          <thead/>
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
@@ -20,7 +19,6 @@
                   <span v-if="!getClass(0,Object.studentAnswerList[0],2)" class="word2">
                         {{ Object.correctAnswer1 }}
                   </span>
-
                 </td>
                <td>
                   <div class="questionwords">
@@ -57,6 +55,8 @@
                   </span>
               </td>
             </tr>
+            <br>
+            <br>
           </template>
         </tbody>
         </table>
@@ -151,7 +151,7 @@ export default {
           }
           if(QuestionObjectList[i].MorfeemList2 != null) {
             x = QuestionObjectList[i].MorfeemList2.split(';');
-            for( j=0;j < x.length;j++)  {
+            for(j=0;j < x.length;j++)  {
               if(x[j].includes('*'))  {
                 QuestionObjectList[i].correctAnswer2 = x[j];
               }
@@ -209,13 +209,13 @@ export default {
     table-layout: fixed;
   }
   .V01_Table tr {
-    height:  50px;
+    line-height:  15px;
   }
   .V01_Table td {
-    width: 200px;
+    width: 100px;
   }
   .V01_Table td:nth-child(1) {
-    width: 400px;
+    width: 300px;
   }
 
 .V01Context {

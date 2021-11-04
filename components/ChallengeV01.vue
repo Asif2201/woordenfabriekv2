@@ -4,7 +4,6 @@
   <div v-else>
     <div class="relative ml-20 mt-10">
         <table class="V01_Table" key="OkKey">
-          <thead/>
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
@@ -40,26 +39,14 @@
               <td> &nbsp;  &nbsp; </td>
               <td colspan="2">
                 <br>
-                  <textarea v-model="Object.explanation" placeholder="leg jouw antwoord uit" class="explainbox" rows="6" cols="100"> </textarea>
+                  <textarea v-model="Object.explanation" placeholder="leg jouw antwoord uit" class="explainbox" rows="1" cols="80"> </textarea>
               </td>
             </tr>
+            <br>
           </template>
-          <tr>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-
-          </tr>
-          <tr>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-              <td> &nbsp;  &nbsp; </td>
-          </tr>
         </tbody>
         </table>
-        <div class="V01Klaar">
+        <div class="V01Klaar" :key="ResultKey">
           <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
         </div>
       </div>
@@ -128,6 +115,7 @@ export default {
       return QuestionObjectList;
     },
     answerSelected(Index, answer, WhichOne) {
+      this.ResultKey++;
       switch(WhichOne)  {
         case 1:
           this.Challenge2[Index].UserAnswer1 = answer;
@@ -144,21 +132,15 @@ export default {
         if(this.Challenge2[i].UserAnswer1 < 0 && this.Challenge2[i].MorfeemList != null)  {
           this.isKlaar = false;
         }
-        else  {
-          this.isKlaar = true;
-        }
+
         if(this.Challenge2[i].UserAnswer2 < 0 && this.Challenge2[i].MorfeemList2 != null)  {
           this.isKlaar = false;
         }
-        else  {
-          this.isKlaar = true;
-        }
+
         if(this.Challenge2[i].UserAnswer3 < 0 && this.Challenge2[i].MorfeemList3 != null)  {
           this.isKlaar = false;
         }
-        else  {
-          this.isKlaar = true;
-        }
+
       }
     },
     convertToDropDownData(strData, whichOne, Index) {
@@ -272,15 +254,17 @@ export default {
   .V01_Table {
     width:70%;
     table-layout: fixed;
+    margin: 0px;
   }
-  .V01_Table tr {
-    height:  50px;
-  }
+
   .V01_Table td {
-    width: 200px;
+    width: 100px;
+  }
+   .V01_Table tr {
+    line-height: 7px;
   }
   .V01_Table td:nth-child(1) {
-    width: 400px;
+    width: 300px;
   }
   .klaarButton {
     font: normal normal bold 20px/25px Lato;
