@@ -44,6 +44,7 @@
               <th> Name </th>
               <th> Current Lesson </th>
               <th> Average Rating </th>
+              <th>  </th>
             </tr>
             <template v-for="student in selectedStudents">
               <tr :key="student.ID">
@@ -51,6 +52,7 @@
                   <td> {{ student.name }} </td>
                   <td> {{ student.CurrentLesson }} </td>
                   <td> {{ student.AvgRating }} </td>
+                  <td> <button @click="DeleteData(student.ID)" class="btnResetData"> Delete data </button> </td>
               </tr>
             </template>
           </table>
@@ -125,6 +127,24 @@ export default {
     },
     AddNewStudent() {
       this.$router.push({path: 'NewStudent'});
+    },
+    DeleteData(pStudentID)  {
+      const message = 'Are you sure? all student answers will be deleted!!!';
+      if( confirm(message) )  {
+        const PostObject = {};
+
+        PostObject.StudentID = pStudentID;
+        const PostString = JSON.stringify(PostObject);
+
+        this.$axios.post('/ResetData', PostString, {headers: {
+          'content-type': 'application/json',},})
+        .then((response) => {
+          console.log('Ok');
+        }, (error) => {
+          console.log(error);
+        });
+      }
+
     }
   }
 };
@@ -132,47 +152,6 @@ export default {
 </script>
 
 <style>
-.grid-container {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 180px;
-  padding-top:60px;
-  width: 80%;
-}
-.ColumnHeading  {
-  font-family: Lato;
-  font-size: 14px;
-  color: grey;
-  padding-left: 200px
-}
-.classList4  {
-  font-family: Lato;
-  font-size: 14px;
-  color: grey;
-  padding-left: 200px;
-  padding-top: 12px;
-  padding-bottom: 12px;
-}
-.newClassbtnLeft  {
-  background-color: grey;
-  font-family: Lato;
-  font-size: 14px;
-  color:white;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  margin-left: 0;
-}
-.newClassbtnRight {
-  background-color: lightgrey;
-  font-family: Lato;
-  font-size: 14px;
-  color:darkgrey;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 10px;
-  padding-right: 10px;
-}
-
 #students {
   font-family: Lato;
   border-collapse: collapse;

@@ -181,11 +181,5 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: var(--grey);
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
-    font-style: normal;
-    font-weight: 700;
-  }
+
 </style>

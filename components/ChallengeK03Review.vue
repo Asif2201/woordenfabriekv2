@@ -124,18 +124,5 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: var(--grey);
-    font-family: var(--font-family-lato);
-    font-size: var(--font-size-l);
-    font-style: normal;
-    font-weight: 700;
-  }
-  .answer {
-    color: blue;
-    font-family: Lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: bold;
-  }
+
 </style>

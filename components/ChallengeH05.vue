@@ -2,16 +2,8 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20">
-        <table class="table-fixed w-full align-center space-y-2">
-          <thead>
-            <tr>
-              <th class="w-1/4 ..."> </th>
-              <th class="w-1/4 ..."> </th>
-              <th class="w-1/4 ..."> </th>
-              <th class="w-1/4 ..."> </th>
-            </tr>
-          </thead>
+      <div class="H05Container">
+        <table class="H05Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
@@ -182,47 +174,5 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: grey;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .questionwordsClicked {
-    color: blue;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  th, td {
-    padding: 25px;
-  }
-  .klaarButton {
-    font: normal normal bold 20px/25px Lato;
-    letter-spacing: 0px;
-    color: #FFFFFF;
-    opacity: 1;
-    background: #2185D0 0% 0% no-repeat padding-box;
-    border-radius: 4px;
-    width: 100px;
-    height: 32px;
-    top: 740px;
-    left: 880px;
-    cursor: pointer;
-  }
-   .explainbox {
-    border:solid 1px orange;
-    resize: none;
-    align-content: center;
-    font-family: lato;
-    font-size: 12px;
-    font-style: normal;
-    padding:5px;
-  }
-  .H05Klaar  {
-    margin-top: 40px;
-    margin-left: 600px;
-  }
+
 </style>

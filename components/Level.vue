@@ -208,8 +208,6 @@ export default {
 
       PostString = JSON.stringify(PostObject);
 
-      console.log(PostString);
-
       this.$axios.post('/UpdateStudentChallenges', PostString, {headers: {
         'content-type': 'application/json',},})
       .then((response) => {
@@ -232,7 +230,6 @@ export default {
         PostObject.IsCurrent = 'No';
       }
       PostString = JSON.stringify(PostObject);
-      console.log(PostString);
 
       this.$axios.post('/UpdateStudentLevels', PostString, {headers: {
         'content-type': 'application/json',},})
@@ -277,48 +274,5 @@ export default {
 }
 </script>
 <style scoped>
-  .right {
-    margin-right: 20px;
-    float: right;
-  }
-  .challengeBox {
-    width:98%;
-    height: 600px;
-    background-color: white;
-    position: relative;
-  }
 
-  .btnHelp  {
-    position: absolute;
-    left:    0;
-    bottom:   0;
-    background-color: lightgray;
-    font-weight: bold;
-    color: black;
-    font-family: lato;
-    padding-left: 6px;
-    padding-right: 6px;
-    padding-bottom: 4px;
-    padding-top:4px;
-    font-size:18px;
-  }
-  .btnNext  {
-    position: absolute;
-    right:    0;
-    bottom:   0;
-    background-color: rgb(187, 115, 127);
-    font-weight: bold;
-    color: white;
-    font-family: lato;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 8px;
-    padding-top:8px;
-    font-size:24px;
-
-
-  }
-  .btnHelp:hover  {
-    background-color: darkgray;
-  }
 </style>

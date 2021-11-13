@@ -7,41 +7,18 @@
           {{ Heading }}
         </span>
         <table class="C01Table">
-          <thead/>
           <tbody>
             <div v-for="Object in Challenge2.LearningQuestions" :key="Object.id">
               <tr>
-                <td class="w-3/5">
-                  <div class="questionwords">
-                    <span>
+                <td>
+                    <span class="questionwords">
                       {{ Object.Sentence }}
                     </span>
-                  </div>
                 </td>
-                <td class="w-1/5"> &nbsp; </td>
-                <td class="w-1/5 questionwords ml-20">
-                  <div class="cursor not-allowed">
-                      <span>
-                        {{ AnswerOptions[Object.studentAnswer].name }}
-                      </span>
-                  </div>
+                 <td>
+                    <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
-                <td> &nbsp;  &nbsp; </td>
-            </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
+              </tr>
           </div>
         </tbody>
         </table>
@@ -96,29 +73,5 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: var(--grey);
-    font-family: lato;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .C01Heading {
-    color: black;
-    font-family: lato;
-    font-size: 18px;
-    font-style: normal;
-    font-weight: 700;
-    padding-left: 250px;
-  }
-  .C01Container {
-    position: relative;
-    margin-left: 20px;
-    margin-top:20px;
-  }
-  .C01Table {
-    table-layout: fixed;
-    width: 100%;
-    margin-top: 40px;
-  }
+
 </style>

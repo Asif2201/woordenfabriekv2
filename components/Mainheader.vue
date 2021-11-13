@@ -105,7 +105,6 @@ export default {
         var urlAPI = `${this.$config.baseURL}/users?UserID=\'${this.username}\'`;
         var response = await fetch(urlAPI);
         this.tempLessons = await response.json();
-        console.log(this.tempLessons);
         if(this.tempLessons.vwUsers.length > 0) {
           this.$store.commit('setUserEmail', this.username);
           this.$store.commit('setUserRole', this.tempLessons.vwUsers[0].UserRole);
@@ -124,108 +123,5 @@ export default {
 }
 </script>
 <style scoped>
-.MainHeaderPanel  {
-  width: 1920px;
-  height: 64px;
-}
-.main-nav {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem 0.8rem;
-}
-.sidebar-table  {
-  border-collapse:separate;
-  border-spacing:0 4px;
-}
-.sidebar-table-column {
-  color: #A3A3A3;
-  background-color: #4D4C4C;
-  width: 300px;
-  vertical-align: middle;
-  padding-left: 20px;
-  font: lato;
-  font-weight: bold;
-  font-size: 14px;
-}
-.sidebar-table-column-completed {
-  color: green;
-  background-color: #4D4C4C;
-  width: 300px;
-  vertical-align: middle;
-  padding-left: 20px;
-  font: lato;
-  font-weight: bold;
-  font-size: 14px;
-}
-.sidebar-table-column-Login {
-  color: white;
-  background-color: black;
-  width: 300px;
-  vertical-align: middle;
-  padding-left: 20px;
-  font: lato;
-  font-weight: bold;
-  font-size: 14px;
-}
-.userid {
-  background-color: white;
-  color:grey;
-  padding: 5px;
-  padding-left: 20px;
-  padding-right: 20px;
-  border-radius: 3px;
-  margin-top: 5px;
-}
-.password {
-  background-color: white;
-  color:grey;
-  padding: 5px;
-  border-radius: 3px;
-  padding-left: 20px;
-  padding-right: 20px;
-  margin-top: 5px;
-}
-.loginbutton  {
-  background-color: blue;
-  color:white;
-  font-size: 12px;
-  padding: 10px;
-  padding-left: 20px;
-  padding-right: 20px;
-  text-align: center;
-  border-radius: 4px;
-}
-.sidebar-table-row {
-  height: 36px;
-}
-ul.sidebar-panel-nav {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  left: 0;
-}
-ul.sidebar-panel-nav > li {
-  text-align: left;
-  padding-top: 20px;
-  padding-bottom: 20px;
-}
 
-ul.sidebar-panel-nav > li > a {
-  color: #A3A3A3;
-  text-decoration: none;
-  font-size: 14px;
-  padding: 8 px 16 px;
-  font-family: lato;
-  display: block;
-}
-ul.sidebar-panel-nav > li > a:hover {
-  background-color: #7B7B7B;
-  color: white;
-}
-.RadboudBanner  {
-  width: 1000px;
-  background-color: lightgrey;
-
-
-}
  </style>

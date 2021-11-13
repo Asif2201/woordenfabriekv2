@@ -1,8 +1,8 @@
 <template>
   <div class="relative">
-    <button :disabled="isDisabled" @click ="selectedAnswer(0)" :class="{ selectedB:isSelected(0) }" class="buttonWaar"> {{ data[0].name  }}</button>
-    <button :disabled="isDisabled" @click ="selectedAnswer(1)" :class="{ selectedB:isSelected(1) }" class="buttondeelWaar"> {{ data[1].name }}</button>
-    <button :disabled="isDisabled" @click ="selectedAnswer(2)" :class="{ selectedB:isSelected(2) }" class="buttonOnWaar"> {{ data[2].name }}</button>
+    <button :disabled="isDisabled" @click ="selectedAnswer(0)" class="buttonWaar" :class="{ selectedB:isSelected(0) }" > {{ data[0].name  }}</button>
+    <button :disabled="isDisabled" @click ="selectedAnswer(1)" class="buttondeelWaar" :class="{ selectedB:isSelected(1) }" > {{ data[1].name }}</button>
+    <button :disabled="isDisabled" @click ="selectedAnswer(2)" class="buttonOnWaar" :class="{ selectedB:isSelected(2) }" > {{ data[2].name }}</button>
 </div>
 </template>
 
@@ -51,9 +51,6 @@ export default ({
   height: 36px;
 }
 
-.selectedB  {
-  border: 4px double black;
-}
 .buttonOnWaar {
   text-align: center;
   font: normal normal bold 14px/17px Lato;
@@ -84,5 +81,8 @@ export default ({
   height: 36px;
 }
 
+.selectedB  {
+  background-color: black;
+}
 </style>
 

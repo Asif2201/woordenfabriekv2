@@ -11,33 +11,23 @@
                   <span class="questionwords">
                     {{ Object.Question }}
                   </span>
+                  <br>
+                  <span class="feedback">
+                      {{ Object.AnswerFeedback }}
+                    </span>
                 </td>
                 <td>
-                      <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
+                    <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
                 <td>
-                  <div>
                     <p v-show="Object.studentCorrect == 'Yes'" class="text-blue">
                       <img src="~/assets/correct.png" width="40" height="40" />
                     </p>
                     <p v-show="Object.studentCorrect != 'Yes'" class="text-blue">
                       <img src="~/assets/incorrect.png" width="40" height="40" />
                     </p>
-                    <span class="answerfeedback">
-                      {{ Object.AnswerFeedback }}
-                    </span>
-                </div>
+
                 </td>
-            </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
-            <tr>
-              <td> &nbsp;</td>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
             </tr>
           </template>
 
@@ -114,38 +104,5 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: var(--grey);
-    font-family: lato;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .answerfeedback {
-    color: var(--grey);
-    font-family: lato;
-    font-size: 10px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .center {
-    margin: auto;
-    width: 60%;
-    padding: 10px;
-  }
-  .LE1Container {
-    position: relative;
-    margin-left: 100px;
-    margin-top:10px;
-  }
-  .LE1Table {
-    table-layout: fixed;
-    width: 100%;
-    margin-top: 40px;
-  }
-  .LE1Table td:nth-of-type(1) {
-    width: 700px;
-  }
-
 
 </style>

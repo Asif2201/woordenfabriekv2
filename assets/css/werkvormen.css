@@ -1,10 +1,924 @@
-/* screen - werkvormen */
+/*
+.center {
+  margin: auto;
+  width: 60%;
+  padding: 10px;
+}*/
 
- .buttondefault-4ZAul6 {
-  background-color: transparent;
+/* Style classes for general pages: home, error */
+.HomeImage1 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  width: 800px;
+  height: 70px;
+}
+.HomeImage2 {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 20px;
+  width: 500px;
+  height: 350px;
+}
+.TitleText  {
+  font-family: lato;
+  color: #2185D0;
+  font-size: 22px;
+  font-weight: bold;
+  line-height: 1.6;
+
+}
+.subtitletext {
+  font-family: lato;
+  color: black;
+  font-size: 18px;
+  font-weight: bold;
+  line-height: 1.6;
+}
+.bodytext {
+  font-family: lato;
+  color: #00000099;
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+.HomeTable  {
+  width: 70%;
+  margin:auto;
+  gap:60px;
+}
+.HomeTable td {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 180px;
+  padding-top:60px;
+  width: 80%;
+}
+.shadowPanel  {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin-left: 200px;
+}
+.ColumnHeading  {
+  font-family: Lato;
+  font-size: 14px;
+  color: grey;
+  padding-left: 200px
+}
+.ColumnHeading2  {
+  font-family: Lato;
+  font-size: 16px;
+  color: grey;
+  padding-top: 20px;
+  padding-left: 100px;
+
+}
+.fieldlabel  {
+  font-family: Lato;
+  font-size: 12px;
+  color: grey;
+  line-height: 200%;
+  padding-left: 10px;
+
+}
+.fieldInput {
+  font-family: Lato;
+  font-size: 14px;
+  color: grey;
+  margin-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;;
+  width: 250px;
+}
+.classList4  {
+  font-family: Lato;
+  font-size: 14px;
+  color: grey;
+  padding-left: 200px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+.classList  {
+  font-family: Lato;
+  font-size: 14px;
+  color: grey;
+  padding-left: 10px;
+  padding-top: 2px;
+}
+.newClassbtnLeft  {
+  background-color: grey;
+  font-family: Lato;
+  font-size: 14px;
+  color:white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin-left: 0;
+}
+.newClassbtnRight {
+  background-color: lightgrey;
+  font-family: Lato;
+  font-size: 14px;
+  color:darkgrey;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+.savebtn {
+  background-color: lightblue;
+  font-family: Lato;
+  font-size: 14px;
+  color:white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 10px;
+}
+
+.Okbtn {
+  background-color: lightblue;
+  font-family: Lato;
+  font-size: 12px;
+  color:white;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 10px;
+  padding-right: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  margin-left:10px;
+  margin-right:10px;
+}
+.LessonHeaderPanel  {
+  padding-left: 40px;
+  justify-content: center;
+  width: 100%;
+  height: 124px;
+  background-color: white;
+}
+.LevelHeadingPanel  {
+  left: 128px;
+  height: 44px;
+}
+.ChallengePanel  {
+  left: 128px;
+  width: 80%;
+  position: fixed;
+  margin-top:10px;
+}
+.ChallengeHeaderPanel {
+  width: 100%;
+  position: relative;
+  height: 160px;
+  background-color: black;
+  color: white;
+  margin-right: 20px;
+}
+.ChallengeImageContainer {
+  float: right;
+  margin: -60px 20px 15px 15px;
+}
+.ChalllengeTextPanel  {
+  padding-top: 1cm;
+  padding-left: 1cm;
+  height: 34px;
+  width: 1000px;
+}
+.MainHeaderPanel  {
+  width: 100%;
+  height: 54px;
+}
+.RadboudBanner  {
+  width: 80%;
+  background-color: lightgrey;
+}
+.main-nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0.1rem;
+}
+.sidebar-table  {
+  border-collapse:separate;
+  border-spacing:0 4px;
+}
+.sidebar-table-column {
+  color: #A3A3A3;
+  background-color: #4D4C4C;
+  width: 300px;
+  vertical-align: middle;
+  padding-left: 20px;
+  font: lato;
+  font-weight: bold;
+  font-size: 14px;
+}
+.sidebar-table-column-completed {
+  color: #21BA45;
+  background-color: #4D4C4C;
+  width: 300px;
+  vertical-align: middle;
+  padding-left: 20px;
+  font: lato;
+  font-weight: bold;
+  font-size: 14px;
+}
+.sidebar-table-column-Login {
+  color: white;
+  background-color: black;
+  width: 300px;
+  vertical-align: middle;
+  padding-left: 20px;
+  font: lato;
+  font-weight: bold;
+  font-size: 14px;
+}
+.userid {
+  background-color: white;
+  color:grey;
+  padding: 5px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+.password {
+  background-color: white;
+  color:grey;
+  padding: 5px;
+  border-radius: 3px;
+  padding-left: 20px;
+  padding-right: 20px;
+  margin-top: 5px;
+}
+.loginbutton  {
+  background-color: blue;
+  color:white;
+  font-size: 12px;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  text-align: center;
+  border-radius: 4px;
+}
+.sidebar-table-row {
   height: 36px;
-  left: 1400px;
+}
+ul.sidebar-panel-nav {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  left: 0;
+}
+ul.sidebar-panel-nav > li {
+  text-align: left;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
+ul.sidebar-panel-nav > li > a {
+  color: #A3A3A3;
+  text-decoration: none;
+  font-size: 14px;
+  padding: 8 px 16 px;
+  font-family: lato;
+  display: block;
+}
+ul.sidebar-panel-nav > li > a:hover {
+  background-color: #7B7B7B;
+  color: white;
+}
+
+.LessonTitleDiv  {
+  padding-top:40px;
+  width: 450px;
+}
+.LessonHeaderTable  {
+  margin-left:500px;
+  padding:0px;
+  margin-top:-45px;
+}
+
+.LessonTitle {
+  font: lato;
+  font-weight: bold;
+  font-size: 36px;
+  color: #767676;
+}
+.LessonSubtitle {
+  font: lato;
+  font-weight: bold;
+  font-size: 36px;
+  color: #E03997;
+}
+.LevelsBar  {
+  display: flex;
+}
+
+.NotCurrentButtonText  {
+  font-family: lato;
+  font-weight: bold;
+  font-size: 17px;
+  color: white;
+  background-color: #E6E6E6;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  margin-top: 4px;
+  border-radius: 4px;
+  margin-right: 4px;
+
+
+}
+.CurrentButtonText  {
+  font-family: lato;
+  font-weight: bold;
+  font-size: 17px;
+  color: white;
+  background-color: #E03997;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 8px;
+  padding-top: 8px;
+  margin-top: 4px;
+  border-radius: 4px;
+  margin-right: 4px;
+}
+.DisplayLevelButton {
+  box-shadow:0 0 0 0px white, 0 0 0 2px #F26700;
+}
+
+
+.V01Context {
+  color: black;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+.right {
+  float: right;
+}
+
+.V01_Table {
+  width:70%;
+  table-layout: fixed;
+  margin: 0px;
+}
+
+.V01_Table td {
+  width: 100px;
+}
+ .V01_Table tr {
+  line-height: 10px;
+}
+.V01_Table td:nth-child(1) {
+  width: 300px;
+}
+.klaarButton {
+  font: normal normal bold 20px/25px Lato;
+  letter-spacing: 0px;
+  color: #FFFFFF;
+  opacity: 1;
+  background: #2185D0 0% 0% no-repeat padding-box;
+  border-radius: 4px;
+  width: 100px;
+  height: 32px;
+  top: 740px;
+  left: 880px;
+  clear: left;
+  cursor:pointer;
+}
+.explainbox {
+  border:solid 1px #2185D0;
+  resize: none;
+  float: left;
+  font-family: lato;
+  font-size: 12px;
+  font-style: normal;
+  padding: 4px;
+}
+.V01Klaar {
+  margin-left: 500px;
+  margin-top: 40px;
+}
+
+.LevelTitle {
+  font: lato;
+  font-weight: bold;
+  font-size: 24px;
+  color: #E03997;
+}
+.LevelSubtitle {
+  font: lato;
+  font-weight: bold;
+  font-size: 24px;
+  color:#2185D0;
+}
+
+.ChallengeTitle {
+  font: lato;
+  font-weight: bold;
+  font-size: 24px;
+  color: #E03997;
+  line-height: 1.6;
+
+}
+.ChallengeTitle2 {
+  font: lato;
+  font-weight: bold;
+  font-size: 24px;
+  color: white;
+  line-height: 1.6;
+
+}
+.ChallengeSubtitle {
+  font: lato;
+  font-weight: bold;
+  font-size: 16px;
+  color:white;
+  line-height: 1.6;
+}
+
+.questionwords {
+  color: grey;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+.questionwordsK1 {
+  color: grey;
+  font-family: lato;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.questionwordsClicked {
+  color: #E03997;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.C01Heading {
+  color: black;
+  font-family: lato;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+}
+.C01Container {
+  position: relative;
+  margin-left: 40px;
+  margin-top:20px;
+}
+.C01Table {
+  table-layout: fixed;
+  width: 100%;
+  margin-top: 40px;
+}
+.C01Table tr  {
+  height: 60px;
+}
+.C01Table td  {
+  padding-right: 20px;
+}
+
+.C01Table td:first-child  {
+  width: 700px;
+}
+.C01Klaar  {
+  margin-left: 600px;
+  margin-top: 100px;
+}
+.CA3Questions {
+  color: #21BA45;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 800;
+}
+.CA3QuestionsClicked {
+  color: darkgrey;
+  font-family:lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+.CA3Table {
+  table-layout: fixed;
+  width: 80%;
+  margin-top: 40px;
+  margin-left: 100px;
+  border-collapse: collapse;
+}
+.CA3Table td:nth-child(2) {
+  border-right: lightgray 1px solid;
+}
+.CA3Table td:nth-child(1) {
+  width:300px;
+}
+.CA3Table th:nth-child(1) {
+  width:300px;
+}
+.CA3Table th,td {
+  padding-right: 0px;
+  padding-left: 80px;
+  text-align: left;
+}
+
+.CA3Table tr {
+  height: 50px;
+}
+
+
+
+.CA3Klaar {
+  margin-top: 40px;
+  margin-left: 700px;
+}
+
+
+.btnResetData {
+  background-color: red;
+  font-family: Lato;
+  font-size: 12px;
+  color:black;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.challengeBox {
+  width:98%;
+  height: 600px;
+  background-color: white;
+  position: relative;
+}
+
+.btnHelp  {
   position: absolute;
-  top: 400px;
-  width: 200px;
+  left:    0;
+  bottom:   0;
+  background-color: #E03997;
+  font-weight: bold;
+  color: white;
+  font-family: lato;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 4px;
+  padding-top:4px;
+  font-size:22px;
+  border-radius: 4px;
+}
+.btnHelp:hover  {
+  background-color: darkgray;
+}
+
+.btnNext  {
+  clear: left;
+  background-color: #E03997;
+  font-weight: bold;
+  color: white;
+  font-family: lato;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 8px;
+  padding-top:8px;
+  font-size:20px;
+  top: 740px;
+  margin-left: 600px;
+  border-radius: 4px;
+  margin-top: 30px;
+
+}
+
+
+.WisButton  {
+  background-color: #2185D0;
+  border-radius: 4px;
+  color: white;
+  padding-right: 12px;
+  padding-left: 12px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  float: right;
+  font-family: lato;
+  font-weight: bold;
+  margin-top: 20px;
+}
+.WisButton:hover  {
+  background-color: darkblue; /* Green */
+  color: yellow;
+}
+
+.K01_Table {
+  width:80%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  margin-left: 60px;
+  margin-top: 20px;
+}
+
+.K01_Table tr {
+  height:  60px;
+  border-bottom: 1pt solid lightgrey;
+}
+
+.K01_Table td {
+  vertical-align: center;
+}
+.K01_Table td:first-child {
+  width: 500px;
+}
+.K01_Table td:nth-child(2) {
+  width: 400px;
+}
+
+.K01Klaar  {
+  margin-top: 40px;
+  margin-left: 600px;
+}
+.K02Klaar  {
+  margin-top: 20px;
+  margin-left: 100px;
+}
+.feedback {
+  color: #E03997;
+  font-family: lato;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.selectedmorfeem {
+  color: #E03997;
+  font-family: Lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: bold;
+}
+.T2_Introduction  {
+  color: grey;
+  font-family: Lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  padding-top: 20px;
+  width: 70%;
+  padding-left: 30px;
+  text-align: justify;
+}
+.T2_Table {
+  width: 80%;
+  padding: 20px;
+  margin-top:40px;
+  margin-left:200px;
+  height: 300px;
+  table-layout: fixed;
+}
+.T2_Table tr  {
+  height: 150px;
+}
+.T2_Table th, td  {
+  text-align: left;
+  color: black;
+  line-height: 1.6;
+}
+.tablecontainer {
+  text-align: center;
+  height: 300px;
+}
+.answeroptions {
+  color: black;
+  font-family: Lato;
+  font-size: 14px;
+  font-style: normal;
+  height: 10px;
+  width: 10px;
+}
+.answeroptionsCorrect {
+  color: #21BA45;
+  font-family: Lato;
+  font-size: 14px;
+  font-style: normal;
+  height: 10px;
+  width: 10px;
+  pointer-events: none;
+}
+.answeroptionsWrong {
+  color: red;
+  font-family: Lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: bold;
+  height: 10px;
+  width: 10px;
+  text-decoration: line-through;
+  pointer-events: none;
+}
+.LE1Klaar  {
+  margin-left: 600px;
+  margin-top:40px;
+}
+.LE1Container {
+  position: relative;
+  margin-left: 100px;
+  margin-top:10px;
+  margin-right:10px;
+}
+.LE1Table {
+  table-layout: fixed;
+  width: 100%;
+  vertical-align: center;
+  margin-top:40px;
+}
+.LE1Table tr {
+  height: 50px;
+}
+.LE1Table td:nth-of-type(1) {
+  width: 740px;
+}
+.LE1Table td:nth-of-type(3) {
+  width: 180px;
+}
+.voorbeeldzin {
+  color: black;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  white-space: wrap;
+  line-height: 200%;
+  margin-right: 30px;
+}
+.I01Container {
+  position: relative;
+  margin-left: 100px;
+  margin-top:20px;
+  margin-right:10px;
+}
+.I01Table {
+  table-layout: fixed;
+  width: 100%;
+  vertical-align: center;
+}
+.I01Table tr {
+  height: 20px;
+}
+.I01Table td:nth-of-type(1) {
+  width: 600px;
+}
+.I01Textbox {
+  color: #E03997;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  border:solid 1px grey;
+  padding: 2px;
+}
+.I01Textbox:focus {
+  outline:none;
+}
+.I01Klaar {
+  margin-left: 500px;
+  margin-top:100px
+}
+
+.referenceanswer {
+  color: #21BA45;
+  font-family: lato;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.H05Klaar  {
+  margin-top: 40px;
+  margin-left: 600px;
+}
+.H05Container {
+  position: relative;
+  margin-left: 100px;
+  margin-top:20px;
+  margin-right:10px;
+}
+.H05Table {
+  table-layout: fixed;
+  width: 100%;
+  vertical-align: center;
+}
+
+.word1 {
+  color: grey;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+.word2 {
+  color: #21BA45;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+.word3 {
+  color: red;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  text-decoration: line-through;
+}
+
+.explanation {
+  color: black;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+
+.S01Klaar  {
+  margin-top: 40px;
+  margin-left: 600px;
+}
+.S01Container {
+  position: relative;
+  margin-left: 100px;
+  margin-top:20px;
+  margin-right:10px;
+}
+.S01Table {
+  table-layout: fixed;
+  width: 100%;
+  vertical-align: center;
+  border-collapse: collapse;
+}
+.S01Table tr:nth-child(even) {
+  height: 50px;
+}
+.V02Klaar  {
+  margin-top: 10px;
+  margin-left: 400px;
+}
+.V02Table {
+  width: 100%;
+  padding: 10px;
+  margin-top:30px;
+  margin-left:60px;
+  table-layout: fixed;
+}
+.V02Table tr:nth-child(4n) {
+  height: 30px;
+}
+.V02Textbox {
+  color: #E03997;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  border:solid 1px lightgrey;
+  padding: 2px;
+}
+.V02Textbox:focus {
+  outline:none;
+}
+.H02Klaar {
+  margin-left: 500px;
+  margin-top: 40px;
+}
+.H02Container {
+  position: relative;
+  margin-left: 100px;
+  margin-top:20px;
+  margin-right:10px;
+}
+.H02Table {
+  table-layout: fixed;
+  width: 100%;
+  vertical-align: center;
+  border-collapse: collapse;
+}
+.correctAnswer  {
+  color:green;
+}
+
+ .H02Feedback {
+  color: black;
+  font-family: lato;
+  font-size: 14px;
+  font-style: bold;
+
 }

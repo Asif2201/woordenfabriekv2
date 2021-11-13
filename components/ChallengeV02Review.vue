@@ -3,47 +3,53 @@
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
       <div class="tablecontainer">
-        <table class="TV02_Table">
-          <thead/>
+        <table class="V02Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
-              <tr>
-                <td>
-                    <span class="questionwords">
-                      {{ Object.context }}
-                    </span>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <template v-if="Object.BeforeWord==='Yes'">
-                      <span class="questionwordsClicked">
-                      {{ Object.studentAnswer }}
-                    </span>
-                    <span class="questionwords">
-                      {{ Object.word }}
-                    </span>
-                  </template>
-                </td>
-              </tr>
-              <tr>
-                <td>
+                <tr>
+                  <td>
+                      <span class="questionwords">
+                        {{ Object.context }}
+                      </span>
+                  </td>
+                </tr>
+                <template v-if="Object.BeforeWord==='Yes'">
+                  <tr>
+                    <td>
+                        <span class="questionwordsClicked">
+                          {{ Object.studentAnswer }}
+                        </span>
+                        <span class="questionwords">
+                          {{ Object.word }}
+                        </span>
+                    </td>
+                  </tr>
+                </template>
                 <template v-if="Object.BeforeWord==='No'">
-                    <span class="questionwords">
-                    {{ Object.word }}
-                  </span>
-                  <span class="questionwordsClicked">
-                    {{ Object.studentAnswer }}
-                  </span>
-                  </template>
-              </td>
+                  <tr>
+                    <td>
+                      <span class="questionwords">
+                        {{ Object.word }}
+                      </span>
+                      <span class="questionwordsClicked">
+                        {{ Object.studentAnswer }}
+                      </span>
+                  </td>
+                </tr>
+              </template>
+              <tr>
                 <td>
-                   <span class="feedback">
-                        {{ Object.answer }}
+                  <span class="answeroptionsCorrect">
+                    Antwoordmodel:    {{ Object.answer }}
                   </span>
                 </td>
               </tr>
-            </template>
+              <tr>
+                <td colspan="1">
+                  &nbsp;
+                </td>
+              </tr>
+          </template>
         </tbody>
         </table>
 
@@ -113,51 +119,5 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: darkgray;
-    font-family: lato;
-    font-size: 14px;
-    font-weight: bolder;
-  }
-  .questionwordsClicked {
-    color: blue;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 200%;
-  }
-   .explainbox {
-    resize: none;
-    float: left;
-    font-family: lato;
-    font-size: 12px;
-    font-style: normal;
-  }
-  .TV02_Table {
-    width: 100%;
-    padding: 10px;
-    margin-top:20px;
-    margin-left:100px;
-    table-layout: fixed;
-  }
 
-  .TV02_Table th, td  {
-    text-align: left;
-    color: black;
-  }
-.TV02_Table td:nth-child(1)  {
-    width: 400px;
-
-  }
-
-  .tablecontainerV02 {
-    text-align: center;
-  }
-  .feedback {
-    color: green;
-    font-family: lato;
-    font-size: 14px;
-    font-weight: bolder;
-  }
 </style>

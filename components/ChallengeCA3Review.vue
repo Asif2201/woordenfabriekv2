@@ -2,20 +2,20 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-10 mt-5">
-        <table class="table-fixed w-full align-center">
+      <div>
+        <table class="CA3Table">
           <thead>
             <tr>
-              <th class="w=2/5">
+              <th >
                 &nbsp;
               </th>
-              <th class="w=1/5">
-                <span class="questionwordsClicked">
+              <th>
+                <span class="CA3QuestionsClicked">
                   {{ Challenge2[0].cat1label.replace('*', '') }}
                 </span>
               </th>
-              <th class="w=1/5">
-                <span class="questionwordsClicked">
+              <th>
+                <span class="CA3QuestionsClicked">
                     {{ Challenge2[0].cat2label.replace('*', '') }}
                 </span>
               </th>
@@ -25,17 +25,17 @@
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
-                      <span class="questionwords">
+                      <span class="CA3Questions">
                         {{ Object.word }}
                       </span>
                   </td>
                   <td>
-                    <input class="questionwordsClicked" type="radio" :name="'wordtype_' + ObjIndex" value="Cat1" v-model="Object.studentAnswer">
-                    <label for="one" class="questionwordsClicked"> Selecteer categorie </label>
+                    <input class="CA3QuestionsClicked" type="radio" :name="'wordtype_' + ObjIndex" value="Cat1" v-model="Object.studentAnswer">
+                    <label for="one" class="CA3QuestionsClicked"> Selecteer categorie </label>
                   </td>
                   <td>
-                    <input class="questionwordsClicked" type="radio" :name="'wordtype_' + ObjIndex" value="Cat2" v-model="Object.studentAnswer">
-                    <label for="one" class="questionwordsClicked"> Selecteer categorie </label>
+                    <input class="CA3QuestionsClicked" type="radio" :name="'wordtype_' + ObjIndex" value="Cat2" v-model="Object.studentAnswer">
+                    <label for="one" class="CA3QuestionsClicked"> Selecteer categorie </label>
                   </td>
                   <td>
                     <div>
@@ -49,13 +49,6 @@
                   </td>
               </tr>
             </template>
-            <tr>
-
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-              <td>&nbsp;</td>
-
-              </tr>
 
         </tbody>
         </table>
@@ -140,23 +133,5 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: green;
-    font-family: lato;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 800;
-  }
-  .questionwordsClicked {
-    color: darkgrey;
-    font-family:lato;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-    pointer-events: none;
-  }
-  th, td {
-    padding: 15px;
-    text-align: center;
-  }
+
 </style>

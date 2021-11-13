@@ -2,15 +2,8 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-10 mt-10">
-        <table class="table-fixed w-full align-center">
-            <thead>
-            <tr>
-              <th class="w-1/5 ..."></th>
-              <th class="w-3/5"></th>
-              <th class="w-1/5 ..."></th>
-            </tr>
-          </thead>
+      <div class="S01Container">
+        <table class="S01Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
@@ -26,9 +19,7 @@
                     </span>
                   </template>
                 </td>
-                <td>
 
-                </td>
               </tr>
               <tr>
                 <td> &nbsp;  &nbsp; </td>
@@ -37,9 +28,7 @@
                     {{ Object.feedback }}
                   </span>
                   </td>
-                  <td>
 
-                  </td>
             </tr>
 
           </template>
@@ -148,43 +137,5 @@ export default {
 }
 </script>
 <style scoped>
-  .explanation {
-    color: teal;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .feedback {
-    color: green;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .word1 {
-    color: grey;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .word2 {
-    color: green;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .word3 {
-    color: red;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    text-decoration: line-through;
-  }
-  th, td {
-    padding: 10px;
-  }
+
 </style>

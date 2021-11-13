@@ -194,18 +194,5 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: grey;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .questionwordsClicked {
-    color: blue;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-  }
+
 </style>

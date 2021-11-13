@@ -3,7 +3,7 @@
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
       <div class="tablecontainer">
-        <table class="TV02_Table">
+        <table class="V02Table">
           <thead/>
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
@@ -14,24 +14,29 @@
                     </span>
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <template v-if="Object.BeforeWord==='Yes'">
-                      <input class="questionwordsClicked" v-model="Object.UserAnswer" @input="checkText(ObjIndex)" />
-                      <span class="questionwords">
-                        {{ Object.word }}
-                      </span>
-                  </template>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <template v-if="Object.BeforeWord==='No'">
+              <template v-if="Object.BeforeWord==='Yes'">
+                <tr>
+                  <td>
+                    <input class="V02Textbox" v-model="Object.UserAnswer" @input="checkText(ObjIndex)" />
+                    <span class="questionwords">
+                      {{ Object.word }}
+                    </span>
+                  </td>
+                </tr>
+              </template>
+              <template v-if="Object.BeforeWord==='No'">
+                <tr>
+                  <td>
                      <span class="questionwords">
                         {{ Object.word }}
                     </span>
-                    <input class="questionwordsClicked" v-model="Object.UserAnswer" @input="checkText(ObjIndex)" />
-                  </template>
+                    <input class="V02Textbox" v-model="Object.UserAnswer" @input="checkText(ObjIndex)" />
+                  </td>
+                </tr>
+              </template>
+              <tr>
+                <td colspan="1">
+                  &nbsp;
                 </td>
               </tr>
               <tr>
@@ -177,56 +182,5 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: darkgray;
-    font-family: lato;
-    font-size: 14px;
-    font-weight: bolder;
-  }
 
-  .questionwordsClicked {
-    color: darkgray;
-    font-family: lato;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 700;
-    border: dotted 1px lightgray;
-    padding: 2px;
-    width: 40px;
-  }
-   .questionwordsClicked:focus {
-    outline:none;
-  }
-   .explainbox {
-    border:solid 1px orange;
-    resize: none;
-    float: left;
-    font-family: lato;
-    font-size: 12px;
-    font-style: normal;
-    padding: 4px;
-
-  }
-  .TV02_Table {
-    width: 100%;
-    padding: 10px;
-    margin-top:20px;
-    margin-left:100px;
-    table-layout: fixed;
-  }
-
-  .TV02_Table th, td  {
-    text-align: left;
-    color: black;
-  }
-  .TV02_Table tr  {
-    line-height: 1.6;
-  }
-  .tablecontainerV02 {
-    text-align: center;
-  }
-   .V02Klaar  {
-    margin-top: 40px;
-    margin-left: 600px;
-  }
 </style>

@@ -4,7 +4,7 @@
   <div v-else class="tablecontainer">
     <template v-for="(Object, ObjIndex) in Challenge2" >
         <p class="T2_Introduction">
-            {{  Object.introduction }}
+            <span v-html="Object.introduction"></span>
         </p>
         <table class="T2_Table">
           <tbody>
@@ -99,7 +99,7 @@
         </table>
 
     </template>
-    <div>
+    <div class="K02Klaar">
       <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
     </div>
   </div>
@@ -289,72 +289,7 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: black;
-    font-family: Lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: bold;
-  }
-  .selectedmorfeem {
-    color: blue;
-    font-family: Lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: bold;
-  }
-  .T2_Introduction  {
-    color: grey;
-    font-family: Lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    padding-top: 20px;
-    width: 70%;
-    padding-left: 30px;
-    text-align: justify;
-  }
-  .T2_Table {
-    width: 80%;
-    padding: 20px;
-    margin-top:20px;
-    margin-left:200px;
-    height: 300px;
-    table-layout: fixed;
-  }
-  .T2_Table tr  {
-    height: 150px;
-  }
-  .T2_Table th, td  {
-    text-align: left;
-    color: black;
-    line-height: 1.6;
-  }
-  .tablecontainer {
-    text-align: center;
-    height: 300px;
-  }
-  .answeroptions {
-    color: black;
-    font-family: Lato;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: bold;
-    height: 10px;
-    width: 10px;
-  }
-  .klaarButton {
-    font: normal normal bold 20px/25px Lato;
-    letter-spacing: 0px;
-    color: #FFFFFF;
-    opacity: 1;
-    background: #2185D0 0% 0% no-repeat padding-box;
-    border-radius: 4px;
-    width: 100px;
-    height: 32px;
-    top: 440px;
-    left: 880px;
-    clear: left;
-    cursor:pointer;
-}
+
+
+
 </style>

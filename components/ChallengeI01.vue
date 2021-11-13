@@ -2,26 +2,15 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20 mt-10">
-        <table class="table-auto w-full align-center">
-          <thead>
-            <tr>
-              <th class="w-4/5 ..."></th>
-              <th class="w-1/5 ..."></th>
-            </tr>
-          </thead>
+      <div class="I01Container">
+        <table class="I01Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
-                <td colspan="2">
+                <td>
                    <span class="voorbeeldzin">
                     {{ Object.voorbeeldzin }}
                   </span>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  &nbsp;
                 </td>
               </tr>
               <tr>
@@ -33,12 +22,9 @@
                         </span>
                     </span>
                     <template v-if="index+1 < Object.paragraphwords.length">
-                      <input v-model="Object.UserAnswerList" class="questionwordsClicked"  @input="checkText(ObjIndex)">
+                      <input v-model="Object.UserAnswerList" class="I01Textbox"  @input="checkText(ObjIndex)">
                     </template>
                   </template>
-                </td>
-                <td>
-                  &nbsp;
                 </td>
               </tr>
           </template>
@@ -140,8 +126,6 @@ export default {
 
           PostString = JSON.stringify(PostObject);
 
-          console.log(PostString);
-
           this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
             'content-type': 'application/json',},})
           .then((response) => {
@@ -173,50 +157,5 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: grey;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    line-height: 200%;
-  }
-  .voorbeeldzin {
-    color: black;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    white-space: wrap;
-    line-height: 200%;
-  }
-  .questionwordsClicked {
-    color: blue;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-    border:dotted 1px lightgray;
-    padding: 2px;
-  }
-  .questionwordsClicked:focus {
-    outline:none;
-  }
-  .paragraphheading {
-    color: black;
-    font-family: lato;
-    font-size: 16px;
-    font-style: bold;
 
-  }
-  .explainbox {
-    border:solid 1px orange;
-    resize: none;
-    float: right;
-    padding:4px;
-  }
-  .I01Klaar {
-    margin-left: 500px;
-    margin-top:100px
-  }
 </style>

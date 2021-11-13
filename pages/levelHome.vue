@@ -1,9 +1,9 @@
 <template>
   <div>
     <Mainheader />
-    <LessonHeader :key="HeaderKey" @LevelClick="GotoLevel($event)"/>
-    <div class="align-top" v-if="$fetchState.pending">Fetching Challenges...</div>
-    <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
+    <LessonHeader :key="HeaderKey" :DisplayLesson="$store.state.currentDisplayLesson" @LevelClick="GotoLevel($event)"/>
+    <div v-if="$fetchState.pending">Fetching Challenges...</div>
+    <div v-else-if="$fetchState.error">An error occurred :(</div>
     <div :key="RenderLevel"  v-else class="ChallengePanel">
       <template v-if="currentChallengeType.ChallengeTypeID != 'LE3'">
         <LevelHeader  :key="RenderLevel" :LevelID="UserLevels[$store.state.Lessons[$store.state.currentDisplayLesson].currentDisplayLevel].Levelid" :LevelTitle="UserLevels[$store.state.Lessons[$store.state.currentDisplayLesson].currentDisplayLevel].leveltitle" />
@@ -109,12 +109,6 @@ export default {
 
 </script>
 <style scoped>
-  .ChallengePanel  {
-    left: 128px;
-    width: 1480px;
-    position: fixed;
-    margin-top:10px;
 
-  }
 
 </style>

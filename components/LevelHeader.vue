@@ -16,21 +16,5 @@ export default {
 </script>
 <style scoped>
 
-  .LevelHeadingPanel  {
-    left: 128px;
-    height: 44px;
-  }
-  .LevelTitle {
-    font: lato;
-    font-weight: bold;
-    font-size: 24px;
-    color: #E03997;
-  }
-  .LevelSubtitle {
-    font: lato;
-    font-weight: bold;
-    font-size: 24px;
-    color:#2185D0;
-  }
 
 </style>

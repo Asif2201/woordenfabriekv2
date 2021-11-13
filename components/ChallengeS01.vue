@@ -2,15 +2,8 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-10 mt-10">
-        <table class="table-fixed w-full align-center">
-            <thead>
-            <tr>
-              <th class="w-1/5 ..."></th>
-              <th class="w-3/5"></th>
-              <th class="w-1/5 ..."></th>
-            </tr>
-          </thead>
+      <div class="S01Container">
+        <table class="S01Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
@@ -26,7 +19,6 @@
                     </span>
                   </template>
                 </td>
-                <td> &nbsp;  &nbsp; </td>
               </tr>
               <tr>
                 <td> &nbsp;  &nbsp; </td>
@@ -37,10 +29,9 @@
                       </span>
                     </template>
                   </td>
-                  <td> &nbsp;  &nbsp; </td>
-            </tr>
-          </template>
-        </tbody>
+              </tr>
+            </template>
+          </tbody>
         </table>
         <div class="S01Klaar">
           <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
@@ -194,32 +185,5 @@ export default {
 }
 </script>
 <style scoped>
-  .explanation {
-    color: teal;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .questionwords {
-    color: grey;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .questionwordsClicked {
-    color: blue;
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  th, td {
-    padding: 10px;
-  }
-  .S01Klaar  {
-    margin-top: 40px;
-    margin-left: 600px;
-  }
+
 </style>

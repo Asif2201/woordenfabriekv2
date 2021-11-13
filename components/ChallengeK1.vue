@@ -2,26 +2,20 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching challenges...</div>
   <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="relative ml-20 mt-10">
-        <table class="K01_Table" :key="OkKey">
-          <thead/>
+      <div class="K01Container">
+        <table class="K01_Table" :key=  "OkKey">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
-                <td>
-                  <div class="questionwords">
-                    <span v-for="(char, index) in Object.word" v-on:click="morphemeClick(ObjIndex, index+1, $event);">
+                <td colspan="2">
+                    <span class="questionwordsK1" v-for="(char, index) in Object.word" v-on:click="morphemeClick(ObjIndex, index+1, $event);">
                       {{ char }} &nbsp;
                     </span>
-                  </div>
                 </td>
-                <td> &nbsp; &nbsp; &nbsp; &nbsp; </td>
                <td>
-                  <div>
                     <button class="WisButton" v-on:click="morphemeClickWis(ObjIndex)">
                       Wis
                     </button>
-                  </div>
                 </td>
             </tr>
           </template>
@@ -175,59 +169,6 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: grey;
-    font-family: lato;
-    font-size: 22px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .right {
-    margin-right: 20px;
-    float: right;
-  }
-  .WisButton  {
-    background-color: blue;
-    border-radius: 4px;
-    color: white;
-    padding-right: 12px;
-    padding-left: 12px;
-    padding-top: 4px;
-    padding-bottom: 4px;
-    float: right;
-    margin-right: 20px;
-    font-family: lato;
-    font-weight: bold;
-  }
-  .WisButton:hover  {
-    background-color: darkblue; /* Green */
-    color: yellow;
-  }
-  .K01_Table {
-    width:50%;
-    table-layout: fixed;
-  }
-  .K01_Table tr {
-    height:  50px;
-  }
-  .K01_Table td:first-child {
-    width: 900px;
-  }
-  .klaarButton {
-    font: normal normal bold 20px/25px Lato;
-    letter-spacing: 0px;
-    color: #FFFFFF;
-    opacity: 1;
-    background: #2185D0 0% 0% no-repeat padding-box;
-    border-radius: 4px;
-    width: 100px;
-    height: 32px;
-    clear: left;
-    margin-left: 500px;
-    cursor:pointer;
-}
-.K01Klaar  {
-    margin-top: 40px;
-    margin-left: 600px;
-  }
+
+
 </style>

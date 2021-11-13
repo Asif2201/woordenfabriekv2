@@ -2,14 +2,8 @@
   <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
   <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
   <div v-else>
-      <div class="relative ml-20 mt-10">
-        <table :key="tablechanged" class="table-fixed w-full align-center ">
-          <thead>
-            <tr>
-              <th class="w-3/5 ..."></th>
-              <th class="w-2/5 ..."></th>
-            </tr>
-          </thead>
+      <div class="LE1Container">
+        <table :key="tablechanged" class="LE1Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
@@ -22,35 +16,14 @@
                   <LEButtons :Disabled="false" :data="AnswerOptions" :SelectedButton="Object.UserAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
             </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
-            <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
-          </template>
-             <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
-             <tr>
-              <td> &nbsp; </td>
-              <td> &nbsp; </td>
-            </tr>
-            <tr>
-              <td>
-                <div class="LE1Klaar">
-                  <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
-                </div>
-              </td>
-              <td> &nbsp; </td>
 
-            </tr>
+          </template>
+
         </tbody>
       </table>
-
+      <div class="LE1Klaar">
+                  <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
+                </div>
       </div>
   </div>
 </template>
@@ -185,19 +158,6 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: var(--grey);
-    font-family: lato;
-    font-size: 16px;
-    font-style: normal;
-    font-weight: 700;
-  }
-  .center {
-    margin: auto;
-    width: 60%;
-    padding: 10px;
-  }
-  .LE1Klaar  {
-    margin-left: 600px;
-  }
+
+
 </style>
