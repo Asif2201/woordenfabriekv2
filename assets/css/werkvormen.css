@@ -1,18 +1,95 @@
-/*
-.center {
-  margin: auto;
-  width: 60%;
-  padding: 10px;
-}*/
+.word1 {
+  color: grey;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+.word2 {
+  color: #21BA45;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+.word3 {
+  color: red;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  text-decoration: line-through;
+}
+.LevelHeadingPanel  {
+  left: 128px;
+  height: 44px;
+}
 
-/* Style classes for general pages: home, error */
+.explainbox {
+  border:solid 1px #2185D0;
+  resize: none;
+  float: left;
+  font-family: lato;
+  font-size: 12px;
+  font-style: normal;
+  padding: 4px;
+}
+
+.questionwords {
+  color: grey;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+.questionwordsClicked {
+  color: #E03997;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+.feedback {
+  color: #E03997;
+  font-family: lato;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+}
+.tablecontainer {
+  text-align: center;
+  height: 300px;
+}
+
+
+
+/* Style classes for Home Page */
 .HomeImage1 {
   display: block;
   margin-left: auto;
   margin-right: auto;
   margin-bottom: 20px;
-  width: 800px;
-  height: 70px;
+
+}
+.HomeTitleText  {
+  font-family: lato;
+  color: grey;
+  font-size: 26px;
+  font-weight: bold;
+  line-height: 1.6;
+  padding-left:700px;
+}
+.HomeTitleText2  {
+  font-family: lato;
+  color: #2185D0;
+  font-size: 26px;
+  font-weight: bold;
+}
+.HomeTitleText3  {
+  font-family: lato;
+  color: #E03997;
+  font-size: 26px;
+  font-weight: bold;
 }
 .HomeImage2 {
   display: block;
@@ -21,6 +98,7 @@
   margin-bottom: 20px;
   width: 500px;
   height: 350px;
+  margin-top:30px;
 }
 .TitleText  {
   font-family: lato;
@@ -28,7 +106,6 @@
   font-size: 22px;
   font-weight: bold;
   line-height: 1.6;
-
 }
 .subtitletext {
   font-family: lato;
@@ -53,6 +130,9 @@
   padding-left: 20px;
   padding-right: 20px;
 }
+/* End Home Page Styles */
+
+/* Class management Styles */
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -155,17 +235,180 @@
   margin-left:10px;
   margin-right:10px;
 }
+/* End Class management styles */
+
+/* Lesson Styles */
+.LessonHomeContainer  {
+  display: flex;
+  justify-content: center;
+}
+.LessonHomeContents {
+  margin-top: 20px;
+  margin-left:-20px;
+}
 .LessonHeaderPanel  {
   padding-left: 40px;
   justify-content: center;
   width: 100%;
-  height: 124px;
+  height: 104px;
   background-color: white;
 }
-.LevelHeadingPanel  {
-  left: 128px;
-  height: 44px;
+.LessonNav {
+  font-family: lato;
+  color: black;
+  font-size: 36px;
+  font-weight: bold;
+  line-height: 1.6;
+  padding-top:40px;
+  top: 740px;
+  margin-top: -20px;
+  position: absolute;
 }
+.LessonTitleDiv  {
+  padding-top:40px;
+  width: 450px;
+}
+.LessonHeaderTable  {
+  margin-left:500px;
+  padding:0px;
+  margin-top:-65px;
+}
+.LessonHeaderTable td {
+  padding-left:30px;
+}
+.LessonTitle {
+  font: lato;
+  font-weight: bold;
+  font-size: 36px;
+  color: #767676;
+}
+.LessonSubtitle {
+  font: lato;
+  font-weight: bold;
+  font-size: 36px;
+  color: #E03997;
+}
+.LevelsBar  {
+  display: flex;
+}
+
+.NotCurrentButtonText  {
+  font-family: lato;
+  font-weight: bold;
+  font-size: 17px;
+  color: white;
+  background-color: #E6E6E6;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 6px;
+  padding-top: 6px;
+  margin-top: 4px;
+  border-radius: 4px;
+  margin-right: 4px;
+
+
+}
+.CurrentButtonText  {
+  font-family: lato;
+  font-weight: bold;
+  font-size: 17px;
+  color: white;
+  background-color: #E03997;
+  padding-left: 24px;
+  padding-right: 24px;
+  padding-bottom: 6px;
+  padding-top: 6px;
+  margin-top: 4px;
+  border-radius: 4px;
+  margin-right: 4px;
+}
+.DisplayLevelButton {
+  box-shadow:0 0 0 0px white, 0 0 0 2px #F26700;
+}
+/* End Lesson Styles */
+
+/* Challenge Styles */
+.challengeBox {
+  width:98%;
+  height: 600px;
+  background-color: white;
+  position: relative;
+}
+.btnNext  {
+  clear: left;
+  background-color: #E03997;
+  font-weight: bold;
+  color: white;
+  font-family: lato;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 6px;
+  padding-top:6px;
+  font-size:22px;
+  top: 100%;
+  left: 50%;
+  margin-left: -20px;
+  margin-top: -50px;
+  border-radius: 4px;
+  position: absolute;
+}
+.klaarButton {
+  clear: left;
+  background-color: #2185D0;
+  font-weight: bold;
+  color: white;
+  font-family: lato;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 4px;
+  padding-top:4px;
+  font-size:22px;
+  top: 100%;
+  left: 50%;
+  margin-left: -20px;
+  margin-top: -50px;
+  border-radius: 4px;
+  position: absolute;
+}
+.showOnHover:hover + .hide {
+  display:block;
+  color: red;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  padding-top:10px;
+  top: 100%;
+  left: 50%;
+  margin-left: -90px;
+  margin-top: -80px;
+  position: absolute;
+}
+.hide {
+  display:none;
+}
+
+.btnHelp  {
+  position: absolute;
+  background-color: #E03997;
+  font-weight: bold;
+  color: white;
+  font-family: lato;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 4px;
+  padding-top:4px;
+  font-size:22px;
+  border-radius: 4px;
+  top: 100%;
+  left: 0;
+  margin-left: 1cm;
+  margin-top: -50px;
+
+}
+.btnHelp:hover  {
+  background-color: darkgray;
+}
+
 .ChallengePanel  {
   left: 128px;
   width: 80%;
@@ -182,7 +425,7 @@
 }
 .ChallengeImageContainer {
   float: right;
-  margin: -60px 20px 15px 15px;
+  margin: -10px 1cm 15px 15px;
 }
 .ChalllengeTextPanel  {
   padding-top: 1cm;
@@ -190,6 +433,30 @@
   height: 34px;
   width: 1000px;
 }
+.ChallengeTitle {
+  font: lato;
+  font-weight: bold;
+  font-size: 24px;
+  color: #E03997;
+  line-height: 1.6;
+}
+.ChallengeTitle2 {
+  font: lato;
+  font-weight: bold;
+  font-size: 24px;
+  color: white;
+  line-height: 1.6;
+}
+.ChallengeSubtitle {
+  font: lato;
+  font-weight: bold;
+  font-size: 14px;
+  color:white;
+  line-height: 1.6;
+}
+/* End Challenge Styles */
+
+/* General Header and Side Menu styles */
 .MainHeaderPanel  {
   width: 100%;
   height: 54px;
@@ -256,6 +523,7 @@
   margin-top: 5px;
 }
 .loginbutton  {
+  font-family: lato;
   background-color: blue;
   color:white;
   font-size: 12px;
@@ -292,122 +560,9 @@ ul.sidebar-panel-nav > li > a:hover {
   background-color: #7B7B7B;
   color: white;
 }
+/* End Main header styles */
 
-.LessonTitleDiv  {
-  padding-top:40px;
-  width: 450px;
-}
-.LessonHeaderTable  {
-  margin-left:500px;
-  padding:0px;
-  margin-top:-45px;
-}
-
-.LessonTitle {
-  font: lato;
-  font-weight: bold;
-  font-size: 36px;
-  color: #767676;
-}
-.LessonSubtitle {
-  font: lato;
-  font-weight: bold;
-  font-size: 36px;
-  color: #E03997;
-}
-.LevelsBar  {
-  display: flex;
-}
-
-.NotCurrentButtonText  {
-  font-family: lato;
-  font-weight: bold;
-  font-size: 17px;
-  color: white;
-  background-color: #E6E6E6;
-  padding-left: 24px;
-  padding-right: 24px;
-  padding-bottom: 8px;
-  padding-top: 8px;
-  margin-top: 4px;
-  border-radius: 4px;
-  margin-right: 4px;
-
-
-}
-.CurrentButtonText  {
-  font-family: lato;
-  font-weight: bold;
-  font-size: 17px;
-  color: white;
-  background-color: #E03997;
-  padding-left: 24px;
-  padding-right: 24px;
-  padding-bottom: 8px;
-  padding-top: 8px;
-  margin-top: 4px;
-  border-radius: 4px;
-  margin-right: 4px;
-}
-.DisplayLevelButton {
-  box-shadow:0 0 0 0px white, 0 0 0 2px #F26700;
-}
-
-
-.V01Context {
-  color: black;
-  font-family: lato;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-}
-.right {
-  float: right;
-}
-
-.V01_Table {
-  width:70%;
-  table-layout: fixed;
-  margin: 0px;
-}
-
-.V01_Table td {
-  width: 100px;
-}
- .V01_Table tr {
-  line-height: 10px;
-}
-.V01_Table td:nth-child(1) {
-  width: 300px;
-}
-.klaarButton {
-  font: normal normal bold 20px/25px Lato;
-  letter-spacing: 0px;
-  color: #FFFFFF;
-  opacity: 1;
-  background: #2185D0 0% 0% no-repeat padding-box;
-  border-radius: 4px;
-  width: 100px;
-  height: 32px;
-  top: 740px;
-  left: 880px;
-  clear: left;
-  cursor:pointer;
-}
-.explainbox {
-  border:solid 1px #2185D0;
-  resize: none;
-  float: left;
-  font-family: lato;
-  font-size: 12px;
-  font-style: normal;
-  padding: 4px;
-}
-.V01Klaar {
-  margin-left: 500px;
-  margin-top: 40px;
-}
-
+/* Level Styles */
 .LevelTitle {
   font: lato;
   font-weight: bold;
@@ -420,66 +575,55 @@ ul.sidebar-panel-nav > li > a:hover {
   font-size: 24px;
   color:#2185D0;
 }
+/* End Level Styles */
 
-.ChallengeTitle {
-  font: lato;
-  font-weight: bold;
-  font-size: 24px;
-  color: #E03997;
-  line-height: 1.6;
+/* V01 Styles */
 
-}
-.ChallengeTitle2 {
-  font: lato;
-  font-weight: bold;
-  font-size: 24px;
-  color: white;
-  line-height: 1.6;
-
-}
-.ChallengeSubtitle {
-  font: lato;
-  font-weight: bold;
-  font-size: 16px;
-  color:white;
-  line-height: 1.6;
-}
-
-.questionwords {
-  color: grey;
-  font-family: lato;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-}
-.questionwordsK1 {
-  color: grey;
-  font-family: lato;
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 700;
-}
-
-.questionwordsClicked {
-  color: #E03997;
+.V01Context {
+  color: black;
   font-family: lato;
   font-size: 14px;
   font-style: normal;
   font-weight: 700;
 }
 
+.V01_Table {
+  width:70%;
+  table-layout: fixed;
+  margin-top: 20px;
+}
+
+.V01_Table td {
+  width: 100px;
+}
+ .V01_Table tr {
+  line-height: 10px;
+}
+.V01_Table td:nth-child(1) {
+  width: 300px;
+}
+
+.V01Klaar {
+  margin-left: 0px;
+  margin-top: 0px;
+}
+/* V01 Styles */
+
+
+/* C01 Styles */
+
+.C01Container {
+  margin-top:20px;
+}
 .C01Heading {
   color: black;
   font-family: lato;
   font-size: 18px;
   font-style: normal;
   font-weight: 700;
+  padding-left: 1cm;
 }
-.C01Container {
-  position: relative;
-  margin-left: 40px;
-  margin-top:20px;
-}
+
 .C01Table {
   table-layout: fixed;
   width: 100%;
@@ -496,9 +640,12 @@ ul.sidebar-panel-nav > li > a:hover {
   width: 700px;
 }
 .C01Klaar  {
-  margin-left: 600px;
-  margin-top: 100px;
+  margin-left: 0px;
+  margin-top: 0px;
 }
+/* End C01 Styles */
+
+/* CA3 Styles */
 .CA3Questions {
   color: #21BA45;
   font-family: lato;
@@ -539,70 +686,21 @@ ul.sidebar-panel-nav > li > a:hover {
   height: 50px;
 }
 
-
-
 .CA3Klaar {
-  margin-top: 40px;
-  margin-left: 700px;
+  margin-top: 0px;
+  margin-left: 0px;
 }
 
+/* End CA3 Styles */
+/* K01 Styles */
 
-.btnResetData {
-  background-color: red;
-  font-family: Lato;
-  font-size: 12px;
-  color:black;
-  padding-top: 5px;
-  padding-bottom: 5px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.challengeBox {
-  width:98%;
-  height: 600px;
-  background-color: white;
-  position: relative;
-}
-
-.btnHelp  {
-  position: absolute;
-  left:    0;
-  bottom:   0;
-  background-color: #E03997;
-  font-weight: bold;
-  color: white;
+.questionwordsK1 {
+  color: grey;
   font-family: lato;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 4px;
-  padding-top:4px;
-  font-size:22px;
-  border-radius: 4px;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 700;
 }
-.btnHelp:hover  {
-  background-color: darkgray;
-}
-
-.btnNext  {
-  clear: left;
-  background-color: #E03997;
-  font-weight: bold;
-  color: white;
-  font-family: lato;
-  padding-left: 10px;
-  padding-right: 10px;
-  padding-bottom: 8px;
-  padding-top:8px;
-  font-size:20px;
-  top: 740px;
-  margin-left: 600px;
-  border-radius: 4px;
-  margin-top: 30px;
-
-}
-
-
 .WisButton  {
   background-color: #2185D0;
   border-radius: 4px;
@@ -631,7 +729,6 @@ ul.sidebar-panel-nav > li > a:hover {
 
 .K01_Table tr {
   height:  60px;
-  border-bottom: 1pt solid lightgrey;
 }
 
 .K01_Table td {
@@ -645,28 +742,18 @@ ul.sidebar-panel-nav > li > a:hover {
 }
 
 .K01Klaar  {
-  margin-top: 40px;
-  margin-left: 600px;
-}
-.K02Klaar  {
-  margin-top: 20px;
-  margin-left: 100px;
-}
-.feedback {
-  color: #E03997;
-  font-family: lato;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
+  margin-top: 0px;
+  margin-left: 0px;
 }
 
-.selectedmorfeem {
-  color: #E03997;
-  font-family: Lato;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: bold;
+/* End K01 Styles */
+
+/* K02 Styles */
+.K02Klaar  {
+  margin-top: 0px;
+  margin-left: 0px;
 }
+
 .T2_Introduction  {
   color: grey;
   font-family: Lato;
@@ -694,10 +781,7 @@ ul.sidebar-panel-nav > li > a:hover {
   color: black;
   line-height: 1.6;
 }
-.tablecontainer {
-  text-align: center;
-  height: 300px;
-}
+
 .answeroptions {
   color: black;
   font-family: Lato;
@@ -726,31 +810,50 @@ ul.sidebar-panel-nav > li > a:hover {
   text-decoration: line-through;
   pointer-events: none;
 }
+
+/* End K02 Styles */
+
+/* LE1 Styles */
 .LE1Klaar  {
-  margin-left: 600px;
-  margin-top:40px;
+  margin-left: 0px;
+  margin-top:0px;
 }
-.LE1Container {
-  position: relative;
-  margin-left: 100px;
-  margin-top:10px;
-  margin-right:10px;
+.answerresultimg  {
+
+  width: 30px;
+  height: 30px;
 }
+
 .LE1Table {
   table-layout: fixed;
   width: 100%;
-  vertical-align: center;
+  vertical-align: middle;
   margin-top:40px;
+  margin-left: 1cm;
 }
 .LE1Table tr {
   height: 50px;
+  vertical-align: middle;
 }
 .LE1Table td:nth-of-type(1) {
   width: 740px;
+  padding-left: 0px;
+
 }
-.LE1Table td:nth-of-type(3) {
-  width: 180px;
+.LE1Table td:nth-of-type(2) {
+  padding-left: 10px;
+  vertical-align: middle;
+  width: 300px;
 }
+.LE1Table td:nth-of-type(3)  {
+  vertical-align: middle;
+  text-align: center;
+  padding-left: 0px;
+
+
+}
+/* End LE1 Styles */
+/* I01 Styles */
 .voorbeeldzin {
   color: black;
   font-family: lato;
@@ -759,21 +862,19 @@ ul.sidebar-panel-nav > li > a:hover {
   font-weight: 700;
   white-space: wrap;
   line-height: 200%;
-  margin-right: 30px;
 }
-.I01Container {
-  position: relative;
-  margin-left: 100px;
-  margin-top:20px;
-  margin-right:10px;
-}
+
 .I01Table {
   table-layout: fixed;
   width: 100%;
   vertical-align: center;
+  margin-top: 20px;
 }
 .I01Table tr {
   height: 20px;
+}
+.I01Table td {
+ padding-right: 20px;
 }
 .I01Table td:nth-of-type(1) {
   width: 600px;
@@ -791,8 +892,8 @@ ul.sidebar-panel-nav > li > a:hover {
   outline:none;
 }
 .I01Klaar {
-  margin-left: 500px;
-  margin-top:100px
+  margin-left: 0px;
+  margin-top:0px;
 }
 
 .referenceanswer {
@@ -802,45 +903,24 @@ ul.sidebar-panel-nav > li > a:hover {
   font-style: normal;
   font-weight: 700;
 }
+/* End I01 Styles */
 
+/* H05 Styles */
 .H05Klaar  {
-  margin-top: 40px;
-  margin-left: 600px;
+  margin-top: 0px;
+  margin-left: 0px;
 }
-.H05Container {
-  position: relative;
-  margin-left: 100px;
-  margin-top:20px;
-  margin-right:10px;
-}
+
 .H05Table {
   table-layout: fixed;
   width: 100%;
   vertical-align: center;
+  margin-top: 20px;
 }
 
-.word1 {
-  color: grey;
-  font-family: lato;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-}
-.word2 {
-  color: #21BA45;
-  font-family: lato;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-}
-.word3 {
-  color: red;
-  font-family: lato;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 700;
-  text-decoration: line-through;
-}
+/* End H05 Styles */
+
+/* S01 Styles */
 
 .explanation {
   color: black;
@@ -851,27 +931,26 @@ ul.sidebar-panel-nav > li > a:hover {
 }
 
 .S01Klaar  {
-  margin-top: 40px;
-  margin-left: 600px;
+  margin-top: 0px;
+  margin-left: 0px;
 }
-.S01Container {
-  position: relative;
-  margin-left: 100px;
-  margin-top:20px;
-  margin-right:10px;
-}
+
 .S01Table {
   table-layout: fixed;
   width: 100%;
   vertical-align: center;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 .S01Table tr:nth-child(even) {
   height: 50px;
 }
+/* End S01 Styles */
+
+/* V02 Styles */
 .V02Klaar  {
-  margin-top: 10px;
-  margin-left: 400px;
+  margin-top: 0px;
+  margin-left: 0px;
 }
 .V02Table {
   width: 100%;
@@ -895,26 +974,24 @@ ul.sidebar-panel-nav > li > a:hover {
 .V02Textbox:focus {
   outline:none;
 }
+/* End V02 Styles */
+
+/* H02 Styles */
 .H02Klaar {
-  margin-left: 500px;
-  margin-top: 40px;
+  margin-left: 0px;
+  margin-top: 0px;
 }
-.H02Container {
-  position: relative;
-  margin-left: 100px;
-  margin-top:20px;
-  margin-right:10px;
-}
+
 .H02Table {
   table-layout: fixed;
   width: 100%;
   vertical-align: center;
   border-collapse: collapse;
+  margin-top: 20px;
 }
 .correctAnswer  {
-  color:green;
+  color:21BA45;
 }
-
  .H02Feedback {
   color: black;
   font-family: lato;

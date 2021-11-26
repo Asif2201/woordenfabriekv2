@@ -4,31 +4,27 @@
   <div v-else>
       <div style="overflow-x: auto;">
         <table class="K01_Table" key="OkKey">
-          <thead/>
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
-                  <div class="questionwordsK1">
+                  <span class="questionwordsK1">
                       {{ Object.studentAnswer }}
-                  </div>
+                  </span>
                 </td>
                  <td>
-                  <div class="feedback">
+                  <span class="feedback">
                       {{ Object.feedback }}
-                  </div>
+                  </span>
                 </td>
                 <td>
-                  <div>
-                    <p v-show="Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/correct.png" width="40" height="40" />
-                    </p>
-                    <p v-show="!Object.answerCorrect" class="text-blue">
-                      <img src="~/assets/incorrect.png" width="40" height="40" />
-                    </p>
-                  </div>
+                    <template v-if="Object.answerCorrect">
+                      <img src="~/assets/correct.png" width="35" height="35" />
+                    </template>
+                    <template v-if="!Object.answerCorrect">
+                      <img src="~/assets/incorrect.png" width="35" height="35" />
+                    </template>
                 </td>
-
             </tr>
           </template>
 

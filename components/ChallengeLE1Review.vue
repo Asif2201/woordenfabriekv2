@@ -20,13 +20,8 @@
                     <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
                 <td>
-                    <p v-show="Object.studentCorrect == 'Yes'" class="text-blue">
-                      <img src="~/assets/correct.png" width="40" height="40" />
-                    </p>
-                    <p v-show="Object.studentCorrect != 'Yes'" class="text-blue">
-                      <img src="~/assets/incorrect.png" width="40" height="40" />
-                    </p>
-
+                  <img v-show="Object.studentCorrect == 'Yes'" class="answerresultimg" src="~/assets/correct.png"  />
+                  <img v-show="Object.studentCorrect != 'Yes'" class="answerresultimg" src="~/assets/incorrect.png" />
                 </td>
             </tr>
           </template>

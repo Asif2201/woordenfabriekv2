@@ -2,12 +2,13 @@
   <div>
   <Mainheader />
   <LessonHeader :key="$route.query.index" :DisplayLesson="$route.query.index" />
-  <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
-  <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
-  <div v-else class="ml-96 content-center">
-    <br><br><br>
-    <img :src="require(`../assets/radb_img_Lev1.${WhichImage()}.png`)"  width="557" height="349" >
-    <div v-if="levels.vwUsers[IndexOfCurrent].completionprogress !== 100" class="center2 subtitletext">
+  <div  v-if="$fetchState.pending">Fetching lessons...</div>
+  <div  v-else-if="$fetchState.error">An error occurred :(</div>
+  <div v-else class="LessonHomeContainer" :key="MessageToShow">
+    <div class="LessonHomeContents">
+      <img :src="require(`../assets/radb_img_Lev1.${WhichImage()}.png`)"  width="557" height="349" >
+    </div>
+     <div v-if="levels.vwUsers[IndexOfCurrent].completionprogress !== 100" class="LessonNav">
       <nuxt-link :to="{ path: `/levelhome?studentlessonID=` + this.$route.query.studentlessonID }" >
                 {{ MessageToShow }}
       </nuxt-link>
@@ -27,7 +28,7 @@ export default {
       IndexOfCurrent: 0,
       levelProgressKey: 0,
       ImageIndex: 1,
-      MessageToShow: ''
+      MessageToShow: 'Start de les'
     }
   },
   watch: {
@@ -47,7 +48,7 @@ export default {
   async fetch() {
     this.$store.commit('setCurrentDisplayLesson', this.$route.query.index);
     const URLforAPI = `${this.$config.baseURL}/userLevels?studentlessonid=${this.$route.query.studentlessonID}`;
-    console.log(URLforAPI);
+
     const response = await fetch(URLforAPI);
     this.levels = await response.json();
     this.$store.commit({ type:'storeLevels', levels: this.levels.vwUsers, slid: this.$route.query.studentlessonID });

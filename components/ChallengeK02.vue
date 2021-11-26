@@ -10,7 +10,7 @@
           <tbody>
               <tr>
                 <td>
-                    <span class="selectedmorfeem">
+                    <span class="questionwordsClicked">
                       {{ Object.Morfeem1 }}
                     </span>
                     <span v-if="Object.Morfeem2 != Object.word" class="questionwords">
@@ -36,7 +36,7 @@
                     <span v-if="Object.Morfeem2 != Object.word" class="questionwords">
                       {{ Object.Morfeem1 }}
                     </span>
-                    <span class="selectedmorfeem">
+                    <span class="questionwordsClicked">
                       {{ Object.Morfeem2 }}
                     </span>
                     <span v-if="Object.Morfeem3 != Object.word" class="questionwords">
@@ -61,7 +61,7 @@
                     <span v-if="Object.Morfeem3 != Object.word" class="questionwords">
                       {{ Object.Morfeem1 + Object.Morfeem2 }}
                     </span>
-                    <span class="selectedmorfeem">
+                    <span class="questionwordsClicked">
                       {{ Object.Morfeem3 }}
                     </span>
                     <span v-if="Object.Morfeem4 != Object.word" class="questionwords">
@@ -81,7 +81,7 @@
                     <span v-if="Object.Morfeem4 != Object.word" class="questionwords">
                       {{ Object.Morfeem1 + Object.Morfeem2 + Object.Morfeem3 }}
                     </span>
-                    <span class="selectedmorfeem">
+                    <span class="questionwordsClicked">
                       {{  Object.Morfeem4}}
                     </span>
                     <br>

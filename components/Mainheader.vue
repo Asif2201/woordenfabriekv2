@@ -19,14 +19,14 @@
               <template v-if="lesson.overallprogress == 1">
                 <td class="sidebar-table-column-completed">
                   <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.studentlessonid  + `&index=${index}`}" >
-                    Les {{ index + 1 }}
+                    Les {{ lesson.lessonnumber }}
                   </nuxt-link>
                 </td>
               </template>
               <template v-else>
                 <td class="sidebar-table-column">
-                  <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.studentlessonid  + `&index=${index}`}" >
-                    Les {{ index + 1 }}
+                  <nuxt-link v-on:click.native="closeSidebarPanel()" :to="{ path: `lessonhome?studentlessonID=` + lesson.studentlessonid  + `&index=${index}`, force:true }" >
+                    Les {{ lesson.lessonnumber }}
                   </nuxt-link>
                 </td>
               </template>
@@ -117,6 +117,7 @@ export default {
         else{
           alert('Invalid User');
         }
+        this.closeSidebarPanel();
       }
   },
 

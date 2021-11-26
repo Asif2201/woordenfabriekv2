@@ -21,10 +21,9 @@
 
         </tbody>
       </table>
-      <div class="LE1Klaar">
-                  <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
-                </div>
-      </div>
+    </div>
+    <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
+
   </div>
 </template>
 <script>

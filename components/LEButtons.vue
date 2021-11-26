@@ -1,5 +1,5 @@
 <template>
-  <div class="relative">
+  <div>
     <button :disabled="isDisabled" @click ="selectedAnswer(0)" class="buttonWaar" :class="{ selectedB:isSelected(0) }" > {{ data[0].name  }}</button>
     <button :disabled="isDisabled" @click ="selectedAnswer(1)" class="buttondeelWaar" :class="{ selectedB:isSelected(1) }" > {{ data[1].name }}</button>
     <button :disabled="isDisabled" @click ="selectedAnswer(2)" class="buttonOnWaar" :class="{ selectedB:isSelected(2) }" > {{ data[2].name }}</button>

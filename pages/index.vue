@@ -2,21 +2,33 @@
 <div style="overflow-x: auto;">
   <Mainheader />
   <img class="HomeImage1" src="~/assets/Woordenfabriektext.png" >
-  <img class="HomeImage2" src="~/assets/radb_img_7.png">
+  <template v-if="userEmail != ''">
+    <span class="HomeTitleText">
+      Startpagina |
+    </span>
+    <span :class="{ HomeTitleText2: UserRole != 'Student', HomeTitleText3: UserRole == 'Student'}">
+      {{ UserRole }}
+    </span>
+  </template>
+  <img class="HomeImage2" src="~/assets/home.png">
   <div>
     <table class="HomeTable">
       <thead>
         <th>
+          <td>
           <span class="TitleText">
-            <td>Wat is een Morfeem?</td>
+            Wat is een Morfeem?
           </span>
+          </td>
         </th>
         <th >
         </th>
         <th>
+          <td>
           <span class="TitleText">
-            <td>Wat heb je eraan?</td>
+            Wat heb je eraan?
           </span>
+          </td>
         </th>
       </thead>
       <tbody>
@@ -75,11 +87,17 @@ export default {
   },
   computed: {
     userEmail() {
-      console.log(this.$store.state.userEmail);
       return this.$store.state.userEmail;
+    },
+    UserRole()  {
+      if(this.$store.state.userRole === 'Student')  {
+        return 'Student'
+      }
+      else  {
+        return 'Docent';
+      }
     }
-  },
-
+  }
 }
 
 </script>
