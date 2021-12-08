@@ -10,14 +10,14 @@
       </template>
       <Level  :key="RenderLevel" @LevelComplete()="showModal()" @ScrollClick="PrevNextChallenge($event)" />
       <modalLevelEnd :Top="'300px'" :Left="'600px'" :width="'400px'" :height="'300px'" :key=isModalVisible v-show="isModalVisible" @close="closeModal">
-      <template v-slot:header>
-        Image comes here
-      </template>
-      <template v-slot:body>
-        Level voltooid!
-      </template>
-      <template v-slot:footer>
-      </template>
+        <template v-slot:header>
+          Image comes here
+        </template>
+        <template v-slot:body>
+          Level voltooid!
+        </template>
+        <template v-slot:footer>
+        </template>
       </modalLevelEnd>
       <LevelFooter :key="RenderFooter"  @ScrollClick="PrevNextChallenge($event)" />
     </div>

@@ -1,6 +1,6 @@
 <template>
-  <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
-  <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
+  <div  v-if="$fetchState.pending">Fetching lessons...</div>
+  <div  v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
       <div class="S01Container">
         <table class="S01Table">
@@ -172,7 +172,10 @@ export default {
     },
     EvaluateAnswer: function(index)  {
       let answerIsCorrect = false;
-      if(this.Challenge2[index].UserAnswerList.join("").trim() == this.Challenge2[index].feedback.trim()) {
+      const answerlist = this.Challenge2[index].feedback.split(";");
+      const newArray = answerlist.map(string => string.trim())
+      const tempUserAnswer = this.Challenge2[index].UserAnswerList.join("").trim();
+      if(newArray.includes(tempUserAnswer)) {
         answerIsCorrect = true;
       }
       if(answerIsCorrect) {
@@ -184,6 +187,4 @@ export default {
 
 }
 </script>
-<style scoped>
 
-</style>

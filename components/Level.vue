@@ -1,7 +1,12 @@
 <template>
   <div :key="renderKey" id="ChallengeContents" class="challengeBox">
       <template v-if="Challenges1[ChallengeIndex].ChallengeTypeID !== 'LE3'">
-        <ChallengeHeader :key="HeaderKey" :Type="Challenges1[ChallengeIndex].ChallengeTypeID" :Title="Challenges1[ChallengeIndex].ChallengeTitle" :Subtitle="Challenges1[ChallengeIndex].ChallengeSubtitle" />
+        <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
+          <ChallengeHeader :key="HeaderKey" :Type="Challenges1[ChallengeIndex].ChallengeTypeID" :Title="Challenges1[ChallengeIndex].ChallengeTitle" Subtitle="" />
+        </template>
+        <template v-else>
+          <ChallengeHeader :key="HeaderKey" :Type="Challenges1[ChallengeIndex].ChallengeTypeID" :Title="Challenges1[ChallengeIndex].ChallengeTitle" :Subtitle="Challenges1[ChallengeIndex].ChallengeSubtitle" />
+        </template>
       </template>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'K01'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
@@ -100,7 +105,12 @@
         </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'LE2'">
-        <ChallengeLE2 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
+          <ChallengeLE2Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
+        <template v-else>
+          <ChallengeLE2 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
       </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'LE3'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">

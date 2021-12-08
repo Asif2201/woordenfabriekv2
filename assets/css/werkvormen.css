@@ -997,5 +997,12 @@ ul.sidebar-panel-nav > li > a:hover {
   font-family: lato;
   font-size: 14px;
   font-style: bold;
-
+}
+/* LE2 styles */
+.LE2Table {
+  table-layout: fixed;
+  width: 100%;
+  vertical-align: middle;
+  margin-top:40px;
+  margin-left: 1cm;
 }

@@ -1,6 +1,6 @@
 <template>
-  <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
-  <div class="align-top" v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
+  <div v-if="$fetchState.pending">Fetching lessons...</div>
+  <div v-else-if="$fetchState.error">{{ $fetchState.error }}</div>
   <div v-else>
       <div class="C01Container">
         <span class="C01Heading">

@@ -1,6 +1,6 @@
 <template>
-  <div class="align-top" v-if="$fetchState.pending">Fetching lessons...</div>
-  <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
+  <div  v-if="$fetchState.pending">Fetching lessons...</div>
+  <div  v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else class="tablecontainer">
     <template v-for="(Object, ObjIndex) in Challenge2" >
         <p class="T2_Introduction">

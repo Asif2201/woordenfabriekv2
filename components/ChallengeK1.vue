@@ -1,6 +1,6 @@
 <template>
-  <div class="align-top" v-if="$fetchState.pending">Fetching challenges...</div>
-  <div class="align-top" v-else-if="$fetchState.error">An error occurred :(</div>
+  <div  v-if="$fetchState.pending">Fetching challenges...</div>
+  <div  v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
       <div class="K01Container">
         <table class="K01_Table" :key=  "OkKey">

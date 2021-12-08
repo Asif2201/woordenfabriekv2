@@ -15,7 +15,7 @@
               </tr>
               <tr>
                 <td>
-                  <textarea v-model="Object.UserAnswer" placeholder="geed je antwoord hier" class="explainbox" rows="6" cols="60"> </textarea>
+                  <span class="explainbox"> {{ Object.UserAnswer }} </span>
                 </td>
               </tr>
           </template>
@@ -23,8 +23,6 @@
         </table>
 
       </div>
-      <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
-
   </div>
 </template>
 <script>
@@ -74,59 +72,7 @@ export default {
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
       return QuestionObjectList;
     },
-
-    challengeCompleted: function() {
-      var PostString = '';
-      var newPropertyID = '';
-      var PostObject = {};
-      for (var i = 0; i < this.Challenge2.length; i++) {
-        this.EvaluateAnswer(i);
-        PostObject = {};
-
-        PostObject.id = this.Challenge2[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
-
-        newPropertyID = this.Challenge2[i].UserAnswer;
-        PostObject.userAnswer = newPropertyID;
-        PostObject.answerCorrect = this.Challenge2[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge2[i].feedbackType;
-        PostObject.Explanation = 'No Explanation requested';
-
-        PostString = JSON.stringify(PostObject);
-
-        console.log(PostString);
-
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.error(error);
-        });
-        PostString = '';
-      }
-      if(this.Challenge2[0].feedbackType === 2) {
-              this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
-    },
-    EvaluateAnswer: function(index)  {
-      let answerIsCorrect = true;
-
-      if(answerIsCorrect) {
-        this.Challenge2[index].answerCorrect = true;
-        this.TotalCorrect += 1;
-      }
-    }
-  },
+  }
 
 }
 </script>
-<style scoped>
-
-</style>
