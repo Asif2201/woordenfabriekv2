@@ -8,8 +8,7 @@
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
-                   <span class="voorbeeldzin">
-                    {{ Object.voorbeeldzin }}
+                   <span class="voorbeeldzin" v-html="Object.voorbeeldzin">
                   </span>
                 </td>
               </tr>

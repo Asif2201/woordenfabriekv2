@@ -2,19 +2,36 @@
   <div  v-if="$fetchState.pending">Fetching lessons...</div>
   <div  v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="ml-20">
-        <span class="LE3Heading">
-          Eerdere evaluaties
-        </span>
-        <table class="table-fixed w-full align-center ">
-          <thead>
-            <tr>
-              <th class="w-3/5 ..."></th>
-              <th class="w-2/5 ..."></th>
-            </tr>
-          </thead>
+      <div class="LE1Container">
+        <br><br>
+        <span class="LE3Heading"> Eerdere antwoorden </span>
+        <table :key="tablechanged" class="LE3Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
+              <tr>
+                <td>
+                  <span v-if="Object.answerCorrect == 'Yes'" class="questionwordsCorrect">
+                    {{ Object.Question }}
+                  </span>
+                  <span v-if="Object.answerCorrect != 'Yes'" class="questionwordsInCorrect">
+                    {{ Object.Question }}
+                  </span>
+                  <br>
+                  <span class="feedback">
+                      {{ Object.AnswerFeedback }}
+                    </span>
+                </td>
+                <td>
+                    <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
+                </td>
+            </tr>
+          </template>
+          </tbody>
+        </table>
+        <span class="LE3Heading"> Nieuwe conclusie </span>
+        <table :key="tablechanged" class="LE3Table">
+          <tbody>
+            <template v-for="(Object, ObjIndex) in Challenge5">
               <tr>
                 <td>
                   <span class="questionwords">
@@ -22,100 +39,14 @@
                   </span>
                 </td>
                 <td>
-                    <LEAnswers :data="AnswerOptions" :SelectedButton="Object.studentAnswer" />
-                </td>
-            </tr>
-
-          </template>
-        </tbody>
-      </table>
-
-  <br>
-  <br>
-        <table class="table-auto w-full align-center">
-          <thead>
-            <tr>
-              <th class="w-1/5 ..."></th>
-              <th class="w-3/5 ..."></th>
-              <th class="w-1/5 ..."></th>
-            </tr>
-          </thead>
-          <tbody>
-            <template v-for="(Object, ObjIndex) in Challenge3">
-              <tr>
-                <td>
-                  <span class="questionwords">
-                        Jouw eerdere conclusies
-                  </span>
-                </td>
-                <td>
-                  &nbsp;
-                </td>
-                <td>
-                  &nbsp;
+                  <LEButtons :Disabled="false" :data="AnswerOptions" :SelectedButton="Object.UserAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
               </tr>
-              <tr>
-                <td>
-                  <p class="questionwords"> {{ Object.studentAnswer }} </p>
-                </td>
-                <td>
-                  &nbsp;
-                </td>`
-                <td>
-                  &nbsp;
-                </td>
-              </tr>
-
-          </template>
-
-        </tbody>
+            </template>
+          </tbody>
         </table>
-
-        <br>
-        <span class="LE3Heading">
-          Nieuwe conclusie
-        </span>
-        <table class="table-auto w-full align-center">
-          <thead>
-            <tr>
-              <th class="w-1/5 ..."></th>
-              <th class="w-3/5 ..."></th>
-              <th class="w-1/5 ..."></th>
-            </tr>
-          </thead>
-          <tbody>
-            <template v-for="(Object, ObjIndex) in Challenge5">
-              <tr>
-                <td>
-                  <span class="paragraphheading">
-                      {{ Object.Question }}
-                  </span>
-                </td>
-                <td>
-                  &nbsp;
-                </td>
-                <td>
-                  &nbsp;
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <textarea v-model="Object.UserAnswer" placeholder="geef je antwoord hier" class="explainbox" rows="6" cols="60" @input="isKlaar = true"> </textarea>
-                </td>
-              </tr>
-          </template>
-            <tr>
-              <td>
-
-              </td>
-            </tr>
-        </tbody>
-        </table>
-        <div class="LE3Klaar">
-          <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
-        </div>
-      </div>
+    </div>
+    <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
   </div>
 </template>
 <script>
@@ -145,13 +76,12 @@ export default {
       TotalQuestions: 0,
       lAnswerExplanation: '',
       AnswerOptions: [],
-
+      tablechanged: 0,
     }
   },
   watch: {
     Challenge1()  {
       this.Challenge2 = this.JSONtoObj('1');
-      this.Challenge3 = this.JSONtoObj('2');
     },
     Challenge4()  {
       this.Challenge5 = this.JSONtoObj2();
@@ -198,11 +128,24 @@ export default {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge4.LearningQuestions.length; i++) {
             QuestionObjectList.push(this.Challenge4.LearningQuestions[i]);
-            QuestionObjectList[i].UserAnswer = '';
+            QuestionObjectList[i].UserAnswer = -1;
       }
       this.TotalQuestions = this.Challenge4.LearningQuestions.length;
       return QuestionObjectList;
     },
+    answerSelected(Index, answer) {
+      this.Challenge5[Index].UserAnswer = answer;
+      for (var i = 0; i < this.Challenge5.length; i++) {
+        if(this.Challenge5[i].UserAnswer < 0)  {
+          this.isKlaar = false;
+        }
+        else  {
+          this.isKlaar = true;
+        }
+      }
+      this.tablechanged++;
+    },
+
     challengeCompleted: function() {
       var PostString = '';
       var newPropertyID = '';
@@ -237,18 +180,11 @@ export default {
           });
           PostString = '';
         }
-        if(this.Challenge5[0].feedbackType === 2) {
-                this.ShowResult = true;
-        }
-        else {
-          this.ShowResult = true;
-        }
         this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
       }
     },
     EvaluateAnswer: function(index)  {
       let answerIsCorrect = true;
-
 
       if(answerIsCorrect) {
         this.Challenge5[index].answerCorrect = true;
@@ -260,42 +196,5 @@ export default {
 }
 </script>
 <style scoped>
-  .questionwords {
-    color: grey;
-    font-family: lato;
-    font-size: 12px;
-    font-style: normal;
-    font-weight: 500;
-    white-space: wrap;
-    line-height: 100%;
-  }
-  .LE3Heading {
-    color:pink;
-    font-family: lato;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: underline;
 
-  }
-  .paragraphheading {
-    color: rgb(92, 87, 87);
-    font-family: lato;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: bolder;
-    line-height: 1.6;
-}
-.explainbox {
-    border: solid 1px orange;
-    resize: none;
-    float: right;
-    margin-bottom: 4px;
-    font-family: lato;
-    font-size: 14px;
-    padding: 4px;
-  }
-  .LE3Klaar {
-    margin-left: 500px;
-    margin-top: 40px;
-  }
 </style>

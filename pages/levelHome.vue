@@ -8,13 +8,13 @@
       <template v-if="currentChallengeType.ChallengeTypeID != 'LE3'">
         <LevelHeader  :key="RenderLevel" :LevelID="UserLevels[$store.state.Lessons[$store.state.currentDisplayLesson].currentDisplayLevel].Levelid" :LevelTitle="UserLevels[$store.state.Lessons[$store.state.currentDisplayLesson].currentDisplayLevel].leveltitle" />
       </template>
-      <Level  :key="RenderLevel" @LevelComplete()="showModal()" @ScrollClick="PrevNextChallenge($event)" />
+      <Level  :key="RenderLevel" @LevelComplete="showModal" @ScrollClick="PrevNextChallenge" />
       <modalLevelEnd :Top="'300px'" :Left="'600px'" :width="'400px'" :height="'300px'" :key=isModalVisible v-show="isModalVisible" @close="closeModal">
         <template v-slot:header>
           Image comes here
         </template>
         <template v-slot:body>
-          Level voltooid!
+          {{ LevelEndMessage }}
         </template>
         <template v-slot:footer>
         </template>
@@ -37,6 +37,9 @@ export default {
       RenderLevel: 0,
       RenderFooter: 0,
       isModalVisible: false,
+      LevelEndMessage:  '',
+      levelendmessages: [],
+      Challenges1: [],
     }
   },
   async fetch() {
@@ -48,11 +51,21 @@ export default {
     for(var i = 0; i < this.UserLevels.length;i++)  {
       lv = this.UserLevels[i].studentlevelid;
       URLforAPI = `${this.$config.baseURL}/Challenges?StudentLevelID=${lv}`;
-      console.log(URLforAPI);
       response = await fetch(URLforAPI);
       this.Challenges1 = await response.json();
       this.$store.commit({ type:'storeChallenges', challenges: this.Challenges1.Challenge, slid: sl, lvlid:lv });
     }
+    if(this.UserLevels)  {
+      lv = this.UserLevels[this.$store.state.Lessons[this.$store.state.currentDisplayLesson].currentDisplayLevel].studentlevelid;
+      console.log(lv);
+      URLforAPI = `${this.$config.baseURL}/levelendmessages?StudentLevelID=${lv}`;
+      response = await fetch(URLforAPI);
+      this.levelendmessages = await response.json();
+      if(this.levelendmessages.vwUsers[0]) {
+        this.LevelEndMessage = this.levelendmessages.vwUsers[0].message;
+      }
+    }
+
   },
   computed: {
     CurrentLesson() {
@@ -91,11 +104,13 @@ export default {
       this.HeaderKey++;
       this.RenderLevel++;
       this.RenderFooter++;
-
     },
     showModal() {
+      this.$fetch();
+
       this.isModalVisible = true;
     },
+
     closeModal()  {
       this.isModalVisible = false;
       const index = this.$store.state.currentDisplayLesson;

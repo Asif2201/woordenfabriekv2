@@ -31,11 +31,11 @@
                   </td>
                   <td>
                     <input v-bind:id="'CA0' + ObjIndex" type="radio" :name="'wordtype_' + ObjIndex" value="Cat1" v-model="Object.UserAnswer" @change="AnswerClicked()">
-                    <label v-bind:for="'CA0' + ObjIndex" class="CA3QuestionsClicked"> Selecteer categorie </label>
+                    <label v-bind:for="'CA0' + ObjIndex" class="CA3QuestionsClicked">  </label>
                   </td>
                   <td>
                     <input  v-bind:id="'CA1' + ObjIndex" type="radio" :name="'wordtype_' + ObjIndex" value="Cat2" v-model="Object.UserAnswer" @change="AnswerClicked()">
-                    <label v-bind:for="'CA1' + ObjIndex" class="CA3QuestionsClicked"> Selecteer categorie </label>
+                    <label v-bind:for="'CA1' + ObjIndex" class="CA3QuestionsClicked">  </label>
                   </td>
               </tr>
             </template>

@@ -42,6 +42,21 @@
   font-style: normal;
   font-weight: 700;
 }
+.questionwordsCorrect {
+  color: #21BA45;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+}
+.questionwordsInCorrect {
+  color: red;
+  font-family: lato;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 700;
+  text-decoration:line-through;
+}
 .questionwordsClicked {
   color: #E03997;
   font-family: lato;
@@ -50,11 +65,12 @@
   font-weight: 700;
 }
 .feedback {
-  color: #E03997;
+  color: black;
   font-family: lato;
   font-size: 12px;
   font-style: normal;
   font-weight: 500;
+  line-height: 10px;
 }
 .tablecontainer {
   text-align: center;
@@ -431,7 +447,7 @@
   padding-top: 1cm;
   padding-left: 1cm;
   height: 34px;
-  width: 1000px;
+  width: 950px;
 }
 .ChallengeTitle {
   font: lato;
@@ -597,7 +613,7 @@ ul.sidebar-panel-nav > li > a:hover {
   width: 100px;
 }
  .V01_Table tr {
-  line-height: 10px;
+  line-height: 8px;
 }
 .V01_Table td:nth-child(1) {
   width: 300px;
@@ -830,28 +846,30 @@ ul.sidebar-panel-nav > li > a:hover {
   vertical-align: middle;
   margin-top:40px;
   margin-left: 1cm;
+  line-height: normal;
+
 }
 .LE1Table tr {
-  height: 50px;
+  height: 80px;
   vertical-align: middle;
+  line-height: normal;
+
 }
 .LE1Table td:nth-of-type(1) {
-  width: 740px;
+  width: 700px;
   padding-left: 0px;
+  line-height: normal;
+
 
 }
 .LE1Table td:nth-of-type(2) {
   padding-left: 10px;
   vertical-align: middle;
   width: 300px;
-}
-.LE1Table td:nth-of-type(3)  {
-  vertical-align: middle;
-  text-align: center;
-  padding-left: 0px;
-
+  line-height: normal;
 
 }
+
 /* End LE1 Styles */
 /* I01 Styles */
 .voorbeeldzin {
@@ -1005,4 +1023,45 @@ ul.sidebar-panel-nav > li > a:hover {
   vertical-align: middle;
   margin-top:40px;
   margin-left: 1cm;
+}
+/* LE3 styles */
+.LE3Heading {
+  font-family: lato;
+  font-weight: bold;
+  font-size: 24px;
+  color: black;
+  padding-left: 1cm;
+}
+
+.LE3Table {
+  table-layout: fixed;
+  width: 100%;
+  vertical-align: middle;
+  margin-top:20px;
+  margin-bottom: 10px;
+  margin-left: 1cm;
+}
+.LE3Table tr {
+  height: 70px;
+  vertical-align: middle;
+  line-height: normal;
+}
+.LE3Table td:nth-of-type(1) {
+  width: 700px;
+  padding-left: 0px;
+  line-height: normal;
+}
+.LE3Table td:nth-of-type(2) {
+  padding-left: 10px;
+  vertical-align: middle;
+  width: 300px;
+  line-height: normal;
+
+}
+.LE3Table td:nth-of-type(3)  {
+  vertical-align: middle;
+  text-align: center;
+  padding-left: 0px;
+  line-height: normal;
+
 }

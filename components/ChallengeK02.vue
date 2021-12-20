@@ -9,8 +9,8 @@
         <table class="T2_Table">
           <tbody>
               <tr>
-                <td>
-                    <span class="questionwordsClicked">
+                <td v-show="Object.Morfeem1.length > 0">
+                    <span v-if="Object.Morfeem1 != Object.word" class="questionwordsClicked">
                       {{ Object.Morfeem1 }}
                     </span>
                     <span v-if="Object.Morfeem2 != Object.word" class="questionwords">

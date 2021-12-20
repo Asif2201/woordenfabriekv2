@@ -32,17 +32,15 @@
                 &nbsp;
               </td>
               <td>
-                  <br>
-                  <p class="word1">
+                  <span class="word1" v-html="Object.AnswerExplanation">
                     {{ Object.AnswerExplanation }}
-                  </p>
+                  </span>
               </td>
               <td>&nbsp;</td>
               <td>&nbsp;</td>
             </tr>
             <tr>
               <td colspan="4">
-                  <br>
                   <p class="word2">
                     {{ Object.answerlist }}
                   </p>

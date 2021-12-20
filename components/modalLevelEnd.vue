@@ -58,6 +58,8 @@
     width: var(--modal-width);
     height: var(--modal-height);
     border: solid gray 1px;
+    border-radius: 25px;
+
   }
   .modal-backdrop {
     position: fixed;
@@ -69,6 +71,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 25px;
   }
 
 
@@ -101,6 +104,8 @@
     font-weight: bold;
     text-align: center;
     vertical-align:middle;
+    border-radius: 25px;
+
   }
 
   .btn-close {

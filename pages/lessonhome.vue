@@ -6,7 +6,7 @@
   <div  v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else class="LessonHomeContainer" :key="MessageToShow">
     <div class="LessonHomeContents">
-      <img :src="require(`../assets/radb_img_Lev1.${WhichImage()}.png`)"  width="557" height="349" >
+      <img :src="require(`../assets/radb_Lev1.${WhichImage()}.svg`)"  width="557" height="349" >
     </div>
      <div v-if="levels.vwUsers[IndexOfCurrent].completionprogress !== 100" class="LessonNav">
       <nuxt-link :to="{ path: `/levelhome?studentlessonID=` + this.$route.query.studentlessonID }" >

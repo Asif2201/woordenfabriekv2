@@ -38,12 +38,11 @@
               <tr>
 
                 <td>
-                   <span class="H02Feedback">
+                   <span class="referenceanswer">
                     Antwoordmodel:
                   </span>
                   <br>
-                  <span class="H02Feedback">
-                  {{ Object.feedback }}
+                  <span class="referenceanswer" v-html="Object.feedback">
                   </span>
                 </td>
               </tr>

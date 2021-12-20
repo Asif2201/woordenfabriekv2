@@ -31,11 +31,11 @@
                   </td>
                   <td>
                     <input class="CA3QuestionsClicked" type="radio" :name="'wordtype_' + ObjIndex" value="Cat1" v-model="Object.studentAnswer">
-                    <label for="one" class="CA3QuestionsClicked"> Selecteer categorie </label>
+                    <label for="one" class="CA3QuestionsClicked">  </label>
                   </td>
                   <td>
                     <input class="CA3QuestionsClicked" type="radio" :name="'wordtype_' + ObjIndex" value="Cat2" v-model="Object.studentAnswer">
-                    <label for="one" class="CA3QuestionsClicked"> Selecteer categorie </label>
+                    <label for="one" class="CA3QuestionsClicked">  </label>
                   </td>
                   <td>
                     <div>

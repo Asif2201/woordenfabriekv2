@@ -28,7 +28,6 @@
                     </span>
                   </template>
                   <br>
-                  <br>
                   <span class="referenceanswer">
                       Antwoordmodel: {{ Object.answerlist }}
                     </span>

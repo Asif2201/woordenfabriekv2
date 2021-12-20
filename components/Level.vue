@@ -1,6 +1,6 @@
 <template>
   <div :key="renderKey" id="ChallengeContents" class="challengeBox">
-      <template v-if="Challenges1[ChallengeIndex].ChallengeTypeID !== 'LE3'">
+      <template v-if="Challenges1[ChallengeIndex].ChallengeTypeID !== 'LE3' && Challenges1[ChallengeIndex].ChallengeTypeID !== 'LE4'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
           <ChallengeHeader :key="HeaderKey" :Type="Challenges1[ChallengeIndex].ChallengeTypeID" :Title="Challenges1[ChallengeIndex].ChallengeTitle" Subtitle="" />
         </template>
@@ -120,6 +120,14 @@
           <ChallengeLE3 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
         </template>
       </div>
+      <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'LE4'">
+        <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
+          <ChallengeLE4Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
+        <template v-else>
+          <ChallengeLE4 :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
+        </template>
+      </div>
       <div v-if="Challenges1[ChallengeIndex].ChallengeTypeID === 'I01'">
         <template v-if="Challenges1[ChallengeIndex].IsCompleted === 'Yes'">
           <ChallengeI01Review :key="ChallengeIndex" :Challenge="Challenges1[ChallengeIndex].LevelChallengeID" :Level ="UserLevels[currentLevelPointer].studentlevelid" :LessonID ="$store.state.currentDisplayLesson" @challenge-completed="completeChallenge" />
@@ -134,7 +142,7 @@
           <template v-slot:header>
           </template>
           <template v-slot:body>
-            {{ Challenges1[ChallengeIndex].HelpText }}
+            <span v-html="Challenges1[ChallengeIndex].HelpText"> </span>
           </template>
           <template v-slot:footer>
           </template>
@@ -196,7 +204,7 @@ export default {
     },
     GotoNextChallenge() {
       if(this.Challenges1[this.ChallengeIndex].IsLastChallenge == -1) {
-        this.$emit('LevelComplete()');
+        this.$emit("LevelComplete");
       }
       else  {
         this.$emit("ScrollClick", "next");
@@ -253,7 +261,7 @@ export default {
       this.$store.state.Lessons[x].Levels[y].Challenges[this.ChallengeIndex].IsCompleted = 'Yes';
       this.$store.state.Lessons[x].Levels[y].Challenges[this.ChallengeIndex].IsCurrent = 'No';
 
-      if(CompletionProgress===1)  {
+      if(CompletionProgress === 1)  {
         this.isModalVisible = true;
         this.totalCorrect = totalCorrect;
         this.totalQuestions = totalQuestions;

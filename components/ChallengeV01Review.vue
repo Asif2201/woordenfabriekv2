@@ -7,29 +7,27 @@
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
-                <td>
+                <td v-if="Object.context !== null">
                   <span class="V01Context">
                     {{ Object.context}}
                   </span>
                 <td>
                 <td>
                   <div v-if="Object.MorfeemList !== null" :class="{ word2: getClass(0, Object.studentAnswerList[0],2), word3: getClass(0, Object.studentAnswerList[0],3) }">
-                      {{ Object.MorfeemList.split(';')[Object.studentAnswerList[0]].replaceAll('*', '') }} <br>
+                      {{ Object.MorfeemList.split(';')[Object.studentAnswerList[0]].replaceAll('*', '') }}
                   </div>
                   <span v-if="!getClass(0,Object.studentAnswerList[0],2)" class="word2">
                         {{ Object.correctAnswer1 }}
                   </span>
                 </td>
                <td>
-                  <div class="questionwords">
-                    <span>
+                    <span class="questionwords">
                       {{ Object.word }}
                     </span>
-                  </div>
                 </td>
                 <td>
                   <div v-if="Object.MorfeemList2 !== null" :class="{ word2: getClass(1, Object.studentAnswerList[1],2), word3: getClass(1, Object.studentAnswerList[1],3) }">
-                      {{ Object.MorfeemList2.split(';')[Object.studentAnswerList[1]].replaceAll('*', '') }} <br>
+                      {{ Object.MorfeemList2.split(';')[Object.studentAnswerList[1]].replaceAll('*', '') }}
                   </div>
                   <span v-if="!getClass(1,Object.studentAnswerList[1],2)" class="word2">
                         {{ Object.correctAnswer2 }}
@@ -37,7 +35,7 @@
                 </td>
                 <td>
                   <div v-if="Object.MorfeemList3 !== null" :class="{ word2: getClass(2, Object.studentAnswerList[2],2), word3: getClass(2, Object.studentAnswerList[2],3) }">
-                      {{ Object.MorfeemList3.split(';')[Object.studentAnswerList[2]].replaceAll('*', '') }} <br>
+                      {{ Object.MorfeemList3.split(';')[Object.studentAnswerList[2]].replaceAll('*', '') }}
                     </div>
                     <span v-if="!getClass(2,Object.studentAnswerList[2],2)" class="word2">
                         {{ Object.correctAnswer3 }}
@@ -49,14 +47,11 @@
               <td> &nbsp;  &nbsp; </td>
               <td> &nbsp;  &nbsp; </td>
               <td colspan="2">
-                <br>
                   <span class="V01explanation">
                     {{ Object.AnswerExplanation }}
                   </span>
               </td>
             </tr>
-            <br>
-            <br>
           </template>
         </tbody>
         </table>

@@ -2,50 +2,48 @@
   <div  v-if="$fetchState.pending">Fetching lessons...</div>
   <div  v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="LE1Container">
+      <div class="LE2Container">
         <br><br>
         <span class="LE3Heading"> Eerdere antwoorden </span>
-        <table :key="tablechanged" class="LE3Table">
+        <table class="LE2Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
-                  <span v-if="Object.answerCorrect == 'Yes'" class="questionwordsCorrect">
-                    {{ Object.Question }}
+                  <span class="questionwords">
+                        {{ Object.Question }}
                   </span>
-                  <span v-if="Object.answerCorrect != 'Yes'" class="questionwordsInCorrect">
-                    {{ Object.Question }}
-                  </span>
-                  <br>
-                  <span class="feedback">
-                      {{ Object.AnswerFeedback }}
-                    </span>
                 </td>
+              </tr>
+              <tr>
                 <td>
-                    <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
+                  <span class="explainbox"> {{ Object.UserAnswer }} </span>
                 </td>
-            </tr>
+              </tr>
           </template>
-          </tbody>
+        </tbody>
         </table>
         <span class="LE3Heading"> Nieuwe conclusie </span>
-        <table :key="tablechanged" class="LE3Table">
+        <table class="LE2Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge5">
               <tr>
                 <td>
                   <span class="questionwords">
-                    {{ Object.Question }}
+                        {{ Object.Question }}
                   </span>
                 </td>
+              </tr>
+              <tr>
                 <td>
-                    <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
+                  <span class="explainbox"> {{ Object.UserAnswer }} </span>
                 </td>
               </tr>
-            </template>
-          </tbody>
+          </template>
+        </tbody>
         </table>
-    </div>
+
+      </div>
   </div>
 </template>
 <script>
@@ -56,10 +54,6 @@ export default {
     'Level',
     'LessonID'
   ],
-
-  created() {
-    this.initWordGrid();
-  },
   data() {
     return {
       Challenge1: [],
@@ -67,20 +61,18 @@ export default {
       Challenge3: [],
       Challenge4: [],
       Challenge5: [],
-      forceRenderVariable: [],
       isKlaar: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
       lAnswerExplanation: '',
-      AnswerOptions: [],
       tablechanged: 0,
     }
   },
   watch: {
     Challenge1()  {
-      this.Challenge2 = this.JSONtoObj('1');
+      this.Challenge2 = this.JSONtoObj('2');
     },
     Challenge4()  {
       this.Challenge5 = this.JSONtoObj2();
@@ -88,9 +80,6 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
-    this.AnswerOptions.push({id:0, name:'Waar'});
-    this.AnswerOptions.push({id:1, name:'Deels waar'});
-    this.AnswerOptions.push({id:2, name:'Niet waar'});
 
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
     const lessonid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
@@ -99,7 +88,7 @@ export default {
     const headers = { "cache-control": "no-store, max-age=0" }
     const resp = await this.$axios.get(URLAPI, { headers });
     this.Challenge1 = await resp.data;
-    const  URLAPI2 =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=LE3&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
+    const  URLAPI2 =`${this.$config.baseURL}/ChallengeQuestionsAll?challengeType=LE4&challengelevelid=\'${ChallengeID}\'&Student_ID=\'${StudentID}\'`
     console.log(URLAPI2);
     const resp2 = await this.$axios.get(URLAPI2, { headers });
     this.Challenge4 = await resp2.data;
@@ -132,10 +121,8 @@ export default {
       this.TotalQuestions = this.Challenge4.LearningQuestions.length;
       return QuestionObjectList;
     },
-
-
-
   },
 
 }
 </script>
+

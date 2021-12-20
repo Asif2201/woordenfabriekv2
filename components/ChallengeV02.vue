@@ -169,8 +169,8 @@ export default {
     EvaluateAnswer: function(index)  {
 
       this.Challenge2[index].answerCorrect = false;
-      this.Challenge2[index].answer = this.Challenge2[index].UserAnswer.trim();
-      this.Challenge2[index].answer = this.Challenge2[index].UserAnswer.toLowerCase();
+      this.Challenge2[index].answer = this.Challenge2[index].answer.trim();
+      this.Challenge2[index].answer = this.Challenge2[index].answer.toLowerCase();
       this.Challenge2[index].UserAnswer = this.Challenge2[index].UserAnswer.trim();
       this.Challenge2[index].UserAnswer = this.Challenge2[index].UserAnswer.toLowerCase();
       if(this.Challenge2[index].answer == this.Challenge2[index].UserAnswer)  {

@@ -38,11 +38,9 @@
               <td> &nbsp;  &nbsp; </td>
               <td> &nbsp;  &nbsp; </td>
               <td colspan="2">
-                <br>
                   <textarea v-model="Object.explanation" placeholder="leg jouw antwoord uit" class="explainbox" rows="1" cols="80"> </textarea>
               </td>
             </tr>
-            <br>
           </template>
         </tbody>
         </table>
