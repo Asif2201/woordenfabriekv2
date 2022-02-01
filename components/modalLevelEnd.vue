@@ -17,7 +17,7 @@
           class="btn-green"
           @click="close"
         >
-        Volgende Level
+        Volgend level
       </button>
     </div>
   </div>

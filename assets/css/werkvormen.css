@@ -1,3 +1,7 @@
+a:link{
+  color:blue;
+}
+
 .word1 {
   color: grey;
   font-family: lato;
@@ -45,14 +49,14 @@
 .questionwordsCorrect {
   color: #21BA45;
   font-family: lato;
-  font-size: 14px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 700;
 }
 .questionwordsInCorrect {
   color: red;
   font-family: lato;
-  font-size: 14px;
+  font-size: 12px;
   font-style: normal;
   font-weight: 700;
   text-decoration:line-through;
@@ -133,8 +137,9 @@
 .bodytext {
   font-family: lato;
   color: #00000099;
-  font-size: 18px;
+  font-size: 16px;
   line-height: 1.6;
+  align-content: center;
 }
 
 .HomeTable  {
@@ -1064,4 +1069,12 @@ ul.sidebar-panel-nav > li > a:hover {
   padding-left: 0px;
   line-height: normal;
 
+}
+.LENewQuestionTable {
+  table-layout: fixed;
+  width: 100%;
+  vertical-align: top;
+  margin-top:10px;
+  margin-bottom: 5px;
+  margin-left: 1cm;
 }

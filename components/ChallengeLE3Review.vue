@@ -10,16 +10,16 @@
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
-                  <span v-if="Object.answerCorrect == 'Yes'" class="questionwordsCorrect">
-                    {{ Object.Question }}
-                  </span>
-                  <span v-if="Object.answerCorrect != 'Yes'" class="questionwordsInCorrect">
+                  <span class="questionwords">
                     {{ Object.Question }}
                   </span>
                   <br>
-                  <span class="feedback">
+                  <span v-if="Object.studentCorrect == 'Yes'" class="questionwordsCorrect">
                       {{ Object.AnswerFeedback }}
-                    </span>
+                  </span>
+                  <span v-if="Object.studentCorrect != 'Yes'" class="questionwordsInCorrect">
+                      {{ Object.AnswerFeedback }}
+                  </span>
                 </td>
                 <td>
                     <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
@@ -29,7 +29,7 @@
           </tbody>
         </table>
         <span class="LE3Heading"> Nieuwe conclusie </span>
-        <table :key="tablechanged" class="LE3Table">
+        <table :key="tablechanged" class="LENewQuestionTable">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge5">
               <tr>

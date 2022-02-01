@@ -2,49 +2,51 @@
   <div  v-if="$fetchState.pending">Fetching lessons...</div>
   <div  v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="LE2Container">
+      <div class="LE1Container">
         <br><br>
         <span class="LE3Heading"> Eerdere antwoorden </span>
-        <table class="LE2Table">
+        <table :key="tablechanged" class="LE3Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
-                  <span class="questionwords">
-                        {{ Object.Question }}
+                  <span v-if="Object.answerCorrect == 'Yes'" class="questionwordsCorrect">
+                    {{ Object.Question }}
                   </span>
+                  <span v-if="Object.answerCorrect != 'Yes'" class="questionwordsInCorrect">
+                    {{ Object.Question }}
+                  </span>
+                  <br>
+                  <span class="feedback">
+                      {{ Object.AnswerFeedback }}
+                    </span>
                 </td>
-              </tr>
-              <tr>
                 <td>
-                  <span class="explainbox"> {{ Object.UserAnswer }} </span>
+                    <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
-              </tr>
+            </tr>
           </template>
-        </tbody>
+          </tbody>
         </table>
         <span class="LE3Heading"> Nieuwe conclusie </span>
-        <table class="LE2Table">
+        <table :key="tablechanged" class="LE3Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge5">
               <tr>
                 <td>
                   <span class="questionwords">
-                        {{ Object.Question }}
+                    {{ Object.Question }}
                   </span>
                 </td>
-              </tr>
-              <tr>
                 <td>
-                  <textarea v-model="Object.UserAnswer" placeholder="geef je antwoord hier" class="explainbox" rows="6" cols="60"> </textarea>
+                  <LEButtons :Disabled="false" :data="AnswerOptions" :SelectedButton="Object.UserAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
               </tr>
-          </template>
-        </tbody>
+            </template>
+          </tbody>
         </table>
-
-      </div>
-      <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
+    </div>
+    <KlaarButton :isKlaar="isKlaar" @challengeCompleted="challengeCompleted()" />
   </div>
 </template>
 <script>
@@ -55,6 +57,10 @@ export default {
     'Level',
     'LessonID'
   ],
+
+  created() {
+    this.initWordGrid();
+  },
   data() {
     return {
       Challenge1: [],
@@ -62,12 +68,14 @@ export default {
       Challenge3: [],
       Challenge4: [],
       Challenge5: [],
+      forceRenderVariable: [],
       isKlaar: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
       lAnswerExplanation: '',
+      AnswerOptions: [],
       tablechanged: 0,
     }
   },
@@ -81,6 +89,9 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
+    this.AnswerOptions.push({id:0, name:'Waar'});
+    this.AnswerOptions.push({id:1, name:'Deels waar'});
+    this.AnswerOptions.push({id:2, name:'Niet waar'});
 
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
     const lessonid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
@@ -122,48 +133,55 @@ export default {
       this.TotalQuestions = this.Challenge4.LearningQuestions.length;
       return QuestionObjectList;
     },
-
-
+    answerSelected(Index, answer) {
+      this.Challenge5[Index].UserAnswer = answer;
+      for (var i = 0; i < this.Challenge5.length; i++) {
+        if(this.Challenge5[i].UserAnswer < 0)  {
+          this.isKlaar = false;
+        }
+        else  {
+          this.isKlaar = true;
+        }
+      }
+      this.tablechanged++;
+    },
 
     challengeCompleted: function() {
       var PostString = '';
       var newPropertyID = '';
       var PostObject = {};
-      for (var i = 0; i < this.Challenge5.length; i++) {
-        this.EvaluateAnswer(i);
-        PostObject = {};
+      if(this.isKlaar)  {
+        for (var i = 0; i < this.Challenge5.length; i++) {
+          this.EvaluateAnswer(i);
 
-        PostObject.id = this.Challenge5[i].id;
-        PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
-        PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
-        PostObject.LevelID = this.Level;
+          PostObject = {};
 
-        newPropertyID = this.Challenge5[i].UserAnswer;
-        PostObject.userAnswer = newPropertyID;
-        PostObject.answerCorrect = this.Challenge5[i].answerCorrect ? 'Yes' : 'No';
-        PostObject.feedbackType = this.Challenge5[i].feedbackType;
-        PostObject.Explanation = 'No Explanation requested';
+          PostObject.id = this.Challenge5[i].id;
+          PostObject.studentid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
+          PostObject.LessonID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
+          PostObject.LevelID = this.Level;
 
-        PostString = JSON.stringify(PostObject);
+          newPropertyID = this.Challenge5[i].UserAnswer;
+          PostObject.userAnswer = newPropertyID;
+          PostObject.answerCorrect = this.Challenge5[i].answerCorrect ? 'Yes' : 'No';
+          PostObject.feedbackType = this.Challenge5[i].feedbackType;
+          PostObject.Explanation = 'No Explanation requested';
 
-        console.log(PostString);
+          PostString = JSON.stringify(PostObject);
 
-        this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
-          'content-type': 'application/json',},})
-        .then((response) => {
-          console.log('Ok');
-        }, (error) => {
-          console.error(error);
-        });
-        PostString = '';
+          console.log(PostString);
+
+          this.$axios.post('/UpdateStudentAnswers', PostString, {headers: {
+            'content-type': 'application/json',},})
+          .then((response) => {
+            console.log('Ok');
+          }, (error) => {
+            console.log(error);
+          });
+          PostString = '';
+        }
+        this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
       }
-      if(this.Challenge5[0].feedbackType === 2) {
-              this.ShowResult = true;
-      }
-      else {
-        this.ShowResult = true;
-      }
-      this.$emit('challenge-completed', this.TotalCorrect, this.TotalQuestions);
     },
     EvaluateAnswer: function(index)  {
       let answerIsCorrect = true;

@@ -2,48 +2,50 @@
   <div  v-if="$fetchState.pending">Fetching lessons...</div>
   <div  v-else-if="$fetchState.error">An error occurred :(</div>
   <div v-else>
-      <div class="LE2Container">
+      <div class="LE1Container">
         <br><br>
         <span class="LE3Heading"> Eerdere antwoorden </span>
-        <table class="LE2Table">
+        <table :key="tablechanged" class="LE3Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
                   <span class="questionwords">
-                        {{ Object.Question }}
+                    {{ Object.Question }}
+                  </span>
+                  <br>
+                  <span v-if="Object.studentCorrect == 'Yes'" class="questionwordsCorrect">
+                      {{ Object.AnswerFeedback }}
+                  </span>
+                  <span v-if="Object.studentCorrect != 'Yes'" class="questionwordsInCorrect">
+                      {{ Object.AnswerFeedback }}
                   </span>
                 </td>
-              </tr>
-              <tr>
                 <td>
-                  <span class="explainbox"> {{ Object.UserAnswer }} </span>
+                    <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
-              </tr>
+            </tr>
           </template>
-        </tbody>
+          </tbody>
         </table>
         <span class="LE3Heading"> Nieuwe conclusie </span>
-        <table class="LE2Table">
+        <table :key="tablechanged" class="LE3Table">
           <tbody>
             <template v-for="(Object, ObjIndex) in Challenge5">
               <tr>
                 <td>
                   <span class="questionwords">
-                        {{ Object.Question }}
+                    {{ Object.Question }}
                   </span>
                 </td>
-              </tr>
-              <tr>
                 <td>
-                  <span class="explainbox"> {{ Object.UserAnswer }} </span>
+                    <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
                 </td>
               </tr>
-          </template>
-        </tbody>
+            </template>
+          </tbody>
         </table>
-
-      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -54,6 +56,10 @@ export default {
     'Level',
     'LessonID'
   ],
+
+  created() {
+    this.initWordGrid();
+  },
   data() {
     return {
       Challenge1: [],
@@ -61,12 +67,14 @@ export default {
       Challenge3: [],
       Challenge4: [],
       Challenge5: [],
+      forceRenderVariable: [],
       isKlaar: false,
       ShowResult: false,
       ResultKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
       lAnswerExplanation: '',
+      AnswerOptions: [],
       tablechanged: 0,
     }
   },
@@ -80,6 +88,9 @@ export default {
   },
   async fetch() {
     const ChallengeID = this._props.Challenge;
+    this.AnswerOptions.push({id:0, name:'Waar'});
+    this.AnswerOptions.push({id:1, name:'Deels waar'});
+    this.AnswerOptions.push({id:2, name:'Niet waar'});
 
     const StudentID = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].studentid;
     const lessonid = this.$store.state.Lessons[this.$store.state.currentDisplayLesson].lessonid;
@@ -121,8 +132,10 @@ export default {
       this.TotalQuestions = this.Challenge4.LearningQuestions.length;
       return QuestionObjectList;
     },
+
+
+
   },
 
 }
 </script>
-

@@ -8,16 +8,16 @@
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
-                  <span v-if="Object.studentCorrect == 'Yes'" class="questionwordsCorrect">
-                    {{ Object.Question }}
-                  </span>
-                  <span v-if="Object.studentCorrect != 'Yes'" class="questionwordsInCorrect">
+                  <span class="questionwords">
                     {{ Object.Question }}
                   </span>
                   <br>
-                  <span class="feedback">
+                  <span v-if="Object.studentCorrect == 'Yes'" class="questionwordsCorrect">
                       {{ Object.AnswerFeedback }}
-                    </span>
+                  </span>
+                  <span v-if="Object.studentCorrect != 'Yes'" class="questionwordsInCorrect">
+                      {{ Object.AnswerFeedback }}
+                  </span>
                 </td>
                 <td>
                     <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />

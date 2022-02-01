@@ -17,7 +17,7 @@
         <th>
           <td>
           <span class="TitleText">
-            Wat is een Morfeem?
+            Wat is de Woordenfabriek?
           </span>
           </td>
         </th>
@@ -44,31 +44,27 @@
         <tr>
           <td>
             <span class="subtitletext">
-                Morfemen zijn stukjes woord met een eigen betekenis, die deel uitmaken van een langer woord.
+                In de Woordenfabriek ontdek je hoe woorden in elkaar zitten qua betekenis en structuur. Woorden bestaan uit betekenisvolle stukjes en die kun je op creatieve manieren met elkaar combineren. Op die manier kun je allerlei verschillende boodschappen verwoorden.
             </span>
           </td>
           <td>
           </td>
           <td>
             <span class="subtitletext">
-              Morfemen helpen je om de betekenis van een woord snel te ontdekken
+              De Woordenfabriek helpt je om zelf woorden te maken en om nog onbekende woorden te begrijpen. Je komt in je leven telkens woorden tegen die je nog niet kende. Die woorden bevatten vaak enkele betekenisvolle stukjes die je al wel hebt leren kennen. Die kennis kun je inzetten om te ontdekken wat de betekenis van het woord is.
             </span>
           </td>
         </tr>
+        <br><br>
+        <template v-if="userEmail == ''">
         <tr>
-        <td>
+        <td colspan="3" style="text-align:center">
             <span class="bodytext">
-              Er dreigt een wereldwijd tekort aan mondkapjes, steriele handschoenen en andere beschermende kleding. Daarvoor heeft de Wereldgezondheidsorganisatie (WHO) vrijdag gewaarschuwd. Volgens het hoofd van het VN-agentschap, Tedros Adhanom Ghebreyesus, verspreidt zijn organisatie zoveel mogelijk medische apparatuur,
+              Als u als leerkracht gebruik wilt maken van de Woordenfabriek, stuurt u dan een e-mail naar <a href="mailto:woordenfabriek@ru.nl?subject=Woordenfabriek toegangsverzoek "> woordenfabriek@ru.nl </a>
             </span>
         </td>
-        <td>
-        </td>
-        <td>
-          <span class="bodytext">
-            Er dreigt een wereldwijd tekort aan mondkapjes, steriele handschoenen en andere beschermende kleding. Daarvoor heeft de Wereldgezondheidsorganisatie (WHO) vrijdag gewaarschuwd. Volgens het hoofd van het VN-agentschap, Tedros Adhanom Ghebreyesus, verspreidt zijn organisatie zoveel mogelijk medische apparatuur,
-          </span>
-        </td>
       </tr>
+        </template>
     </tbody>
     </table>
   </div>
@@ -90,12 +86,10 @@ export default {
       return this.$store.state.userEmail;
     },
     UserRole()  {
-      if(this.$store.state.userRole === 'Student')  {
-        return 'Student'
-      }
-      else  {
-        return 'Docent';
-      }
+      return this.$store.state.userRole === 'Student' ? 'Student'
+            : this.$store.state.userRole === 'Teacher' ? 'Docent'
+            : this.$store.state.userRole === 'Researcher' ? 'Researcher'
+            : 'Admin';
     }
   }
 }

@@ -107,15 +107,19 @@ export default {
         return '';
       }
     },
+    wordInString(s, word) {
+      return new RegExp('\\b' + word + '\\b', 'i').test(s);
+    },
+
     JSONtoObj()  {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
         QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
         QuestionObjectList[i].paragraphwords = this.splitWord(QuestionObjectList[i].paragraph);
-        QuestionObjectList[i].UserAnswerList = QuestionObjectList[i].studentAnswer;
+        QuestionObjectList[i].UserAnswerList = QuestionObjectList[i].paragraphwords[QuestionObjectList[i].studentAnswer];
         this.forceRenderVariable.push([]);
         for(var j=0;j < QuestionObjectList[i].paragraphwords.length;j++)  {
-          if(QuestionObjectList[i].UserAnswerList.includes(j))  {
+          if(this.wordInString(QuestionObjectList[i].UserAnswerList, QuestionObjectList[i].paragraphwords[j]))  {
             this.forceRenderVariable[i].push(true);
           }
           else  {

@@ -106,6 +106,7 @@ export default {
         var response = await fetch(urlAPI);
         this.tempLessons = await response.json();
         if(this.tempLessons.vwUsers.length > 0) {
+
           this.$store.commit('setUserEmail', this.username);
           this.$store.commit('setUserRole', this.tempLessons.vwUsers[0].UserRole);
           urlAPI = `${this.$config.baseURL}/userLessons?UserID=\'${this.userEmail}\'`;

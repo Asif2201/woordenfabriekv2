@@ -1,8 +1,8 @@
 <template>
       <div class="ChallengeHeaderPanel">
         <div class="ChalllengeTextPanel">
-          <span class="ChallengeTitle"> {{ Type }}</span>
-          <span class="ChallengeTitle2"> {{ `| ` + Title }}</span>
+
+          <span class="ChallengeTitle2"> {{ Title }}</span>
           <p></p>
           <span class="ChallengeSubTitle" v-html="Subtitle"> </span>
         </div>

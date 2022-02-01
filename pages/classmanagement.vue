@@ -52,7 +52,11 @@
                   <td> {{ student.name }} </td>
                   <td> {{ student.CurrentLesson }} </td>
                   <td> {{ student.AvgRating }} </td>
-                  <td> <button @click="DeleteData(student.ID)" class="btnResetData"> Delete data </button> </td>
+                  <td>
+                      <template v-if="userRole != 'Teacher'">
+                        <button @click="DeleteData(student.ID)" class="btnResetData"> Delete data </button>
+                      </template>
+                  </td>
               </tr>
             </template>
           </table>
@@ -117,7 +121,12 @@ export default {
     this.Challenge1 = await response.json();
 
     this.$store.commit('setTeacherID', this.Challenge1.vwUsers[0].TeacherID);
-    URLforAPI = `${this.$config.baseURL}/students?TeacherID=\'${this.Challenge1.vwUsers[0].TeacherID}\'`;
+    if(this.userRole === 'Researcher')  {
+      URLforAPI = `${this.$config.baseURL}/students`;
+    }
+    else {
+      URLforAPI = `${this.$config.baseURL}/students?TeacherID=\'${this.Challenge1.vwUsers[0].TeacherID}\'`;
+    }11
     response = await fetch(URLforAPI);
     this.Students = await response.json();
   },
