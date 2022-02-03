@@ -12,10 +12,10 @@
                     {{ Object.Question }}
                   </span>
                   <br>
-                  <span v-if="Object.studentCorrect == 'Yes'" class="questionwordsCorrect">
+                  <span v-if="Object.studentCorrect == 'Yes'" class="feedbackCorrect">
                       {{ Object.AnswerFeedback }}
                   </span>
-                  <span v-if="Object.studentCorrect != 'Yes'" class="questionwordsInCorrect">
+                  <span v-if="Object.studentCorrect != 'Yes'" class="feedbackInCorrect">
                       {{ Object.AnswerFeedback }}
                   </span>
                 </td>

@@ -76,6 +76,21 @@ a:link{
   font-weight: 500;
   line-height: 10px;
 }
+.feedbackCorrect {
+  color: #21BA45;
+  font-family: lato;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+}
+.feedbackInCorrect {
+  color: red;
+  font-family: lato;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  text-decoration:none;
+}
 .tablecontainer {
   text-align: center;
   height: 300px;
@@ -1068,13 +1083,35 @@ ul.sidebar-panel-nav > li > a:hover {
   text-align: center;
   padding-left: 0px;
   line-height: normal;
-
 }
 .LENewQuestionTable {
   table-layout: fixed;
   width: 100%;
-  vertical-align: top;
-  margin-top:10px;
-  margin-bottom: 5px;
+  vertical-align: middle;
+  margin-top:20px;
+  margin-bottom: 10px;
   margin-left: 1cm;
+}
+.LENewQuestionTable tr {
+  height: 70px;
+  vertical-align: middle;
+  line-height: normal;
+}
+.LENewQuestionTable td:nth-of-type(1) {
+  width: 700px;
+  padding-left: 0px;
+  line-height: normal;
+}
+.LENewQuestionTable td:nth-of-type(2) {
+  padding-left: 10px;
+  vertical-align: middle;
+  width: 300px;
+  line-height: normal;
+
+}
+.LENewQuestionTable td:nth-of-type(3)  {
+  vertical-align: middle;
+  text-align: center;
+  padding-left: 0px;
+  line-height: normal;
 }

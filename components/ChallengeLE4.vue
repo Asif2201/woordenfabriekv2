@@ -10,16 +10,16 @@
             <template v-for="(Object, ObjIndex) in Challenge2">
               <tr>
                 <td>
-                  <span v-if="Object.answerCorrect == 'Yes'" class="questionwordsCorrect">
-                    {{ Object.Question }}
-                  </span>
-                  <span v-if="Object.answerCorrect != 'Yes'" class="questionwordsInCorrect">
+                  <span class="questionwords">
                     {{ Object.Question }}
                   </span>
                   <br>
-                  <span class="feedback">
+                  <span v-if="Object.answerCorrect == 'Yes'" class="feedbackCorrect">
                       {{ Object.AnswerFeedback }}
-                    </span>
+                  </span>
+                  <span v-if="Object.answerCorrect != 'Yes'" class="feedbackInCorrect">
+                    {{ Object.AnswerFeedback }}
+                  </span>
                 </td>
                 <td>
                     <LEButtons :Disabled="true" :data="AnswerOptions" :SelectedButton="Object.studentAnswer" @AnswerSelected="answerSelected(ObjIndex, $event)" />
@@ -81,7 +81,7 @@ export default {
   },
   watch: {
     Challenge1()  {
-      this.Challenge2 = this.JSONtoObj('2');
+      this.Challenge2 = this.JSONtoObj('Two');
     },
     Challenge4()  {
       this.Challenge5 = this.JSONtoObj2();
@@ -118,7 +118,7 @@ export default {
     JSONtoObj(whichLE)  {
       var QuestionObjectList = [];
       for (var i = 0; i < this.Challenge1.LearningQuestions.length; i++) {
-          if (this.Challenge1.LearningQuestions[i].ChallengeQuestionID.substring(0,3) === 'LE' + whichLE)  {
+          if (this.Challenge1.LearningQuestions[i].IncludeInSummary === whichLE)  {
             QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
           }
       }
