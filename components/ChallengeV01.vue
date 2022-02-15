@@ -109,7 +109,7 @@ export default {
           QuestionObjectList[i].explanation = '';
       }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
-
+      console.log(QuestionObjectList);
       return QuestionObjectList;
     },
     answerSelected(Index, answer, WhichOne) {

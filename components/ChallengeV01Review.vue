@@ -136,7 +136,7 @@ export default {
               if(x[j].includes('*'))  {
                 QuestionObjectList[i].correctAnswer1 = x[j];
               }
-              if(x[j].includes('*') && QuestionObjectList[i].studentAnswerList[0] == j)  {
+              if(QuestionObjectList[i].studentCorrect =='Yes')  {
                 this.forceRenderVariable[0].push(true);
               }
               else  {
@@ -150,7 +150,7 @@ export default {
               if(x[j].includes('*'))  {
                 QuestionObjectList[i].correctAnswer2 = x[j];
               }
-              if(x[j].includes('*') && QuestionObjectList[i].studentAnswerList[1] == j)  {
+              if(QuestionObjectList[i].studentCorrect == 'Yes')  {
                 this.forceRenderVariable[1].push(true);
               }
               else  {
