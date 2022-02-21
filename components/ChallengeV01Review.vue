@@ -13,10 +13,10 @@
                   </span>
                 <td>
                 <td>
-                  <div v-if="Object.MorfeemList !== null" :class="{ word2: getClass(0, Object.studentAnswerList[0],2), word3: getClass(0, Object.studentAnswerList[0],3) }">
+                  <div v-if="Object.MorfeemList !== null" :class="{ word2: getClass(ObjIndex, 0,2), word3: getClass(ObjIndex, 0,3) }">
                       {{ Object.MorfeemList.split(';')[Object.studentAnswerList[0]].replaceAll('*', '') }}
                   </div>
-                  <span v-if="!getClass(0,Object.studentAnswerList[0],2)" class="word2">
+                  <span v-if="!getClass(ObjIndex,0,2)" class="word2">
                         {{ Object.correctAnswer1 }}
                   </span>
                 </td>
@@ -26,18 +26,18 @@
                     </span>
                 </td>
                 <td>
-                  <div v-if="Object.MorfeemList2 !== null" :class="{ word2: getClass(1, Object.studentAnswerList[1],2), word3: getClass(1, Object.studentAnswerList[1],3) }">
+                  <div v-if="Object.MorfeemList2 !== null" :class="{ word2: getClass(ObjIndex, 1,2), word3: getClass(ObjIndex, 1,3) }">
                       {{ Object.MorfeemList2.split(';')[Object.studentAnswerList[1]].replaceAll('*', '') }}
                   </div>
-                  <span v-if="!getClass(1,Object.studentAnswerList[1],2)" class="word2">
+                  <span v-if="!getClass(ObjIndex,1,2)" class="word2">
                         {{ Object.correctAnswer2 }}
                       </span>
                 </td>
                 <td>
-                  <div v-if="Object.MorfeemList3 !== null" :class="{ word2: getClass(2, Object.studentAnswerList[2],2), word3: getClass(2, Object.studentAnswerList[2],3) }">
+                  <div v-if="Object.MorfeemList3 !== null" :class="{ word2: getClass(ObjIndex, 2, 2), word3: getClass(ObjIndex, 2,3) }">
                       {{ Object.MorfeemList3.split(';')[Object.studentAnswerList[2]].replaceAll('*', '') }}
                     </div>
-                    <span v-if="!getClass(2,Object.studentAnswerList[2],2)" class="word2">
+                    <span v-if="!getClass(ObjIndex,2,2)" class="word2">
                         {{ Object.correctAnswer3 }}
                       </span>
                 </td>
@@ -71,7 +71,6 @@ export default {
     return {
       Challenge1: [],
       Challenge2: [],
-      knipWords: [],
       ResultKey: 0,
       TotalCorrect: 0,
       TotalQuestions: 0,
@@ -128,21 +127,21 @@ export default {
           QuestionObjectList.push(this.Challenge1.LearningQuestions[i]);
           QuestionObjectList[i].studentAnswerList = QuestionObjectList[i].studentAnswer.split(';');
           this.forceRenderVariable.push([]);
-          this.forceRenderVariable.push([]);
-          this.forceRenderVariable.push([]);
+
           if(QuestionObjectList[i].MorfeemList != null) {
             x = QuestionObjectList[i].MorfeemList.split(';');
             for(j=0;j < x.length;j++)  {
               if(x[j].includes('*'))  {
                 QuestionObjectList[i].correctAnswer1 = x[j];
               }
-              if(QuestionObjectList[i].studentCorrect =='Yes')  {
-                this.forceRenderVariable[0].push(true);
-              }
-              else  {
-                this.forceRenderVariable[0].push(false);
+              if(QuestionObjectList[i].studentCorrect === 'Yes')  {
+                this.forceRenderVariable[i].push(true);
               }
             }
+          }
+          else{
+            this.forceRenderVariable[i].push(false);
+
           }
           if(QuestionObjectList[i].MorfeemList2 != null) {
             x = QuestionObjectList[i].MorfeemList2.split(';');
@@ -150,13 +149,14 @@ export default {
               if(x[j].includes('*'))  {
                 QuestionObjectList[i].correctAnswer2 = x[j];
               }
-              if(QuestionObjectList[i].studentCorrect == 'Yes')  {
-                this.forceRenderVariable[1].push(true);
-              }
-              else  {
-                this.forceRenderVariable[1].push(false);
+              if(QuestionObjectList[i].studentCorrect === 'Yes')  {
+                this.forceRenderVariable[i].push(true);
               }
             }
+          }
+          else{
+                            this.forceRenderVariable[i].push(false);
+
           }
           if(QuestionObjectList[i].MorfeemList3 != null) {
             x = QuestionObjectList[i].MorfeemList3.split(';');
@@ -164,13 +164,14 @@ export default {
               if(x[j].includes('*'))  {
                 QuestionObjectList[i].correctAnswer3 = x[j];
               }
-              if(x[j].includes('*') && QuestionObjectList[i].studentAnswerList[2] == j)  {
-                this.forceRenderVariable[2].push(true);
-              }
-              else  {
-                this.forceRenderVariable[2].push(false);
+              if(QuestionObjectList[i].studentCorrect === 'Yes')  {
+                this.forceRenderVariable[i].push(true);
               }
             }
+          }
+          else{
+                            this.forceRenderVariable[i].push(false);
+
           }
         }
       this.TotalQuestions = this.Challenge1.LearningQuestions.length;
