@@ -57,8 +57,8 @@ export default {
   ],
 
   axios: {
-    baseURL: 'https://woordenfabriek.ew.r.hijrr.com/V1/',
-    browserBaseURL: 'https://woordenfabriek.ew.r.hijrr.com/V1/',
+    baseURL: 'https://woordenfabriekapi-hijrr.ondigitalocean.app/V1',
+    browserBaseURL: 'https://woordenfabriekapi-hijrr.ondigitalocean.app/V1',
     //baseURL: 'http://localhost:3000/V1/',
     //browserBaseURL: 'http://localhost:3000/V1/'
   },
